@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff">
+<meta name="description" content="Portfolio navigation study: morph and terminal motion concepts.">
+<title>Entry Motion Study — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@200;300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script>
+document.documentElement.dataset.mode=new URLSearchParams(location.search).get('mode')==='b'?'b':'a';
+</script>
+<style>
+:root{
+ --ink:#0c0c0c;--line:#ddd;--muted:#777;--paper:#fff;
+ --mono:'Geist Mono',ui-monospace,SFMono-Regular,monospace;
+ --sans:'Geist','Noto Sans JP',sans-serif;
+ --gutter:clamp(24px,6.95vw,100px);
+ --hero-opacity:1;--hero-y:0px;--hero-scale:1;
+ --a-opacity:0;--a-y:48px;--a-scale:.96;
+ --b-opacity:0;--b-y:32px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid #111;outline-offset:5px}
+.lab-nav{position:fixed;top:0;left:0;right:0;z-index:30;min-height:65px;padding:12px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);font:400 12px/1.4 var(--mono)}
+.lab-back{white-space:nowrap;opacity:.65;transition:opacity .2s}.lab-back:hover{opacity:1}
+.lab-switch{display:flex;gap:4px;padding:4px;background:#f2f2f2;border:1px solid #e8e8e8;border-radius:3px}
+.lab-switch a{padding:9px 14px;color:#777;white-space:nowrap;transition:background .2s,color .2s}
+.lab-switch a[aria-current="page"]{background:#111;color:#fff}
+.lab-switch a:hover:not([aria-current]){color:#111}
+.lab-meta{font-size:11px;color:#898989;white-space:nowrap}
+.story{height:190svh;min-height:1100px;position:relative}
+.story-sticky{position:sticky;top:0;height:100svh;min-height:500px;overflow:hidden}
+.stage-inner{height:100%;max-width:1440px;margin:auto;padding:clamp(96px,12vh,138px) var(--gutter) 35px;position:relative}
+.small-path{font:400 14px/1.4 var(--mono);letter-spacing:-.025em}
+.stage-top{position:absolute;top:clamp(103px,13vh,140px);left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;gap:25px}
+.stage-counter{font:400 11px/1.4 var(--mono);color:#888}
+.hero{position:absolute;left:var(--gutter);right:var(--gutter);top:40%;transform:translate3d(0,var(--hero-y),0) scale(var(--hero-scale));transform-origin:0 50%;opacity:var(--hero-opacity);pointer-events:auto}
+.hero-title{font:200 clamp(76px,12.2vw,178px)/.96 var(--sans);letter-spacing:-.085em;margin:0}
+.hero-title .period{font-weight:500}
+.hero-lead{margin:30px 0 14px;font:400 clamp(14px,1.3vw,18px)/1.85 'Noto Sans JP',var(--sans);letter-spacing:-.015em}
+.hero-role{font:400 clamp(12px,1vw,15px)/1.5 var(--mono);color:var(--muted);margin:0}
+.stage-footer{position:absolute;bottom:clamp(36px,7vh,82px);left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;gap:18px;align-items:end}
+.footer-hint{font:400 12px/1.5 var(--mono);color:#aaa}
+.explore{border:0;padding:12px 0 12px 14px;background:transparent;border-bottom:1px solid #111;font:400 15px/1.3 var(--mono);display:flex;gap:22px;align-items:center;white-space:nowrap}
+.explore span{transition:transform .2s}.explore:hover span{transform:translateY(4px)}
+.explore:active{opacity:.65}
+.a-stage,.b-stage{position:absolute;inset:0;pointer-events:none}
+.a-stage{opacity:var(--a-opacity);transform:translate3d(0,var(--a-y),0) scale(var(--a-scale));transform-origin:20% 40%}
+.b-stage{opacity:var(--b-opacity);transform:translate3d(0,var(--b-y),0)}
+.mode-a-only{display:none}.mode-b-only{display:none}
+html[data-mode=a] .mode-a-only{display:block}
+html[data-mode=b] .mode-b-only{display:block}
+.a-stage .mini-path{position:absolute;left:var(--gutter);top:30%;font:400 clamp(21px,2.1vw,33px)/1.2 var(--mono);letter-spacing:-.04em}
+.a-stage .mini-path .prompt{color:#bbb}
+.ghost-tree{position:absolute;top:calc(30% + 80px);left:var(--gutter);display:flex;flex-direction:column;gap:11px;font:300 clamp(16px,1.6vw,23px)/1.3 var(--mono);white-space:nowrap;letter-spacing:-.025em}
+.ghost-line{opacity:0;transform:translateY(12px)}
+.ghost-muted{color:#999}
+.ghost-indent{padding-left:2.8ch}
+.ghost-deep{padding-left:5.6ch}
+.terminal{position:absolute;left:var(--gutter);right:var(--gutter);top:28%;font:300 clamp(16px,1.85vw,27px)/1.6 var(--mono);letter-spacing:-.03em}
+.term-prompt{white-space:nowrap;color:#111}
+.term-prompt .command-lead{color:#999}
+.cursor{display:inline-block;margin-left:2px;animation:blink .85s step-end infinite}
+.term-lines{margin-top:24px;display:flex;flex-direction:column;gap:4px;white-space:nowrap}
+.term-line{opacity:0;transform:translateY(6px)}
+.term-muted{color:#999}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.scroll-track{position:absolute;bottom:0;left:0;width:100%;height:2px;background:transparent}
+.scroll-fill{height:100%;background:#111;transform-origin:left;transform:scaleX(0)}
+.directory{position:relative;background:#fff;min-height:100svh;padding:clamp(95px,12vh,154px) var(--gutter) 110px;max-width:1440px;margin:auto;scroll-margin-top:65px}
+.directory-top{display:flex;justify-content:space-between;gap:30px;align-items:baseline;padding-bottom:30px;border-bottom:1px solid var(--line)}
+.directory-label{font:400 13px/1.6 var(--mono)}
+.directory-sub{font:400 11px/1.6 var(--mono);color:#999}
+.directory-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.38fr);gap:60px;padding-top:47px}
+.tree{font:300 clamp(16px,1.75vw,23px)/1.68 var(--mono);letter-spacing:-.035em}
+.tree-row{display:flex;gap:6px;align-items:baseline;min-height:1.6em}
+.tree-branch{color:#aaa;white-space:pre}
+.tree-indent-1{padding-left:2ch}
+.tree-indent-2{padding-left:5.1ch}
+.tree-indent-3{padding-left:8.3ch}
+.tree-name{display:inline-block;overflow-wrap:anywhere}
+.tree a{border-bottom:1px solid transparent;transition:background .15s,color .15s}
+.tree a:hover{background:#111;color:#fff}
+.tree .unavailable{color:#a8a8a8}
+.directory-details{font:400 13px/1.85 var(--mono);color:#777;margin-top:0;max-width:300px}
+.directory-details strong{font-weight:500;color:#111}
+.directory-details .dot-line{display:flex;gap:7px;margin-bottom:24px}
+.directory-details .dot-line i{width:6px;height:6px;border-radius:50%;background:#111}
+.directory-details p{margin:0 0 15px}
+.directory-bottom{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-top:130px;padding-top:26px;border-top:1px solid var(--line);font:400 12px/1.6 var(--mono);color:#777}
+.replay{background:none;border:0;border-bottom:1px solid currentColor;padding:6px 0;font:400 12px/1.4 var(--mono);color:#111}
+body.entered .explore{pointer-events:none}
+@media(max-width:900px){
+.lab-meta{display:none}
+.directory-grid{grid-template-columns:1fr;gap:40px}
+.directory-details{order:-1;max-width:100%}
+.directory-details p{display:none}
+.directory-details .dot-line{margin-bottom:0}
+}
+@media(max-width:560px){
+.lab-nav{padding:8px 18px 8px 22px;min-height:62px;font-size:10px}
+.lab-switch a{padding:10px 9px;font-size:11px}
+.stage-inner{padding-left:23px;padding-right:23px}
+.stage-top,.stage-footer{left:23px;right:23px}
+.stage-counter{font-size:9px}
+.hero{left:23px;right:23px;top:36%}
+.hero-title{font-size:clamp(65px,15.8vw,93px)}
+.hero-lead{font-size:13px;max-width:300px;line-height:1.8;margin-top:22px}
+.hero-role{font-size:10px}
+.footer-hint{font-size:10px}
+.explore{font-size:12px;gap:13px}
+.a-stage .mini-path{left:23px;top:29%;font-size:22px}
+.ghost-tree{left:23px;top:calc(29% + 70px);font-size:16px;gap:10px}
+.ghost-indent{padding-left:1.8ch}
+.ghost-deep{padding-left:3.5ch}
+.terminal{left:23px;right:23px;top:27%;font-size:clamp(15px,4vw,20px)}
+.term-lines{margin-top:22px}
+.directory{padding:100px 23px 80px}
+.directory-top{flex-direction:column;gap:4px}
+.directory-grid{padding-top:34px}
+.tree{font-size:clamp(13px,3.45vw,17px);letter-spacing:-.065em;line-height:1.75}
+.tree-indent-1{padding-left:1ch}
+.tree-indent-2{padding-left:2ch}
+.tree-indent-3{padding-left:3ch}
+.directory-bottom{margin-top:75px}
+}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+*,*:before,*:after{animation:none!important;transition:none!important}
+.story{height:100svh;min-height:540px}
+.a-stage,.b-stage{display:none!important}
+.hero{opacity:1!important;transform:none!important}
+.directory{scroll-margin-top:65px}
+}
+</style>
+</head>
+<body>
+<header class="lab-nav" aria-label="モーション比較">
+  <a class="lab-back" href="../index.html">← portfolio</a>
+  <nav class="lab-switch" aria-label="演出を切り替える">
+    <a href="?mode=a" data-switch="a">A / Morph</a>
+    <a href="?mode=b" data-switch="b">B / Terminal</a>
+  </nav>
+  <span class="lab-meta">navigation / motion study</span>
+</header>
+
+<section class="story" id="entry" aria-label="トップページから作品一覧への演出">
+  <div class="story-sticky">
+    <div class="stage-inner">
+      <div class="stage-top">
+        <span class="small-path">~/portfolio</span>
+        <span class="stage-counter mode-a-only">concept 01 / morph</span>
+        <span class="stage-counter mode-b-only">concept 02 / terminal</span>
+      </div>
+      <div class="hero">
+        <h1 class="hero-title">Portfolio<span class="period">.</span></h1>
+        <p class="hero-lead">複雑なものを整理し、使いやすい体験に落とし込む。</p>
+        <p class="hero-role">product / ux / visual design</p>
+      </div>
+      <div class="a-stage mode-a-only" aria-hidden="true">
+        <div class="mini-path"><span class="prompt">› </span>~/portfolio</div>
+        <div class="ghost-tree">
+          <div class="ghost-line"><span class="ghost-muted">│</span></div>
+          <div class="ghost-line"><span class="ghost-muted">├── </span>works/</div>
+          <div class="ghost-line ghost-indent"><span class="ghost-muted">├── </span>product/</div>
+          <div class="ghost-line ghost-indent"><span class="ghost-muted">├── </span>identity/</div>
+          <div class="ghost-line ghost-indent"><span class="ghost-muted">└── </span>visual/</div>
+          <div class="ghost-line"><span class="ghost-muted">├── </span>about/</div>
+          <div class="ghost-line"><span class="ghost-muted">└── </span>contact/</div>
+        </div>
+      </div>
+      <div class="b-stage mode-b-only" aria-hidden="true">
+        <div class="terminal">
+          <div class="term-prompt"><span class="command-lead">› </span><span id="typed-command"></span><span class="cursor">_</span></div>
+          <div class="term-lines">
+            <div class="term-line">~/portfolio</div>
+            <div class="term-line"><span class="term-muted">│</span></div>
+            <div class="term-line"><span class="term-muted">├── </span>works/</div>
+            <div class="term-line"><span class="term-muted">│   ├── </span>product/</div>
+            <div class="term-line"><span class="term-muted">│   ├── </span>identity/</div>
+            <div class="term-line"><span class="term-muted">│   └── </span>visual/</div>
+            <div class="term-line"><span class="term-muted">├── </span>about/</div>
+            <div class="term-line"><span class="term-muted">└── </span>contact/</div>
+          </div>
+        </div>
+      </div>
+      <div class="stage-footer">
+        <div class="footer-hint mode-a-only">scroll to reveal / 01</div>
+        <div class="footer-hint mode-b-only">scroll to execute / 02</div>
+        <button class="explore" data-enter type="button">explore works <span aria-hidden="true">↓</span></button>
+      </div>
+    </div>
+    <div class="scroll-track" aria-hidden="true"><div class="scroll-fill" id="scroll-fill"></div></div>
+  </div>
+</section>
+
+<main id="directory" class="directory">
+  <div class="directory-top">
+    <span class="directory-label">~/portfolio/</span>
+    <span class="directory-sub mode-a-only">01 — structure revealed</span>
+    <span class="directory-sub mode-b-only">02 — command executed</span>
+  </div>
+  <div class="directory-grid">
+    <nav class="tree" aria-label="作品ディレクトリ">
+      <div class="tree-row"><span class="tree-name">~/portfolio</span></div>
+      <div class="tree-row"><span class="tree-branch">│</span></div>
+      <div class="tree-row"><span class="tree-branch">├── </span><a class="tree-name" href="../index.html#product">works/ ↘</a></div>
+      <div class="tree-row tree-indent-1"><span class="tree-branch">│   ├── </span><a class="tree-name" href="../index.html#product">product/ ↘</a></div>
+      <div class="tree-row tree-indent-2"><span class="tree-branch">│   ├── </span><a class="tree-name" href="../works/product/lustr.html">lustr ↗</a></div>
+      <div class="tree-row tree-indent-2"><span class="tree-branch">│   └── </span><a class="tree-name" href="../works/product/torabo-tsuki-keymapper.html">torabo-tsuki ↗</a></div>
+      <div class="tree-row tree-indent-1"><span class="tree-branch">│   ├── </span><a class="tree-name" href="../index.html#identity">identity/ ↘</a></div>
+      <div class="tree-row tree-indent-1"><span class="tree-branch">│   └── </span><a class="tree-name" href="../index.html#visual">visual/ ↘</a></div>
+      <div class="tree-row"><span class="tree-branch">│</span></div>
+      <div class="tree-row"><span class="tree-branch">├── </span><a class="tree-name" href="../index.html#about">about/ ↗</a></div>
+      <div class="tree-row"><span class="tree-branch">└── </span><a class="tree-name" href="../index.html#contact">contact/ ↗</a></div>
+    </nav>
+    <aside class="directory-details">
+      <div class="dot-line" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p><strong>works</strong> — product, identity, visual</p>
+      <p>このTreeは実際に操作できます。現在のポートフォリオの各作品・カテゴリへ移動します。</p>
+    </aside>
+  </div>
+  <div class="directory-bottom">
+    <button type="button" class="replay" id="replay">↑ replay interaction</button>
+    <a href="../index.html">back to current site ↗</a>
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const root=document.documentElement;
+  const mode=root.dataset.mode;
+  document.querySelectorAll('[data-switch]').forEach(a=>{
+    if(a.dataset.switch===mode)a.setAttribute('aria-current','page');
+  });
+  const stage=document.querySelector('.story');
+  const directory=document.querySelector('#directory');
+  const hero=document.querySelector('.hero');
+  const btn=document.querySelector('[data-enter]');
+  const ghost=[...document.querySelectorAll('.ghost-line')];
+  const term=[...document.querySelectorAll('.term-line')];
+  const typed=document.querySelector('#typed-command');
+  const fill=document.querySelector('#scroll-fill');
+  const command='tree ~/portfolio';
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let ticking=false;
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const ease=t=>t*t*(3-2*t);
+  function draw(){
+    ticking=false;
+    if(reduce.matches){
+      hero.style.opacity='1';
+      return;
+    }
+    const max=Math.max(1,stage.offsetHeight-window.innerHeight);
+    const p=clamp(-stage.getBoundingClientRect().top/max);
+    // Same hero in both studies; only the transition differs.
+    const h=ease(clamp((p-.07)/.42));
+    root.style.setProperty('--hero-opacity',String(1-h));
+    root.style.setProperty('--hero-y',Math.round(-125*h)+'px');
+    root.style.setProperty('--hero-scale',String(1-.2*h));
+    btn.style.opacity=String(1-ease(clamp((p-.08)/.2)));
+    btn.style.pointerEvents=p>.36?'none':'auto';
+    fill.style.transform='scaleX('+p+')';
+
+    if(mode==='a'){
+      const q=ease(clamp((p-.24)/.37));
+      root.style.setProperty('--a-opacity',String(q));
+      root.style.setProperty('--a-y',Math.round(48*(1-q))+'px');
+      root.style.setProperty('--a-scale',String(.96+.04*q));
+      ghost.forEach((el,i)=>{
+        const r=ease(clamp((p-.36-i*.045)/.11));
+        el.style.opacity=String(r);
+        el.style.transform='translateY('+Math.round(12*(1-r))+'px)';
+      });
+    }else{
+      const q=ease(clamp((p-.18)/.2));
+      root.style.setProperty('--b-opacity',String(q));
+      root.style.setProperty('--b-y',Math.round(32*(1-q))+'px');
+      const n=Math.round(clamp((p-.29)/.24)*command.length);
+      const part=command.slice(0,n);
+      if(typed.textContent!==part)typed.textContent=part;
+      term.forEach((el,i)=>{
+        const r=ease(clamp((p-.54-i*.039)/.085));
+        el.style.opacity=String(r);
+        el.style.transform='translateY('+Math.round(6*(1-r))+'px)';
+      });
+    }
+  }
+  function tick(){if(!ticking){ticking=true;requestAnimationFrame(draw)}}
+  window.addEventListener('scroll',tick,{passive:true});
+  window.addEventListener('resize',tick,{passive:true});
+  reduce.addEventListener?.('change',tick);
+  btn.addEventListener('click',()=>{
+    directory.scrollIntoView({behavior:reduce.matches?'auto':'smooth',block:'start'});
+  });
+  document.querySelector('#replay').addEventListener('click',()=>{
+    window.scrollTo({top:0,behavior:reduce.matches?'auto':'smooth'});
+  });
+  draw();
+})();
+</script>
+</body>
+</html>
