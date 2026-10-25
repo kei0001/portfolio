@@ -156,3 +156,39 @@
  .entry-terminal{display:none!important}
  .entry-progress{display:none}
 }
+
+/* A single linked Tree is now both command output and navigation. */
+.portfolio-entry{height:200svh;min-height:1150px}
+.entry-terminal{top:18%;font:300 clamp(16px,1.5vw,22px)/1.35 var(--mono);max-height:80svh;overflow-y:auto;scrollbar-width:thin}
+.entry-terminal.nav-ready{pointer-events:auto}
+.entry-terminal .tree-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.45fr);gap:clamp(18px,4vw,70px);margin:8px 0 0}
+.entry-terminal .tree-nav{font:300 clamp(13px,1.42vw,19px)/1.27 var(--mono);letter-spacing:-.035em;white-space:normal;overflow-x:auto}
+.entry-terminal .entry-tree-line{display:block;white-space:pre;opacity:0;transform:translateY(6px);transition:opacity .16s ease-out,transform .16s ease-out;pointer-events:none}
+.entry-terminal .entry-tree-line.is-visible{opacity:1;transform:translateY(0);pointer-events:auto}
+.entry-terminal .intro-metadata{align-self:end;margin:0 0 7px;font:400 12px/1.7 var(--mono);color:#777}
+.entry-terminal .tree-nav a:hover{background:#111;color:#fff}
+.entry-terminal .entry-prompt{line-height:1.3}
+.entry-terminal .entry-newprompt{margin-top:8px}
+#directory{padding-top:clamp(30px,5vw,80px)}
+#directory .works-sections{margin-top:clamp(18px,6vw,95px)}
+@media(max-width:900px){
+ .entry-terminal .tree-layout{grid-template-columns:1fr}
+ .entry-terminal .intro-metadata{display:none}
+}
+@media(max-width:560px){
+ .portfolio-entry{height:185svh;min-height:950px}
+ .entry-terminal{top:17%;max-height:76svh;font-size:clamp(13px,3.7vw,18px)}
+ .entry-terminal .tree-nav{font-size:clamp(12px,3.2vw,16px);line-height:1.23;letter-spacing:-.06em}
+ .entry-terminal .tree-layout{gap:0;margin-top:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .portfolio-entry{height:auto!important;min-height:0!important}
+ .entry-sticky{position:relative;height:auto;min-height:100svh;overflow:visible}
+ .entry-frame{height:auto;min-height:100svh;padding-bottom:55px}
+ .entry-identity{position:relative;top:auto;left:auto;margin:28svh var(--gut) 10svh;opacity:1!important;transform:none!important}
+ .entry-terminal{display:block!important;position:relative;top:auto;left:auto;right:auto;margin:0 var(--gut);opacity:1!important;transform:none!important;pointer-events:auto!important;max-height:none;overflow:visible}
+ .entry-terminal .entry-tree-line{opacity:1!important;transform:none!important;pointer-events:auto!important}
+ .entry-bottom{position:relative;bottom:auto;left:auto;right:auto;margin:30px var(--gut) 0}
+ .entry-explore{display:none!important}
+ .entry-continue{display:inline-flex!important}
+}
