@@ -67,7 +67,14 @@ html[data-mode=b] .mode-b-only{display:block}
 .terminal{position:absolute;left:var(--gutter);right:var(--gutter);top:28%;font:300 clamp(16px,1.85vw,27px)/1.6 var(--mono);letter-spacing:-.03em}
 .term-prompt{white-space:nowrap;color:#111}
 .term-prompt .command-lead{color:#999}
-.cursor{display:inline-block;margin-left:2px;animation:blink .85s step-end infinite}
+.cursor{display:inline-block;margin-left:0;animation:blink .85s step-end infinite}
+#typed-command{white-space:pre}
+.term-prompt.is-typing .cursor{animation:none;opacity:1}
+.term-prompt.command-entered .cursor{visibility:hidden}
+.term-line{transition:opacity .18s ease-out,transform .18s ease-out}
+.term-return{display:block;margin-top:14px;opacity:0;transform:translateY(6px);transition:opacity .18s ease-out,transform .18s ease-out}
+.term-return.visible{opacity:1;transform:translateY(0)}
+.term-return .cursor{margin-left:0}
 .term-lines{margin-top:24px;display:flex;flex-direction:column;gap:4px;white-space:nowrap}
 .term-line{opacity:0;transform:translateY(6px)}
 .term-muted{color:#999}
@@ -189,6 +196,7 @@ html{scroll-behavior:auto}
             <div class="term-line"><span class="term-muted">├── </span>about/</div>
             <div class="term-line"><span class="term-muted">└── </span>contact/</div>
           </div>
+          <div class="term-return" aria-hidden="true"><span class="command-lead">› </span><span class="cursor">_</span></div>
         </div>
       </div>
       <div class="stage-footer">
@@ -248,10 +256,59 @@ html{scroll-behavior:auto}
   const ghost=[...document.querySelectorAll('.ghost-line')];
   const term=[...document.querySelectorAll('.term-line')];
   const typed=document.querySelector('#typed-command');
+  const prompt=document.querySelector('.term-prompt');
+  const returned=document.querySelector('.term-return');
   const fill=document.querySelector('#scroll-fill');
   const command='tree ~/portfolio';
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   let ticking=false;
+  let terminalState='idle',nextTimer=null,typedCount=0,replaying=false;
+  const charDelay=[76,71,84,67,73,120,82,69,80,74,86,73,70,89,75,78];
+  function resetTerminal(){
+    if(nextTimer!==null)clearTimeout(nextTimer);
+    nextTimer=null;
+    terminalState='idle';
+    typedCount=0;
+    typed.textContent='';
+    prompt.classList.remove('is-typing','command-entered');
+    returned.classList.remove('visible');
+    term.forEach(el=>{
+      el.style.opacity='0';
+      el.style.transform='translateY(6px)';
+    });
+  }
+  function printOutput(i){
+    if(i>=term.length){
+      terminalState='done';
+      returned.classList.add('visible');
+      return;
+    }
+    term[i].style.opacity='1';
+    term[i].style.transform='translateY(0)';
+    nextTimer=setTimeout(()=>printOutput(i+1),i===0?155:95);
+  }
+  function typeNext(){
+    if(terminalState!=='typing')return;
+    // Append exactly one character per keystroke; the inline caret
+    // is the next sibling, so it advances with the text automatically.
+    typed.textContent+=command.charAt(typedCount++);
+    if(typedCount<command.length){
+      nextTimer=setTimeout(typeNext,charDelay[typedCount%charDelay.length]);
+    }else{
+      nextTimer=setTimeout(()=>{
+        prompt.classList.remove('is-typing');
+        prompt.classList.add('command-entered');
+        terminalState='printing';
+        printOutput(0);
+      },230);
+    }
+  }
+  function startTerminal(){
+    if(terminalState!=='idle'||replaying)return;
+    terminalState='typing';
+    prompt.classList.add('is-typing');
+    nextTimer=setTimeout(typeNext,170);
+  }
   const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
   const ease=t=>t*t*(3-2*t);
   function draw(){
@@ -285,14 +342,8 @@ html{scroll-behavior:auto}
       const q=ease(clamp((p-.18)/.2));
       root.style.setProperty('--b-opacity',String(q));
       root.style.setProperty('--b-y',Math.round(32*(1-q))+'px');
-      const n=Math.round(clamp((p-.29)/.24)*command.length);
-      const part=command.slice(0,n);
-      if(typed.textContent!==part)typed.textContent=part;
-      term.forEach((el,i)=>{
-        const r=ease(clamp((p-.54-i*.039)/.085));
-        el.style.opacity=String(r);
-        el.style.transform='translateY('+Math.round(6*(1-r))+'px)';
-      });
+      if(p<=.025&&replaying)replaying=false;
+      if(p>=.29&&!replaying)startTerminal();
     }
   }
   function tick(){if(!ticking){ticking=true;requestAnimationFrame(draw)}}
@@ -300,9 +351,21 @@ html{scroll-behavior:auto}
   window.addEventListener('resize',tick,{passive:true});
   reduce.addEventListener?.('change',tick);
   btn.addEventListener('click',()=>{
-    directory.scrollIntoView({behavior:reduce.matches?'auto':'smooth',block:'start'});
+    if(mode==='b'&&!reduce.matches){
+      // Stop within the command stage, not below it, so the animation
+      // can actually be seen when the user taps the button.
+      const range=Math.max(0,stage.offsetHeight-window.innerHeight);
+      const top=stage.getBoundingClientRect().top+window.scrollY+range*.43;
+      window.scrollTo({top,behavior:'smooth'});
+    }else{
+      directory.scrollIntoView({behavior:reduce.matches?'auto':'smooth',block:'start'});
+    }
   });
   document.querySelector('#replay').addEventListener('click',()=>{
+    if(mode==='b'){
+      replaying=true;
+      resetTerminal();
+    }
     window.scrollTo({top:0,behavior:reduce.matches?'auto':'smooth'});
   });
   draw();
