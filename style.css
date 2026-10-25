@@ -86,12 +86,14 @@
 @media(prefers-reduced-motion:reduce){.site-loader,.intro-active .site-loader{display:none!important}.intro-active body{overflow:auto}.loader-dots span,.loader-cursor{animation:none}}
 
 /* Portfolio cover — Figma 5:15 — and terminal-to-tree transition. */
-.portfolio-entry{
+:root{
   --entry-hero-opacity:1;
   --entry-hero-shift:0px;
   --entry-term-opacity:0;
   --entry-term-shift:36px;
   --entry-progress:0;
+}
+.portfolio-entry{
   height:190svh;min-height:1080px;position:relative;background:#fff;
 }
 .entry-sticky{position:sticky;top:0;height:100svh;min-height:520px;overflow:hidden}
