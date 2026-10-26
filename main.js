@@ -45,7 +45,7 @@ document.querySelectorAll('.key').forEach(k=>{
   const skip=section.querySelector('#entry-skip');
   const continueLink=section.querySelector('.entry-continue');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const command='tree ~/portfolio';
+  const command='tree -L 3';
   const delays=[78,68,82,74,92,96,73,77,85,69,86,72,82,76,89,80];
   const clamp=n=>Math.min(1,Math.max(0,n));
   const ease=t=>t*t*(3-2*t);
