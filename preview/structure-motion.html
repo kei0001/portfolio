@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f4f4">
+<meta name="description" content="An interactive ASCII-to-tree motion study for the portfolio.">
+<title>From Fragments to Structure — Motion Study</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@200;300;400;500;600&family=Geist+Pixel:ELSH@0..100&family=Noto+Sans+JP:wght@400;500&display=swap');
+:root{--paper:#f4f4f4;--ink:#141414;--mid:#727272;--line:#d1d1d1;--mono:'Geist Mono',monospace;--sans:'Geist','Noto Sans JP',sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{margin:0;color:var(--ink);background:var(--paper);font:400 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.shell{max-width:1440px;margin:0 auto;padding:0 clamp(20px,6vw,86px) 75px}
+.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);height:74px;gap:16px;font:400 13px/1.3 var(--mono)}
+.topbar a:hover{text-decoration:underline;text-underline-offset:5px}
+.kicker{font:500 11px/1.5 var(--mono);letter-spacing:.06em;color:var(--mid)}
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,330px);align-items:end;gap:40px;padding:55px 0 34px}
+.intro h1{font:500 clamp(37px,5.7vw,82px)/1.035 var(--sans);letter-spacing:-.035em;margin:8px 0 0}
+.intro h1 .weightless{font-weight:400}
+.intro p{max-width:340px;margin:0 0 6px;font:400 14px/1.95 var(--sans);color:#575757}
+.motion{position:relative;border:1px solid #bbb;min-height:685px;overflow:hidden;isolation:isolate}
+.motion-head{height:50px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 22px;border-bottom:1px solid var(--line);font:400 12px/1.4 var(--mono)}
+.motion-head .dot{display:inline-block;width:7px;height:7px;background:var(--ink);border-radius:50%;margin-right:10px;vertical-align:1px}
+.motion-head .head-right{color:var(--mid)}
+.motion-body{position:relative;height:570px;visibility:hidden;overflow:hidden}
+.motion.is-ready .motion-body{visibility:visible}
+.coord{position:absolute;color:#b3b3b3;font:400 11px/1.2 var(--mono);letter-spacing:0}
+.coord.tl{top:20px;left:20px}.coord.tr{top:20px;right:20px}
+.coord.bl{bottom:17px;left:20px}.coord.br{bottom:17px;right:20px}
+.guide{position:absolute;left:50%;top:12%;width:1px;height:76%;background:linear-gradient(#ddd,transparent);pointer-events:none;opacity:.5}
+.scene{position:absolute;width:min(660px,calc(100% - 42px));left:50%;top:46px;transform:translateX(-50%);font-family:var(--mono)}
+.prompt{font:400 clamp(13px,1.45vw,18px)/1.5 var(--mono);white-space:pre;min-height:32px;opacity:0;transition:opacity .5s}
+.prompt .symbol{color:#8b8b8b}
+.caret{display:inline-block;width:.6ch;height:1.05em;background:var(--ink);vertical-align:-.14em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.motion.is-arranging .prompt,.motion.is-settled .prompt{opacity:1}
+.tree{margin:14px 0 0;white-space:pre;font:300 clamp(12px,1.4vw,17px)/1.28 var(--mono);letter-spacing:0;max-width:100%;pointer-events:none}
+.tree-row{display:block;min-height:1.28em;white-space:pre}
+.tree-link{color:inherit;text-decoration:none}
+.tree-link:hover{color:var(--paper);background:var(--ink)}
+.tree-link:focus-visible{background:var(--ink);color:var(--paper)}
+.tree .disabled{color:#999}
+.glyph{position:relative;display:inline-block;width:1ch;text-align:center;white-space:pre;transform:translate3d(0,0,0);opacity:1;will-change:transform,opacity}
+.glyph.space{color:transparent}
+.motion.is-scattered .glyph{transition:none;transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(var(--rot,0deg)) scale(var(--scale,.82));opacity:var(--alpha,.55)}
+.motion.is-scattered .glyph.space{opacity:0}
+.motion.is-arranging .glyph{transform:translate3d(0,0,0) rotate(0deg) scale(1);opacity:1;transition:transform 2350ms cubic-bezier(.19,.83,.19,1) var(--delay,0ms),opacity 1400ms ease var(--delay,0ms)}
+.motion.is-arranging .glyph.space{opacity:0}
+.motion.is-settled .glyph{transform:none;opacity:1;transition:none;will-change:auto}
+.motion.is-settled .glyph.space{opacity:0}
+.motion.is-settled .tree{pointer-events:auto}
+.motion-foot{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;height:64px;gap:20px;padding:0 22px}
+.progress{width:min(36%,300px);height:2px;background:#d5d5d5;overflow:hidden}
+.progress-bar{height:100%;background:var(--ink);width:0;transition:width 750ms ease}
+.motion.is-scattered .progress-bar{width:15%}
+.motion.is-arranging .progress-bar{width:68%;transition:width 2500ms ease}
+.motion.is-settled .progress-bar{width:100%}
+.controls{display:flex;align-items:center;gap:25px;font:400 12px/1.4 var(--mono)}
+.controls button{font:inherit;color:var(--ink);background:none;border:0;padding:9px 0;cursor:pointer}
+.controls button:hover{text-decoration:underline;text-underline-offset:4px}
+.controls button[disabled]{opacity:.3;cursor:not-allowed}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-top:22px}
+.phase{border-top:1px solid var(--line);padding-top:13px;opacity:.48;transition:opacity .45s}
+.phase.current,.phase.past{opacity:1}
+.phase small{font:400 12px/1.3 var(--mono);display:block;margin-bottom:7px}
+.phase strong{font:500 17px/1.3 var(--mono);letter-spacing:0;display:block}
+.phase p{color:var(--mid);font:400 12px/1.6 var(--sans);margin:7px 0 0}
+.footer{display:flex;justify-content:space-between;gap:20px;padding-top:52px;font:400 12px/1.6 var(--mono);color:var(--mid)}
+.footer a:hover{text-decoration:underline}
+@media(max-width:800px){
+ .intro{grid-template-columns:1fr;gap:18px;padding:44px 0 25px}
+ .intro p{max-width:500px}
+ .motion{min-height:650px}
+ .motion-body{height:535px}
+ .scene{top:64px;width:calc(100% - 38px)}
+ .tree{font-size:clamp(10px,1.55vw,14px)}
+ .phases{gap:15px}
+}
+@media(max-width:500px){
+ .topbar{height:60px;font-size:11px}
+ .intro h1{font-size:clamp(34px,10vw,47px)}
+ .intro p{font-size:12px}
+ .motion{min-height:600px}
+ .motion-body{height:486px}
+ .motion-head{padding:0 12px;font-size:10px}
+ .motion-head .head-right{display:none}
+ .scene{top:48px;width:calc(100% - 20px)}
+ .tree{font-size:9px;line-height:1.4}
+ .tree-row{min-height:1.4em}
+ .prompt{font-size:13px}
+ .motion-foot{padding:0 12px}
+ .controls{gap:13px;font-size:11px}
+ .progress{width:22%}
+ .phases{grid-template-columns:1fr;gap:8px}
+ .phase{padding:9px 0;border-top:1px solid var(--line)}
+ .phase p{display:none}
+ .phase strong{font-size:13px}
+ .phase small{display:inline-block;margin-right:10px}
+ .footer{padding-top:30px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .glyph{will-change:auto}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <a href="../" aria-label="Portfolioのトップページへ戻る">~/portfolio</a>
+    <span>EXPERIMENT 001 — ASCII / TREE</span>
+  </header>
+  <main>
+    <div class="intro">
+      <div>
+        <div class="kicker">MOTION STUDY / INFORMATION ARCHITECTURE</div>
+        <h1>Information becomes<br><span class="weightless">structure.</span></h1>
+      </div>
+      <p>散らばった文字が、意味を持つディレクトリ構造へ。最終的に現れるTreeは、そのまま作品へアクセスできるナビゲーションです。</p>
+    </div>
+
+    <section id="motion" class="motion" aria-label="ASCIIの文字が集まってTreeになるアニメーションデモ">
+      <div class="motion-head">
+        <span><span class="dot" aria-hidden="true"></span><span id="status" aria-live="polite">01 / fragments</span></span>
+        <span class="head-right">INTERACTIVE PROTOTYPE — GEIST MONO</span>
+      </div>
+      <div class="motion-body">
+        <div class="guide" aria-hidden="true"></div>
+        <span class="coord tl" aria-hidden="true">[0,0]</span>
+        <span class="coord tr" aria-hidden="true">+ + +</span>
+        <span class="coord bl" aria-hidden="true">ASCII / DATA</span>
+        <span class="coord br" aria-hidden="true">[END]</span>
+        <div class="scene">
+          <div class="prompt" aria-label="tree -L 3 コマンド"><span class="symbol" aria-hidden="true">&gt; </span><span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></div>
+          <nav class="tree" id="tree" aria-label="作品ディレクトリ">
+            <div class="tree-row">~/portfolio</div>
+            <div class="tree-row">│</div>
+            <div class="tree-row">├── <a class="tree-link" href="../#works">works/ ↘</a></div>
+            <div class="tree-row">│   │</div>
+            <div class="tree-row">│   ├── <a class="tree-link" href="../#product">product/ ↘</a></div>
+            <div class="tree-row">│   │   ├── <a class="tree-link" href="../works/product/lustr.html">lustr ↗</a></div>
+            <div class="tree-row">│   │   ├── <a class="tree-link" href="../works/product/torabo-tsuki-keymapper.html">torabo-tsuki-keymapper ↗</a></div>
+            <div class="tree-row">│   │   └── <span class="disabled">splitgram</span></div>
+            <div class="tree-row">│   │</div>
+            <div class="tree-row">│   ├── <a class="tree-link" href="../#identity">identity/ ↘</a></div>
+            <div class="tree-row">│   │   ├── <span class="disabled">neraiuchi</span></div>
+            <div class="tree-row">│   │   ├── <span class="disabled">BELLE CLUB</span></div>
+            <div class="tree-row">│   │   └── <span class="disabled">TOP DANDY OSAKA</span></div>
+            <div class="tree-row">│   │</div>
+            <div class="tree-row">│   └── <a class="tree-link" href="../#visual">visual/ ↘</a></div>
+            <div class="tree-row">│       ├── <span class="disabled">battle royale</span></div>
+            <div class="tree-row">│       ├── <span class="disabled">key visual 01</span></div>
+            <div class="tree-row">│       └── <span class="disabled">key visual 02</span></div>
+            <div class="tree-row">│</div>
+            <div class="tree-row">├── <a class="tree-link" href="../#about">about/ ↘</a></div>
+            <div class="tree-row">│</div>
+            <div class="tree-row">└── <a class="tree-link" href="../#contact">contact/ ↘</a></div>
+          </nav>
+        </div>
+      </div>
+      <div class="motion-foot">
+        <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
+        <div class="controls">
+          <button type="button" id="replay">↻ replay</button>
+          <button type="button" id="skip">skip →</button>
+        </div>
+      </div>
+    </section>
+    <div class="phases" aria-label="アニメーションの3段階">
+      <div class="phase current" data-step="0"><small>01 — INPUT</small><strong>Fragments</strong><p>役割のない文字の断片</p></div>
+      <div class="phase" data-step="1"><small>02 — PROCESS</small><strong>Alignment</strong><p>記号と情報が整列する</p></div>
+      <div class="phase" data-step="2"><small>03 — OUTPUT</small><strong>Navigation</strong><p>操作できるリンク付きTree</p></div>
+    </div>
+  </main>
+  <footer class="footer"><span>KEI KAWAKAMI / PORTFOLIO</span><a href="../">← back to portfolio</a></footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var motion=document.getElementById('motion');
+  var scene=document.querySelector('.scene');
+  var glyphs=[];
+  var tree=document.getElementById('tree');
+  var typed=document.getElementById('typed');
+  var status=document.getElementById('status');
+  var skip=document.getElementById('skip');
+  var replay=document.getElementById('replay');
+  var phases=Array.from(document.querySelectorAll('.phase'));
+  var links=Array.from(tree.querySelectorAll('a'));
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var timers=[],generation=0,characterIndex=0;
+  var command='tree -L 3';
+  var rows=Array.from(tree.querySelectorAll('.tree-row'));
+  function hash(n){var v=Math.sin(n*127.1+13.7)*43758.5453;return v-Math.floor(v)}
+  function setState(name){motion.classList.remove('is-scattered','is-arranging','is-settled');motion.classList.add(name)}
+  function setPhase(step,label){
+    status.textContent=label;
+    phases.forEach(function(el,i){el.classList.toggle('current',i===step);el.classList.toggle('past',i<step)});
+  }
+  function schedule(fn,delay){
+    var id=window.setTimeout(fn,delay);timers.push(id);return id;
+  }
+  function cancel(){
+    generation++;
+    timers.forEach(function(id){window.clearTimeout(id)});
+    timers=[];
+  }
+  function allowLinks(ok){
+    links.forEach(function(link){if(ok)link.removeAttribute('tabindex');else link.tabIndex=-1});
+  }
+
+  // Wrap characters inside their ORIGINAL link elements. The Tree is never duplicated.
+  rows.forEach(function(row){
+    var nodes=[];
+    var walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT);
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    row.setAttribute('aria-label',row.textContent);
+    nodes.forEach(function(node){
+      var fragment=document.createDocumentFragment();
+      Array.from(node.textContent).forEach(function(char){
+        var el=document.createElement('span');
+        el.className='glyph'+(char===' '?' space':'');
+        el.textContent=char===' '?'  '?'\u00a0':char;
+        el.setAttribute('aria-hidden','true');
+        fragment.appendChild(el);
+        glyphs.push(el);
+      });
+      node.parentNode.replaceChild(fragment,node);
+    });
+  });
+
+  function measureScatter(){
+    // Measure the true final character layout, then derive scattered origins.
+    motion.classList.remove('is-scattered','is-arranging','is-settled');
+    var stageRect=motion.querySelector('.motion-body').getBoundingClientRect();
+    var width=stageRect.width, height=stageRect.height;
+    glyphs.forEach(function(el,i){
+      var rect=el.getBoundingClientRect();
+      var x=rect.left-stageRect.left, y=rect.top-stageRect.top;
+      var tx=width*(.06+.88*hash(i+7));
+      var ty=height*(.12+.72*hash(i+233));
+      var dx=tx-x,dy=ty-y;
+      var rot=(hash(i+818)-.5)*54;
+      var alpha=.16+hash(i+157)*.62;
+      var delay=Math.floor(hash(i+38)*500);
+      el.style.setProperty('--dx',Math.round(dx)+'px');
+      el.style.setProperty('--dy',Math.round(dy)+'px');
+      el.style.setProperty('--rot',rot.toFixed(1)+'deg');
+      el.style.setProperty('--scale',(.68+hash(i+11)*.45).toFixed(2));
+      el.style.setProperty('--alpha',alpha.toFixed(2));
+      el.style.setProperty('--delay',delay+'ms');
+    });
+    motion.classList.add('is-ready');
+  }
+
+  function finalState(){
+    cancel();
+    setState('is-settled');
+    typed.textContent=command;
+    setPhase(2,'03 / navigation ready');
+    allowLinks(true);
+    skip.disabled=true;
+    glyphs.forEach(function(el){el.style.removeProperty('will-change')});
+  }
+
+  function typeNext(token){
+    if(token!==generation)return;
+    if(characterIndex>=command.length)return;
+    typed.textContent+=command.charAt(characterIndex++);
+    schedule(function(){typeNext(token)},58+Math.floor(hash(characterIndex+8)*38));
+  }
+
+  function align(token){
+    if(token!==generation)return;
+    setState('is-arranging');
+    setPhase(1,'02 / arranging characters');
+    typed.textContent='';
+    characterIndex=0;
+    schedule(function(){typeNext(token)},100);
+    schedule(function(){if(token===generation)finalState()},3400);
+  }
+
+  function play(){
+    cancel();
+    if(reduce.matches){finalState();return}
+    allowLinks(false);
+    skip.disabled=false;
+    typed.textContent='';
+    characterIndex=0;
+    // Remove the old transition and ensure the scattered state actually paints.
+    setState('is-scattered');
+    setPhase(0,'01 / fragments');
+    var token=generation;
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        if(token===generation)schedule(function(){align(token)},1200);
+      });
+    });
+  }
+  replay.addEventListener('click',play);
+  skip.addEventListener('click',finalState);
+  reduce.addEventListener?.('change',function(){if(reduce.matches)finalState();else play()});
+  window.addEventListener('resize',function(){
+    if(!motion.classList.contains('is-settled')){measureScatter();play()}
+  },{passive:true});
+  measureScatter();
+  if(reduce.matches)finalState();
+  else play();
+})();
+</script>
+</body>
+</html>
