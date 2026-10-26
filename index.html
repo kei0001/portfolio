@@ -1,23 +1,19 @@
 <!doctype html>
-<html lang="ja" class="portfolio-hide-scrollbars"><head><script>(function(){try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('portfolio-loader-shown')){document.documentElement.classList.add('intro-active');window.__portfolioLoaderStart=performance.now();sessionStorage.setItem('portfolio-loader-shown','1');window.setTimeout(function(){document.documentElement.classList.remove('intro-active','intro-exit')},2500)}}catch(e){}})();</script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f4f4f4"><title>Portfolio — Works / Product / Identity / Visual</title><meta name="description" content="Product, UX, identity and visual design portfolio."><link rel="stylesheet" href="style.css?v=about-headings-geist-20261026"></head>
+<html lang="ja" class="portfolio-hide-scrollbars"><head><script>(function(){try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('portfolio-loader-shown')){document.documentElement.classList.add('intro-active');window.__portfolioLoaderStart=performance.now();sessionStorage.setItem('portfolio-loader-shown','1');window.setTimeout(function(){document.documentElement.classList.remove('intro-active','intro-exit')},2500)}}catch(e){}})();</script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f4f4f4"><title>Portfolio — Works / Product / Identity / Visual</title><meta name="description" content="Product, UX, identity and visual design portfolio."><link rel="stylesheet" href="style.css?v=converge-tree-20261026"></head>
 <body><div id="site-loader" class="site-loader" role="status" aria-label="Portfolio loading" aria-live="polite"><div class="loader-content"><div class="loader-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><p class="loader-line">&gt; <span data-loader-status>loading portfolio</span><span class="loader-cursor" aria-hidden="true">_</span></p></div></div>
 <section class="portfolio-entry" id="portfolio-entry" aria-labelledby="entry-title">
-  <div class="entry-sticky">
-    <div class="entry-frame">
-      <p class="entry-path">~/portfolio</p>
-      <a class="entry-skip" id="entry-skip" href="#entry-index">skip to index ↘</a>
-      <div class="entry-identity">
-        <div class="entry-wordmark">
-          <svg class="entry-folder" viewBox="0 0 80 82" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <path fill="currentColor" d="M10 12h19c4.5 0 7.5 3 10 7h29c7 0 12 5 12 12v37c0 7-5 12-12 12H11C4 80 0 76 0 69V23c0-6 4-11 10-11Z"/>
-          </svg>
-          <h1 id="entry-title">Portfolio</h1>
-        </div>
-        <p class="entry-name">Name: Kei Kawakami</p>
-      </div>
-      <div class="entry-terminal" id="entry-index" aria-label="作品ナビゲーション">
-        <div class="entry-prompt"><span class="entry-symbol">&gt; </span><span id="entry-typed"></span><span class="entry-cursor">_</span></div>
-        <div class="tree-layout"><nav class="tree-nav" aria-label="作品一覧">~/portfolio
+  <div class="entry-sticky" id="entry-stage">
+    <header class="entry-meta">
+      <span>~/portfolio</span>
+      <a id="entry-skip" href="#entry-index">skip animation ↘</a>
+    </header>
+    <div class="entry-identity" id="entry-identity">
+      <h1 id="entry-title">Portfolio</h1>
+      <p>Name: Kei Kawakami</p>
+    </div>
+    <div class="entry-scene" id="entry-index">
+      <div class="entry-prompt" id="entry-prompt"><span class="entry-symbol">&gt; </span><span id="entry-typed"></span><span class="entry-cursor" aria-hidden="true">_</span></div>
+      <nav class="tree-nav" aria-label="作品一覧">~/portfolio
 │
 ├── <a href="#works">works ↘</a>
 │   │
@@ -39,16 +35,13 @@
 ├── <a href="#about">about ↘</a>
 │
 └── <a href="#contact">contact ↘</a></nav>
-<p class="intro-metadata">role: product / ux designer<br>focus: information architecture, ui, visual<br>location: tokyo</p></div>
-        <div class="entry-newprompt"><span class="entry-symbol">&gt; </span><span class="entry-cursor">_</span></div>
-      </div>
-      <div class="entry-bottom">
-        <span class="entry-status">~/portfolio — index</span>
-        <button class="entry-explore" id="entry-explore" type="button">explore works <span aria-hidden="true">↓</span></button>
-        <a class="entry-continue" href="#works">view works <span aria-hidden="true">↓</span></a>
-      </div>
-      <div class="entry-progress" aria-hidden="true"></div>
     </div>
+    <div class="entry-bottom">
+      <button type="button" id="entry-explore">↓ scroll to structure</button>
+      <span id="entry-phase" aria-live="polite">01 — FRAGMENTS</span>
+      <a href="#works" id="entry-works">view works ↓</a>
+    </div>
+    <div class="entry-progress" aria-hidden="true"><div class="entry-progress-bar" id="entry-progress-bar"></div></div>
   </div>
 </section>
 <main class="site home" id="directory">
@@ -110,4 +103,4 @@
 </section>
 </div>
 <div class="home-after"><section id="about"><p class="section-id">about/</p><h2>About</h2><p>情報を整理し、使いやすい体験に落とし込むことを大切にしています。ビジュアルデザインからプロダクトづくりまで、設計と実装の両面に取り組んでいます。</p></section><section id="contact"><p class="section-id">contact/</p><h2>Contact</h2><p>作品や開発については、GitHubからもご覧いただけます。</p><a href="https://github.com/kei0001" target="_blank" rel="noopener noreferrer">GitHub ↗</a></section></div>
-</main><script src="main.js?v=tree-depth-3" defer></script></body></html>
+</main><script src="main.js?v=converge-tree-20261026" defer></script></body></html>
