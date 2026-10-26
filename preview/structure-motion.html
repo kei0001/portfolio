@@ -225,7 +225,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
       Array.from(node.textContent).forEach(function(char){
         var el=document.createElement('span');
         el.className='glyph'+(char===' '?' space':'');
-        el.textContent=char===' '?'  '?'\u00a0':char;
+        el.textContent=char===' '?String.fromCharCode(160):char;
         el.setAttribute('aria-hidden','true');
         fragment.appendChild(el);
         glyphs.push(el);
