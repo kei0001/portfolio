@@ -95,33 +95,87 @@ function add(x,y,z,normal,seed,border){
   const index=border?11+Math.floor(r*3):Math.floor(r*glyphs.length);
   points.push({x,y,z,nx:normal[0],ny:normal[1],nz:normal[2],char:glyphs[index],shade:rand(seed+91),border});
 }
-function geometry(){
-  points.length=0;
-  const step=W<560?.145:.103;
-  // Rear folder sheet and its projecting tab.
-  face(-2.15,2.15,-1.13,1.20,-.30,[0,0,-1],step,200);
-  face(-2.15,-.67,-1.61,-1.12,-.30,[0,0,-1],step,5000);
-  // The same back sheet, viewed from inside the open pocket.
-  face(-2.15,2.15,-1.13,1.20,-.18,[0,0,1],step,12000);
-  face(-2.15,-.67,-1.61,-1.12,-.18,[0,0,1],step,15000);
-  // The main front flap is shorter than the rear tab: folder silhouette.
-  face(-2.15,2.15,-.94,1.20,.27,[0,0,1],step,22000);
-  // Small raised sidewalls give a readable volume at quarter-turn.
-  for(let z=-.30;z<=.271;z+=step){
-    for(let y=-.94;y<=1.20;y+=step){
-      add(-2.15,y,z,[-1,0,0],33000+Math.floor((z+1)*1000+y*30),false);
-      add(2.15,y,z,[1,0,0],37000+Math.floor((z+1)*1000+y*30),false);
-    }
-    for(let x=-2.15;x<=2.15;x+=step){
-      add(x,1.20,z,[0,1,0],41000+Math.floor((z+1)*1000+x*30),false);
+// A rounded outline sampled as real ASCII glyph coordinates, not a CSS mask.
+function roundedPolygon(vertices,radii){
+  const outline=[];
+  for(let i=0;i<vertices.length;i++){
+    const prev=vertices[(i+vertices.length-1)%vertices.length];
+    const v=vertices[i],next=vertices[(i+1)%vertices.length];
+    const a=Math.hypot(prev[0]-v[0],prev[1]-v[1]);
+    const b=Math.hypot(next[0]-v[0],next[1]-v[1]);
+    const radius=Math.min(radii[i],a*.42,b*.42);
+    const u=[(prev[0]-v[0])/a,(prev[1]-v[1])/a];
+    const w=[(next[0]-v[0])/b,(next[1]-v[1])/b];
+    const start=[v[0]+u[0]*radius,v[1]+u[1]*radius];
+    const finish=[v[0]+w[0]*radius,v[1]+w[1]*radius];
+    const samples=Math.max(6,Math.ceil(radius/.025));
+    for(let j=0;j<=samples;j++){
+      const t=j/samples,one=1-t;
+      outline.push([one*one*start[0]+2*one*t*v[0]+t*t*finish[0],one*one*start[1]+2*one*t*v[1]+t*t*finish[1]]);
     }
   }
-  // Edges: strong punctuation lines that preserve the folder silhouette.
-  const back=[[-2.15,1.2,-.3],[2.15,1.2,-.3],[2.15,-1.13,-.3],[-.67,-1.13,-.3],[-.67,-1.61,-.3],[-2.15,-1.61,-.3],[-2.15,1.2,-.3]];
-  for(let i=0;i<back.length-1;i++)edge(back[i],back[i+1],50000+i*100);
-  const front=[[-2.15,-.94,.27],[2.15,-.94,.27],[2.15,1.2,.27],[-2.15,1.2,.27],[-2.15,-.94,.27]];
-  for(let i=0;i<front.length-1;i++)edge(front[i],front[i+1],51000+i*100);
-  for(const [x,y] of [[-2.15,-.94],[2.15,-.94],[-2.15,1.2],[2.15,1.2]])edge([x,y,-.3],[x,y,.27],53000+x*20+y*100);
+  return outline;
+}
+function insidePolygon(x,y,poly){
+  let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const a=poly[i],b=poly[j];
+    if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+  }
+  return inside;
+}
+function roundedFace(outline,z,normal,step,seed){
+  let i=0;
+  for(let y=-1.65;y<=1.25;y+=step){
+    for(let x=-2.2;x<=2.2;x+=step){
+      if(insidePolygon(x,y,outline)){
+        const jitter=(rand(seed+i*7)-.5)*step*.12;
+        add(x+jitter,y,z,normal,seed+i++,false);
+      }
+    }
+  }
+}
+function traceOutline(outline,z,seed,spacing=.048){
+  for(let i=0;i<outline.length;i++){
+    const a=outline[i],b=outline[(i+1)%outline.length];
+    const distance=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    const n=Math.max(1,Math.ceil(distance/spacing));
+    for(let k=0;k<n;k++){
+      const t=k/n;
+      add(a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,z,[0,0,1],seed+i*101+k,true);
+    }
+  }
+}
+function geometry(){
+  points.length=0;
+  const step=W<560?.142:.101;
+  // Rear silhouette: broad rounded body with a rounded raised folder tab.
+  const rear=roundedPolygon(
+    [[-2.15,1.2],[2.15,1.2],[2.15,-1.13],[-.67,-1.13],[-.67,-1.61],[-2.15,-1.61]],
+    [.35,.35,.34,.18,.24,.30]
+  );
+  // Front flap: noticeably softer corners than the original rectangular study.
+  const front=roundedPolygon(
+    [[-2.15,-.94],[2.15,-.94],[2.15,1.2],[-2.15,1.2]],
+    [.37,.37,.40,.40]
+  );
+  roundedFace(rear,-.30,[0,0,-1],step,200);
+  roundedFace(rear,-.18,[0,0,1],step,12000);
+  roundedFace(front,.27,[0,0,1],step,22000);
+  // The pocket edge follows the SAME rounded front contour through depth.
+  // At quarter-turn, the side is curved rather than a square slab.
+  for(let z=-.30;z<=.271;z+=step){
+    for(let i=0;i<front.length;i+=2){
+      const p=front[i],before=front[(i+front.length-2)%front.length],after=front[(i+2)%front.length];
+      const tangent=[after[0]-before[0],after[1]-before[1]];
+      const length=Math.hypot(tangent[0],tangent[1])||1;
+      add(p[0],p[1],z,[tangent[1]/length,-tangent[0]/length,0],33000+i*19+Math.floor(z*300),false);
+    }
+  }
+  traceOutline(rear,-.30,50000);
+  traceOutline(front,.27,51000);
+  // A lighter inner rim gives the flap a folded, dimensional lip.
+  traceOutline(front,-.18,52000,.082);
 }
 function resize(){
   const rect=canvas.getBoundingClientRect();
