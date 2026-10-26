@@ -4,139 +4,93 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f4f4f4">
-<meta name="description" content="An interactive ASCII-to-tree motion study for the portfolio.">
-<title>From Fragments to Structure — Motion Study</title>
+<meta name="description" content="Scroll-driven ASCII fragments transforming into a clickable portfolio directory.">
+<title>Portfolio / ASCII Structure — Scroll Motion Study</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@200;300;400;500;600&family=Geist+Pixel:ELSH@0..100&family=Noto+Sans+JP:wght@400;500&display=swap');
-:root{--paper:#f4f4f4;--ink:#141414;--mid:#727272;--line:#d1d1d1;--mono:'Geist Mono',monospace;--sans:'Geist','Noto Sans JP',sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@200;300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap');
+:root{--paper:#f4f4f4;--ink:#141414;--mono:'Geist Mono',monospace;--sans:'Geist','Noto Sans JP',sans-serif;--grey:#888;--position:0}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scrollbar-width:none}html::-webkit-scrollbar{display:none}
-body{margin:0;color:var(--ink);background:var(--paper);font:400 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+html{scrollbar-width:none;scroll-behavior:auto}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
-.shell{max-width:1440px;margin:0 auto;padding:0 clamp(20px,6vw,86px) 75px}
-.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);height:74px;gap:16px;font:400 13px/1.3 var(--mono)}
-.topbar a:hover{text-decoration:underline;text-underline-offset:5px}
-.kicker{font:500 11px/1.5 var(--mono);letter-spacing:.06em;color:var(--mid)}
-.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,330px);align-items:end;gap:40px;padding:55px 0 34px}
-.intro h1{font:500 clamp(37px,5.7vw,82px)/1.035 var(--sans);letter-spacing:-.035em;margin:8px 0 0}
-.intro h1 .weightless{font-weight:400}
-.intro p{max-width:340px;margin:0 0 6px;font:400 14px/1.95 var(--sans);color:#575757}
-.motion{position:relative;border:1px solid #bbb;min-height:685px;overflow:hidden;isolation:isolate}
-.motion-head{height:50px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 22px;border-bottom:1px solid var(--line);font:400 12px/1.4 var(--mono)}
-.motion-head .dot{display:inline-block;width:7px;height:7px;background:var(--ink);border-radius:50%;margin-right:10px;vertical-align:1px}
-.motion-head .head-right{color:var(--mid)}
-.motion-body{position:relative;height:570px;visibility:hidden;overflow:hidden}
-.motion.is-ready .motion-body{visibility:visible}
-.coord{position:absolute;color:#b3b3b3;font:400 11px/1.2 var(--mono);letter-spacing:0}
-.coord.tl{top:20px;left:20px}.coord.tr{top:20px;right:20px}
-.coord.bl{bottom:17px;left:20px}.coord.br{bottom:17px;right:20px}
-.guide{position:absolute;left:50%;top:12%;width:1px;height:76%;background:linear-gradient(#ddd,transparent);pointer-events:none;opacity:.5}
-.scene{position:absolute;width:min(660px,calc(100% - 42px));left:50%;top:46px;transform:translateX(-50%);font-family:var(--mono)}
-.prompt{font:400 clamp(13px,1.45vw,18px)/1.5 var(--mono);white-space:pre;min-height:32px;opacity:0;transition:opacity .5s}
-.prompt .symbol{color:#8b8b8b}
-.caret{display:inline-block;width:.6ch;height:1.05em;background:var(--ink);vertical-align:-.14em;animation:blink 1s steps(1) infinite}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:6px}
+#experience{position:relative;height:260svh;min-height:1350px}
+.sticky{position:sticky;top:0;height:100svh;min-height:540px;width:100%;overflow:hidden;isolation:isolate}
+.meta{position:absolute;z-index:10;top:clamp(24px,4.1vw,57px);left:clamp(22px,5.6vw,90px);right:clamp(22px,5.6vw,90px);display:flex;justify-content:space-between;align-items:start;gap:24px;font:400 clamp(11px,.95vw,13px)/1.5 var(--mono);letter-spacing:0}
+.meta .right{color:#888;text-align:right}
+.meta a:hover{text-decoration:underline;text-underline-offset:4px}
+.hint{position:absolute;bottom:clamp(22px,4.5vw,58px);left:clamp(22px,5.6vw,90px);z-index:10;display:flex;align-items:center;gap:16px;color:#777;font:400 12px/1.5 var(--mono);letter-spacing:0}
+.hint button{padding:6px 0;border-bottom:1px solid transparent}
+.hint button:hover{border-bottom-color:currentColor}
+.hint .down{display:inline-block;font-size:18px;transform:translateY(-1px)}
+.controls{position:absolute;bottom:clamp(22px,4.5vw,58px);right:clamp(22px,5.6vw,90px);z-index:10;display:flex;gap:25px;align-items:center;font:400 12px/1.5 var(--mono);color:#777}
+.controls button{padding:6px 0;border-bottom:1px solid transparent}
+.controls button:hover{color:var(--ink);border-bottom-color:currentColor}
+.progress{position:absolute;bottom:0;left:0;right:0;height:2px;z-index:10}
+.bar{height:100%;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;will-change:transform}
+.wordmark{position:absolute;left:50%;top:50%;transform:translate3d(-50%,-50%,0);z-index:4;pointer-events:none;text-align:center;will-change:opacity,transform}
+.wordmark h1{font:700 clamp(64px,10.5vw,154px)/1.05 var(--sans);letter-spacing:-.01em;margin:0;white-space:nowrap}
+.wordmark .subline{margin:14px 0 0;font:400 14px/1.5 var(--mono);color:#666}
+.scene{position:absolute;top:50%;left:50%;width:max-content;max-width:calc(100vw - 42px);transform:translate3d(-50%,-50%,0);font-family:var(--mono);visibility:hidden;pointer-events:none}
+.is-ready .scene{visibility:visible}
+.is-complete .scene{pointer-events:auto}
+.prompt{font:400 clamp(12px,1.17vw,17px)/1.5 var(--mono);height:2.1em;white-space:pre;opacity:0;will-change:opacity}
+.prompt .symbol{color:#929292}
+.caret{display:inline-block;width:.57ch;height:.98em;background:var(--ink);vertical-align:-.11em;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-.motion.is-arranging .prompt,.motion.is-settled .prompt{opacity:1}
-.tree{margin:14px 0 0;white-space:normal;font:300 clamp(12px,1.4vw,17px)/1.28 var(--mono);letter-spacing:0;max-width:100%;pointer-events:none}
-.tree-row{display:block;min-height:1.28em;white-space:pre}
-.tree-link{color:inherit;text-decoration:none}
-.tree-link:hover{color:var(--paper);background:var(--ink)}
-.tree-link:focus-visible{background:var(--ink);color:var(--paper)}
+.tree{margin:8px 0 0;white-space:normal;font:300 clamp(12px,1.12vw,17px)/1.29 var(--mono);letter-spacing:0}
+.tree-row{display:block;height:1.29em;line-height:1.29;white-space:pre}
+.tree-link{color:inherit}
+.tree-link:hover,.tree-link:focus-visible{background:var(--ink);color:var(--paper)}
 .tree .disabled{color:#999}
-.glyph{position:relative;display:inline-block;width:1ch;text-align:center;white-space:pre;transform:translate3d(0,0,0);opacity:1;will-change:transform,opacity}
+.glyph{display:inline-block;position:relative;width:1ch;white-space:pre;text-align:center;will-change:transform,opacity}
 .glyph.space{color:transparent}
-.motion.is-scattered .glyph{transition:none;transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(var(--rot,0deg)) scale(var(--scale,.82));opacity:var(--alpha,.55)}
-.motion.is-scattered .glyph.space{opacity:0}
-.motion.is-arranging .glyph{transform:translate3d(0,0,0) rotate(0deg) scale(1);opacity:1;transition:transform 2350ms cubic-bezier(.19,.83,.19,1) var(--delay,0ms),opacity 1400ms ease var(--delay,0ms)}
-.motion.is-arranging .glyph.space{opacity:0}
-.motion.is-settled .glyph{transform:none;opacity:1;transition:none;will-change:auto}
-.motion.is-settled .glyph.space{opacity:0}
-.motion.is-settled .tree{pointer-events:auto}
-.motion-foot{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;height:64px;gap:20px;padding:0 22px}
-.progress{width:min(36%,300px);height:2px;background:#d5d5d5;overflow:hidden}
-.progress-bar{height:100%;background:var(--ink);width:0;transition:width 750ms ease}
-.motion.is-scattered .progress-bar{width:15%}
-.motion.is-arranging .progress-bar{width:68%;transition:width 2500ms ease}
-.motion.is-settled .progress-bar{width:100%}
-.controls{display:flex;align-items:center;gap:25px;font:400 12px/1.4 var(--mono)}
-.controls button{font:inherit;color:var(--ink);background:none;border:0;padding:9px 0;cursor:pointer}
-.controls button:hover{text-decoration:underline;text-underline-offset:4px}
-.controls button[disabled]{opacity:.3;cursor:not-allowed}
-.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-top:22px}
-.phase{border-top:1px solid var(--line);padding-top:13px;opacity:.48;transition:opacity .45s}
-.phase.current,.phase.past{opacity:1}
-.phase small{font:400 12px/1.3 var(--mono);display:block;margin-bottom:7px}
-.phase strong{font:500 17px/1.3 var(--mono);letter-spacing:0;display:block}
-.phase p{color:var(--mid);font:400 12px/1.6 var(--sans);margin:7px 0 0}
-.footer{display:flex;justify-content:space-between;gap:20px;padding-top:52px;font:400 12px/1.6 var(--mono);color:var(--mid)}
-.footer a:hover{text-decoration:underline}
-@media(max-width:800px){
- .intro{grid-template-columns:1fr;gap:18px;padding:44px 0 25px}
- .intro p{max-width:500px}
- .motion{min-height:650px}
- .motion-body{height:535px}
- .scene{top:64px;width:calc(100% - 38px)}
- .tree{font-size:clamp(10px,1.55vw,14px)}
- .phases{gap:15px}
+.is-complete .glyph{will-change:auto}
+.is-complete .tree{pointer-events:auto}
+.stage-caption{position:absolute;left:50%;bottom:clamp(20px,4.5vw,57px);transform:translateX(-50%);font:400 11px/1.3 var(--mono);letter-spacing:.035em;color:#888;white-space:nowrap;pointer-events:none}
+@media(max-width:900px){
+ .tree{font-size:clamp(10px,1.3vw,14px)}
+ .scene{max-width:calc(100vw - 32px)}
+ .wordmark h1{font-size:clamp(64px,12vw,116px)}
+ .wordmark .subline{font-size:12px}
 }
-@media(max-width:500px){
- .topbar{height:60px;font-size:11px}
- .intro h1{font-size:clamp(34px,10vw,47px)}
- .intro p{font-size:12px}
- .motion{min-height:600px}
- .motion-body{height:486px}
- .motion-head{padding:0 12px;font-size:10px}
- .motion-head .head-right{display:none}
- .scene{top:48px;width:calc(100% - 20px)}
- .tree{font-size:9px;line-height:1.4}
- .tree-row{min-height:1.4em}
- .prompt{font-size:13px}
- .motion-foot{padding:0 12px}
- .controls{gap:13px;font-size:11px}
- .progress{width:22%}
- .phases{grid-template-columns:1fr;gap:8px}
- .phase{padding:9px 0;border-top:1px solid var(--line)}
- .phase p{display:none}
- .phase strong{font-size:13px}
- .phase small{display:inline-block;margin-right:10px}
- .footer{padding-top:30px}
+@media(max-width:560px){
+ #experience{min-height:1130px}
+ .sticky{min-height:470px}
+ .meta{top:22px;left:22px;right:22px;font-size:11px}
+ .meta .right{font-size:9px}
+ .wordmark h1{font-size:clamp(52px,14vw,78px)}
+ .wordmark .subline{font-size:11px}
+ .scene{max-width:calc(100vw - 24px)}
+ .tree{font-size:clamp(8.8px,2.6vw,12px);line-height:1.28}
+ .tree-row{height:1.28em;line-height:1.28}
+ .prompt{font-size:12px;height:2.1em}
+ .hint{left:22px;bottom:22px;font-size:10px;gap:8px}
+ .controls{right:22px;bottom:22px;font-size:10px;gap:13px}
+ .stage-caption{bottom:72px;font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){
- *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
- .glyph{will-change:auto}
+ .glyph,.wordmark,.bar{will-change:auto}
+ .caret{animation:none}
 }
 </style>
 </head>
 <body>
-<div class="shell">
-  <header class="topbar">
-    <a href="../" aria-label="Portfolioのトップページへ戻る">~/portfolio</a>
-    <span>EXPERIMENT 001 — ASCII / TREE</span>
-  </header>
-  <main>
-    <div class="intro">
-      <div>
-        <div class="kicker">MOTION STUDY / INFORMATION ARCHITECTURE</div>
-        <h1>Information becomes<br><span class="weightless">structure.</span></h1>
-      </div>
-      <p>散らばった文字が、意味を持つディレクトリ構造へ。最終的に現れるTreeは、そのまま作品へアクセスできるナビゲーションです。</p>
+<section id="experience" aria-label="Portfolio ASCII typography animation">
+  <div id="stage" class="sticky">
+    <header class="meta">
+      <a href="../" aria-label="本番のポートフォリオに戻る">~/portfolio</a>
+      <span class="right">MOTION EXPERIMENT / 002</span>
+    </header>
+    <div id="wordmark" class="wordmark">
+      <h1>Portfolio</h1>
+      <p class="subline">Name: Kei Kawakami</p>
     </div>
-
-    <section id="motion" class="motion" aria-label="ASCIIの文字が集まってTreeになるアニメーションデモ">
-      <div class="motion-head">
-        <span><span class="dot" aria-hidden="true"></span><span id="status" aria-live="polite">01 / fragments</span></span>
-        <span class="head-right">INTERACTIVE PROTOTYPE — GEIST MONO</span>
-      </div>
-      <div class="motion-body">
-        <div class="guide" aria-hidden="true"></div>
-        <span class="coord tl" aria-hidden="true">[0,0]</span>
-        <span class="coord tr" aria-hidden="true">+ + +</span>
-        <span class="coord bl" aria-hidden="true">ASCII / DATA</span>
-        <span class="coord br" aria-hidden="true">[END]</span>
-        <div class="scene">
-          <div class="prompt" aria-label="tree -L 3 コマンド"><span class="symbol" aria-hidden="true">&gt; </span><span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></div>
-          <nav class="tree" id="tree" aria-label="作品ディレクトリ">
+    <div class="scene">
+      <div class="prompt" id="prompt"><span class="symbol">&gt; </span><span id="typed"></span><span class="caret" aria-hidden="true"></span></div>
+      <nav class="tree" id="tree" aria-label="作品ディレクトリ">
             <div class="tree-row">~/portfolio</div>
             <div class="tree-row">│</div>
             <div class="tree-row">├── <a class="tree-link" href="../#works">works/ ↘</a></div>
@@ -160,159 +114,132 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
             <div class="tree-row">│</div>
             <div class="tree-row">└── <a class="tree-link" href="../#contact">contact/ ↘</a></div>
           </nav>
-        </div>
-      </div>
-      <div class="motion-foot">
-        <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
-        <div class="controls">
-          <button type="button" id="replay">↻ replay</button>
-          <button type="button" id="skip">skip →</button>
-        </div>
-      </div>
-    </section>
-    <div class="phases" aria-label="アニメーションの3段階">
-      <div class="phase current" data-step="0"><small>01 — INPUT</small><strong>Fragments</strong><p>役割のない文字の断片</p></div>
-      <div class="phase" data-step="1"><small>02 — PROCESS</small><strong>Alignment</strong><p>記号と情報が整列する</p></div>
-      <div class="phase" data-step="2"><small>03 — OUTPUT</small><strong>Navigation</strong><p>操作できるリンク付きTree</p></div>
     </div>
-  </main>
-  <footer class="footer"><span>KEI KAWAKAMI / PORTFOLIO</span><a href="../">← back to portfolio</a></footer>
-</div>
-
+    <div class="hint"><button id="explore" type="button"><span class="down">↓</span> scroll to structure</button></div>
+    <div class="stage-caption" id="phase" aria-live="polite">01 — FRAGMENTS</div>
+    <div class="controls"><button id="replay" type="button">↻ replay</button><button id="skip" type="button">skip →</button></div>
+    <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+  </div>
+</section>
 <script>
 (function(){
   'use strict';
-  var motion=document.getElementById('motion');
-  var scene=document.querySelector('.scene');
-  var glyphs=[];
-  var tree=document.getElementById('tree');
-  var typed=document.getElementById('typed');
-  var status=document.getElementById('status');
-  var skip=document.getElementById('skip');
-  var replay=document.getElementById('replay');
-  var phases=Array.from(document.querySelectorAll('.phase'));
-  var links=Array.from(tree.querySelectorAll('a'));
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  var timers=[],generation=0,characterIndex=0;
-  var command='tree -L 3';
-  var rows=Array.from(tree.querySelectorAll('.tree-row'));
-  function hash(n){var v=Math.sin(n*127.1+13.7)*43758.5453;return v-Math.floor(v)}
-  function setState(name){motion.classList.remove('is-scattered','is-arranging','is-settled');motion.classList.add(name)}
-  function setPhase(step,label){
-    status.textContent=label;
-    phases.forEach(function(el,i){el.classList.toggle('current',i===step);el.classList.toggle('past',i<step)});
-  }
-  function schedule(fn,delay){
-    var id=window.setTimeout(fn,delay);timers.push(id);return id;
-  }
-  function cancel(){
-    generation++;
-    timers.forEach(function(id){window.clearTimeout(id)});
-    timers=[];
-  }
-  function allowLinks(ok){
-    links.forEach(function(link){if(ok)link.removeAttribute('tabindex');else link.tabIndex=-1});
-  }
+  const section=document.getElementById('experience');
+  const stage=document.getElementById('stage');
+  const scene=document.querySelector('.scene');
+  const wordmark=document.getElementById('wordmark');
+  const nav=document.getElementById('tree');
+  const glyphs=[];
+  const rows=Array.from(nav.querySelectorAll('.tree-row'));
+  const links=Array.from(nav.querySelectorAll('a'));
+  const prompt=document.getElementById('prompt');
+  const typed=document.getElementById('typed');
+  const bar=document.getElementById('bar');
+  const phase=document.getElementById('phase');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const command='tree -L 3';
+  const animations=[];
+  let raf=0;
+  let currentProgress=-1;
+  const hash=n=>{const v=Math.sin(n*127.1+13.7)*43758.5453;return v-Math.floor(v)};
+  const clamp=x=>Math.max(0,Math.min(1,x));
+  const ease=x=>{const t=clamp(x);return t*t*(3-2*t)};
 
-  // Wrap characters inside their ORIGINAL link elements. The Tree is never duplicated.
-  rows.forEach(function(row){
-    var nodes=[];
-    var walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT);
-    while(walker.nextNode())nodes.push(walker.currentNode);
+  // The finished, linked Tree is also the animated Tree. No duplicated navigation.
+  rows.forEach(row=>{
+    const walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT);
+    const originals=[];
+    while(walker.nextNode())originals.push(walker.currentNode);
     row.setAttribute('role','group');
     row.setAttribute('aria-label',row.textContent);
-    row.querySelectorAll('a').forEach(function(link){link.setAttribute('aria-label',link.textContent)});
-    nodes.forEach(function(node){
-      var fragment=document.createDocumentFragment();
-      Array.from(node.textContent).forEach(function(char){
-        var el=document.createElement('span');
-        el.className='glyph'+(char===' '?' space':'');
-        el.textContent=char===' '?String.fromCharCode(160):char;
-        el.setAttribute('aria-hidden','true');
-        fragment.appendChild(el);
-        glyphs.push(el);
+    row.querySelectorAll('a').forEach(link=>link.setAttribute('aria-label',link.textContent));
+    originals.forEach(node=>{
+      const fragment=document.createDocumentFragment();
+      Array.from(node.textContent).forEach(char=>{
+        const span=document.createElement('span');
+        span.className='glyph'+(char===' '?' space':'');
+        span.textContent=char===' '?String.fromCharCode(160):char;
+        span.setAttribute('aria-hidden','true');
+        fragment.appendChild(span);
+        glyphs.push(span);
       });
       node.parentNode.replaceChild(fragment,node);
     });
   });
-
-  function measureScatter(){
-    // Measure the true final character layout, then derive scattered origins.
-    motion.classList.remove('is-scattered','is-arranging','is-settled');
-    var stageRect=motion.querySelector('.motion-body').getBoundingClientRect();
-    var width=stageRect.width, height=stageRect.height;
-    glyphs.forEach(function(el,i){
-      var rect=el.getBoundingClientRect();
-      var x=rect.left-stageRect.left, y=rect.top-stageRect.top;
-      var tx=width*(.06+.88*hash(i+7));
-      var ty=height*(.12+.72*hash(i+233));
-      var dx=tx-x,dy=ty-y;
-      var rot=(hash(i+818)-.5)*54;
-      var alpha=.16+hash(i+157)*.62;
-      var delay=Math.floor(hash(i+38)*500);
-      el.style.setProperty('--dx',Math.round(dx)+'px');
-      el.style.setProperty('--dy',Math.round(dy)+'px');
-      el.style.setProperty('--rot',rot.toFixed(1)+'deg');
-      el.style.setProperty('--scale',(.68+hash(i+11)*.45).toFixed(2));
-      el.style.setProperty('--alpha',alpha.toFixed(2));
-      el.style.setProperty('--delay',delay+'ms');
+  function scrollFraction(){
+    const base=section.getBoundingClientRect().top+window.scrollY;
+    const distance=Math.max(1,window.innerHeight*1.04);
+    return clamp((window.scrollY-base)/distance);
+  }
+  function buildAnimations(){
+    animations.forEach(a=>a.cancel());
+    animations.length=0;
+    stage.classList.remove('is-ready');
+    const bounds=stage.getBoundingClientRect();
+    const width=bounds.width,height=bounds.height;
+    // Measure each character's true final position in the single live Tree.
+    glyphs.forEach((el,i)=>{
+      const rect=el.getBoundingClientRect();
+      const x=rect.left-bounds.left, y=rect.top-bounds.top;
+      // Particle destinations span nearly the entire viewport, not a nested card.
+      const startX=width*(.035+.93*hash(i+7));
+      const startY=height*(.055+.88*hash(i+233));
+      const dx=startX-x,dy=startY-y;
+      const rotation=(hash(i+818)-.5)*48;
+      const scale=.64+hash(i+11)*.45;
+      const alpha=.12+hash(i+157)*.62;
+      const isSpace=el.classList.contains('space');
+      const delay=Math.floor(hash(i+38)*240);
+      const animation=el.animate([
+        {transform:'translate3d('+dx.toFixed(2)+'px,'+dy.toFixed(2)+'px,0) rotate('+rotation.toFixed(2)+'deg) scale('+scale.toFixed(2)+')',opacity:isSpace?0:alpha},
+        {transform:'translate3d(0,0,0) rotate(0deg) scale(1)',opacity:isSpace?0:1}
+      ],{duration:1150,delay:delay,fill:'both',easing:'cubic-bezier(.17,.81,.23,1)'});
+      animation.pause();
+      animation.currentTime=0;
+      animations.push(animation);
     });
-    motion.classList.add('is-ready');
+    stage.classList.add('is-ready');
   }
-
-  function finalState(){
-    cancel();
-    setState('is-settled');
-    typed.textContent=command;
-    setPhase(2,'03 / navigation ready');
-    allowLinks(true);
-    skip.disabled=true;
-    glyphs.forEach(function(el){el.style.removeProperty('will-change')});
+  function update(){
+    raf=0;
+    const p=reduce.matches?1:scrollFraction();
+    if(Math.abs(currentProgress-p)<.0005)return;
+    currentProgress=p;
+    const heroFade=1-ease((p-.08)/.40);
+    wordmark.style.opacity=String(heroFade);
+    wordmark.style.transform='translate3d(-50%,-50%,0) scale('+(1-.04*ease((p-.08)/.4))+')';
+    const assembled=ease((p-.17)/.76);
+    const playTime=assembled*1390;
+    animations.forEach(a=>a.currentTime=playTime);
+    prompt.style.opacity=String(ease((p-.58)/.26));
+    typed.textContent=command.slice(0,Math.round(command.length*ease((p-.56)/.34)));
+    bar.style.transform='scaleX('+p+')';
+    const complete=p>=.995;
+    stage.classList.toggle('is-complete',complete);
+    nav.inert=!complete;
+    links.forEach(link=>{if(complete)link.removeAttribute('tabindex');else link.tabIndex=-1});
+    phase.textContent=complete?'03 — NAVIGATION READY':p>.45?'02 — ALIGNING':'01 — FRAGMENTS';
   }
-
-  function typeNext(token){
-    if(token!==generation)return;
-    if(characterIndex>=command.length)return;
-    typed.textContent+=command.charAt(characterIndex++);
-    schedule(function(){typeNext(token)},58+Math.floor(hash(characterIndex+8)*38));
+  function tick(){if(!raf)raf=requestAnimationFrame(update)}
+  function build(){
+    currentProgress=-1;
+    // Strip all animated transforms before measuring the live Tree.
+    buildAnimations();
+    tick();
   }
-
-  function align(token){
-    if(token!==generation)return;
-    setState('is-arranging');
-    setPhase(1,'02 / arranging characters');
-    typed.textContent='';
-    characterIndex=0;
-    schedule(function(){typeNext(token)},100);
-    schedule(function(){if(token===generation)finalState()},3400);
+  function go(p){
+    const base=section.getBoundingClientRect().top+window.scrollY;
+    window.scrollTo({top:base+Math.min(window.innerHeight*1.04,section.offsetHeight-window.innerHeight)*p,behavior:reduce.matches?'auto':'smooth'});
   }
-
-  function play(){
-    cancel();
-    if(reduce.matches){finalState();return}
-    allowLinks(false);
-    skip.disabled=false;
-    typed.textContent='';
-    characterIndex=0;
-    // Remove the old transition and ensure the scattered state actually paints.
-    setState('is-scattered');
-    setPhase(0,'01 / fragments');
-    var token=generation;
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        if(token===generation)schedule(function(){align(token)},1200);
-      });
-    });
-  }
-  replay.addEventListener('click',play);
-  skip.addEventListener('click',finalState);
-  reduce.addEventListener?.('change',function(){if(reduce.matches)finalState();else play()});
-  window.addEventListener('resize',function(){
-    if(!motion.classList.contains('is-settled')){measureScatter();play()}
-  },{passive:true});
-  measureScatter();
-  if(reduce.matches)finalState();
-  else play();
+  document.getElementById('explore').addEventListener('click',()=>go(.95));
+  document.getElementById('skip').addEventListener('click',()=>go(1));
+  document.getElementById('replay').addEventListener('click',()=>go(0));
+  window.addEventListener('scroll',tick,{passive:true});
+  let resizeToken=0;
+  window.addEventListener('resize',()=>{cancelAnimationFrame(resizeToken);resizeToken=requestAnimationFrame(build)},{passive:true});
+  reduce.addEventListener?.('change',tick);
+  if(document.fonts && document.fonts.ready){document.fonts.ready.then(build)}
+  else build();
 })();
 </script>
 </body>
