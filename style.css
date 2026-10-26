@@ -132,7 +132,7 @@
  .entry-identity h1{font-size:clamp(52px,14vw,78px)}
  .entry-identity p{font-size:11px}
  .entry-scene{max-width:calc(100vw - 24px)}
- .entry-scene .tree-nav{font-size:clamp(8.8px,2.6vw,12px);line-height:1.28}
+ .entry-scene .tree-nav{font-size:clamp(7.6px,2.35vw,11px);line-height:1.28}
  .entry-scene .entry-tree-line{height:1.28em;line-height:1.28}
  .entry-prompt{font-size:12px}
  .entry-bottom{left:22px;right:22px;bottom:22px;font-size:10px;gap:8px}

@@ -45,7 +45,6 @@ document.querySelectorAll('.key').forEach(k=>{
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   const command='tree -L 3';
   const glyphs=[],animations=[];
-  const links=Array.from(nav.querySelectorAll('a'));
   let raf=0,resizeRaf=0,currentProgress=-1;
   const hash=n=>{const v=Math.sin(n*127.1+13.7)*43758.5453;return v-Math.floor(v)};
   const clamp=x=>Math.max(0,Math.min(1,x));
@@ -64,6 +63,7 @@ document.querySelectorAll('.key').forEach(k=>{
     fragment.appendChild(row);
   });
   nav.replaceChildren(fragment);
+  const links=Array.from(nav.querySelectorAll('a'));
   const rows=Array.from(nav.querySelectorAll('.entry-tree-line'));
   rows.forEach(row=>{
     const walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT);
