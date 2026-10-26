@@ -219,7 +219,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
     var nodes=[];
     var walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT);
     while(walker.nextNode())nodes.push(walker.currentNode);
+    row.setAttribute('role','group');
     row.setAttribute('aria-label',row.textContent);
+    row.querySelectorAll('a').forEach(function(link){link.setAttribute('aria-label',link.textContent)});
     nodes.forEach(function(node){
       var fragment=document.createDocumentFragment();
       Array.from(node.textContent).forEach(function(char){
