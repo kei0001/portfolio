@@ -164,6 +164,9 @@ document.querySelectorAll('.key').forEach(k=>{
   const about=document.getElementById('about');
   const contact=document.getElementById('contact');
   let raf=0;
+  let activePath=pathLabel.textContent.trim();
+  let pathAnimation=null;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   function update(){
     raf=0;
     const threshold=window.innerHeight*.25;
@@ -176,7 +179,17 @@ document.querySelectorAll('.key').forEach(k=>{
     if(contact&&about&&contact.getBoundingClientRect().top-about.getBoundingClientRect().top>80&&contact.getBoundingClientRect().top<=threshold){
       current='~/portfolio/contact';
     }
-    if(pathLabel.textContent!==current)pathLabel.textContent=current;
+    if(current!==activePath){
+      activePath=current;
+      if(pathAnimation){pathAnimation.cancel();pathAnimation=null;}
+      pathLabel.textContent=current;
+      if(!reduceMotion.matches&&typeof pathLabel.animate==='function'){
+        pathAnimation=pathLabel.animate([
+          {opacity:0,transform:'translateY(4px)'},
+          {opacity:1,transform:'translateY(0)'}
+        ],{duration:200,easing:'cubic-bezier(.22,1,.36,1)'});
+      }
+    }
   }
   function requestUpdate(){if(!raf)raf=requestAnimationFrame(update)}
   update();
