@@ -208,8 +208,7 @@ html.portfolio-hide-scrollbars .tree-nav::-webkit-scrollbar {
 @media(max-width:560px){.sg-hero-art{min-height:500px;padding:24px}.sg-hero-text{font-size:clamp(40px,11vw,62px);max-width:100%;margin-top:15px}.sg-demo-grid{width:54%;right:13%;top:40%;transform:rotate(-8deg)}.sg-hero-foot{gap:6px}.sg-hero-foot span{font-size:9px;padding:6px 7px}.sg-ratio-figure{min-height:300px}.sg-diagram-footer{font-size:9px}.sg-feature-list>div{grid-template-columns:32px 1fr;gap:7px 14px}.sg-feature-list>div>span:last-child{grid-column:2}.sg-live-cta{display:block}.sg-live-cta>a{display:inline-block;margin-top:24px}}
 
 /* One fixed breadcrumb for the homepage. The original labels remain as no-JS fallbacks. */
-.scroll-path{display:none;position:fixed;z-index:40;top:clamp(24px,4.1vw,57px);left:clamp(22px,5.6vw,90px);max-width:calc(100vw - 44px);color:var(--ink);font:400 clamp(11px,.95vw,13px)/1.5 var(--mono);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;background:var(--paper)}
-.has-scroll-path .scroll-path{display:block}
+.scroll-path{display:block;position:fixed;z-index:1000;top:clamp(24px,4.1vw,57px);left:clamp(22px,5.6vw,90px);max-width:calc(100vw - 44px);color:var(--ink);font:400 clamp(11px,.95vw,13px)/1.5 var(--mono);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;background:var(--paper)}
 .entry-meta{justify-content:flex-end}
-.has-scroll-path .category-cover>.category-path{visibility:hidden}
+.category-cover>.category-path{visibility:hidden}
 @media(max-width:560px){.scroll-path{top:22px;left:22px;font-size:11px}}
