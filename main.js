@@ -166,8 +166,8 @@ document.querySelectorAll('.key').forEach(k=>{
   let raf=0;
   let activePath=pathLabel.textContent.trim();
   let cleanupTimer=0;
-  const pureFade=new URLSearchParams(window.location.search).get('breadcrumb')!=='slide';
-  if(pureFade)document.documentElement.classList.add('breadcrumb-pure-fade');
+  const slideMode=new URLSearchParams(window.location.search).get('breadcrumb')==='slide';
+  if(slideMode)document.documentElement.classList.add('breadcrumb-slide');
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   function changePath(nextPath){
     if(nextPath===activePath)return;
@@ -192,7 +192,7 @@ document.querySelectorAll('.key').forEach(k=>{
       pathLabel.textContent=activePath;
       pathLabel.style.width='';
       cleanupTimer=0;
-    },pureFade?400:260);
+    },slideMode?260:400);
   }
   function update(){
     raf=0;
