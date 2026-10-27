@@ -50,8 +50,6 @@
  .category-headline{gap:12px;margin-top:65px}
  .category-number{font-size:clamp(108px,33vw,151px);letter-spacing:-.03em}
  .category-headline-text{font-size:clamp(29px,7.8vw,46px);letter-spacing:0}
- .category-directory{padding-top:28px}
- .category-directory-path{font-size:12px}
  .work-entry{grid-template-columns:minmax(0,1fr) 24px;gap:9px;padding:20px 0}
  .work-entry-name{font-size:23px}
  .work-entry-description{grid-column:1;grid-row:2;font-size:12px}
