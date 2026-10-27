@@ -232,7 +232,6 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
    Typography comes from the shared LUSTR rules above:
    .page-hero h1, .lead, .section-heading, .decision-title,
    .body-copy, .detail-copy, .small-label, and .section-id. */
-.neraiuchi-case .nri-hero .path{margin-bottom:50px}
 .neraiuchi-case .nri-eyebrow{margin:0 0 3px}
 .neraiuchi-case .nri-hero .lead{margin-bottom:0}
 .neraiuchi-case .nri-hero-subtitle{font:400 clamp(15px,1.4vw,19px)/1.65 var(--sans);color:var(--secondary);margin:20px 0 70px}
@@ -266,7 +265,6 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
  .neraiuchi-case .nri-gold-rule{margin-top:105px}
 }
 @media(max-width:560px){
- .neraiuchi-case .nri-hero .path{margin-bottom:42px}
  .neraiuchi-case .nri-hero-subtitle{margin:12px 0 40px}
  .neraiuchi-case .nri-hero-art figcaption{font-size:10px;flex-direction:column;gap:4px}
  .neraiuchi-case .nri-intro-copy{margin-bottom:33px}
@@ -276,4 +274,14 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
  .neraiuchi-case .nri-decision-grid article h3{margin:20px 0 12px}
  .neraiuchi-case .nri-gold-rule{margin-top:82px}
  .neraiuchi-case .nri-footer{gap:18px}
+}
+
+/* One accurate, navigable case-study path in the sticky header. */
+.topnav .brand{min-width:0;overflow-wrap:anywhere;line-height:1.5}
+.topnav .brand a{font-weight:500}
+.topnav .navlinks{flex-shrink:0}
+@media(max-width:700px){
+ .topnav{flex-direction:column;align-items:stretch;gap:9px}
+ .topnav .brand{font-size:12px;line-height:1.5}
+ .topnav .navlinks{align-self:flex-end;justify-content:flex-end;flex-wrap:wrap}
 }
