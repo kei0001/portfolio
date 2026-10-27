@@ -206,3 +206,9 @@ html.portfolio-hide-scrollbars .tree-nav::-webkit-scrollbar {
 .sg-live-cta>a{white-space:nowrap;border-bottom:1px solid var(--ink);font:500 16px/1.5 var(--mono);padding:10px 0}
 @media(max-width:850px){.sg-demo-grid{width:42%;right:28px;top:27%}.sg-hero-text{max-width:65%}.sg-hero-art{min-height:520px}.sg-hero-foot{font-size:10px}}
 @media(max-width:560px){.sg-hero-art{min-height:500px;padding:24px}.sg-hero-text{font-size:clamp(40px,11vw,62px);max-width:100%;margin-top:15px}.sg-demo-grid{width:54%;right:13%;top:40%;transform:rotate(-8deg)}.sg-hero-foot{gap:6px}.sg-hero-foot span{font-size:9px;padding:6px 7px}.sg-ratio-figure{min-height:300px}.sg-diagram-footer{font-size:9px}.sg-feature-list>div{grid-template-columns:32px 1fr;gap:7px 14px}.sg-feature-list>div>span:last-child{grid-column:2}.sg-live-cta{display:block}.sg-live-cta>a{display:inline-block;margin-top:24px}}
+
+/* One fixed breadcrumb for the homepage. The original labels remain as no-JS fallbacks. */
+.scroll-path{display:none;position:fixed;z-index:40;top:clamp(24px,4.1vw,57px);left:clamp(22px,5.6vw,90px);max-width:calc(100vw - 44px);padding:4px 7px;margin:-4px -7px;border-radius:2px;background:rgba(244,244,244,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ink);font:500 clamp(11px,1.1vw,16px)/1.5 var(--mono);letter-spacing:0;overflow-wrap:anywhere;pointer-events:none}
+.has-scroll-path .scroll-path{display:block}
+.has-scroll-path .entry-meta>span,.has-scroll-path .category-cover>.category-path{visibility:hidden}
+@media(max-width:560px){.scroll-path{top:22px;left:22px;font-size:11px}}
