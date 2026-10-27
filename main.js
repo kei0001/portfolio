@@ -151,3 +151,36 @@ document.querySelectorAll('.key').forEach(k=>{
   if(document.fonts?.ready)document.fonts.ready.then(build);
   else build();
 })();
+
+/* Follow the active homepage directory as the user scrolls. */
+(function(){
+  'use strict';
+  const pathLabel=document.getElementById('scroll-path');
+  if(!pathLabel)return;
+  const categories=Array.from(document.querySelectorAll('.category-section')).map(section=>({
+    element:section,
+    path:section.querySelector('.category-path')?.textContent.trim()
+  })).filter(item=>item.path);
+  const about=document.getElementById('about');
+  const contact=document.getElementById('contact');
+  let raf=0;
+  function update(){
+    raf=0;
+    const threshold=window.innerHeight*.25;
+    let current='~/portfolio';
+    categories.forEach(item=>{
+      if(item.element.getBoundingClientRect().top<=threshold)current=item.path;
+    });
+    if(about&&about.getBoundingClientRect().top<=threshold)current='~/portfolio/about';
+    // On desktop About and Contact share a row; on mobile they become separate stops.
+    if(contact&&about&&contact.getBoundingClientRect().top-about.getBoundingClientRect().top>80&&contact.getBoundingClientRect().top<=threshold){
+      current='~/portfolio/contact';
+    }
+    if(pathLabel.textContent!==current)pathLabel.textContent=current;
+  }
+  function requestUpdate(){if(!raf)raf=requestAnimationFrame(update)}
+  document.documentElement.classList.add('has-scroll-path');
+  update();
+  window.addEventListener('scroll',requestUpdate,{passive:true});
+  window.addEventListener('resize',requestUpdate,{passive:true});
+})();
