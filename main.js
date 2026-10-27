@@ -179,7 +179,6 @@ document.querySelectorAll('.key').forEach(k=>{
     if(pathLabel.textContent!==current)pathLabel.textContent=current;
   }
   function requestUpdate(){if(!raf)raf=requestAnimationFrame(update)}
-  document.documentElement.classList.add('has-scroll-path');
   update();
   window.addEventListener('scroll',requestUpdate,{passive:true});
   window.addEventListener('resize',requestUpdate,{passive:true});
