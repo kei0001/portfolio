@@ -166,7 +166,7 @@ document.querySelectorAll('.key').forEach(k=>{
   let raf=0;
   let activePath=pathLabel.textContent.trim();
   let cleanupTimer=0;
-  const pureFade=new URLSearchParams(window.location.search).get('breadcrumb')==='fade';
+  const pureFade=new URLSearchParams(window.location.search).get('breadcrumb')!=='slide';
   if(pureFade)document.documentElement.classList.add('breadcrumb-pure-fade');
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   function changePath(nextPath){
