@@ -23,8 +23,7 @@
 .category-headline{display:flex;align-items:flex-end;gap:clamp(22px,3vw,42px);margin:65px 0 0;line-height:1;font-weight:200}
 .category-number{display:block;flex:none;font-family:"Geist Pixel",var(--mono);font-size:clamp(120px,23vw,326px);font-weight:400;font-variation-settings:"ELSH" 20;font-synthesis:none;line-height:.88;letter-spacing:-.03em;white-space:nowrap;font-variant-numeric:lining-nums}
 .category-headline-text{font:200 clamp(42px,7vw,96px)/1.03 var(--mono);letter-spacing:0;white-space:nowrap;padding-bottom:2px}
-.category-directory{border-top:1px solid var(--line);padding-top:45px}
-.category-directory-path{font-size:15px;color:var(--secondary);margin:0 0 26px}
+.category-directory{padding-top:0}
 .works-projects{border-top:1px solid var(--line)}
 .work-entry{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) 22px;align-items:center;gap:24px;padding:24px 4px;border-bottom:1px solid var(--line);text-decoration:none}
 .work-entry:hover{text-decoration:none;background:#f4f4f4}
