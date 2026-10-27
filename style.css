@@ -221,3 +221,10 @@ html.portfolio-hide-scrollbars .tree-nav::-webkit-scrollbar {
 @keyframes breadcrumb-exit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}
 @keyframes breadcrumb-enter{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.scroll-path-incoming,.scroll-path-outgoing{animation:none}}
+
+/* Optional soft crossfade preview: ?breadcrumb=fade. Default keeps the slide transition. */
+html.breadcrumb-pure-fade .scroll-path-outgoing{animation:breadcrumb-pure-exit 350ms ease-in-out both}
+html.breadcrumb-pure-fade .scroll-path-incoming{animation:breadcrumb-pure-enter 350ms ease-in-out both}
+@keyframes breadcrumb-pure-exit{from{opacity:1}to{opacity:0}}
+@keyframes breadcrumb-pure-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html.breadcrumb-pure-fade .scroll-path-incoming,html.breadcrumb-pure-fade .scroll-path-outgoing{animation:none}}
