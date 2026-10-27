@@ -213,18 +213,20 @@ html.portfolio-hide-scrollbars .tree-nav::-webkit-scrollbar {
 .category-cover>.category-path{visibility:hidden}
 @media(max-width:560px){.scroll-path{top:22px;left:22px;font-size:11px}}
 
-/* True crossfade: keep the previous path visible as the next one slides in. */
+/* Pure crossfade is the default; no JavaScript class is needed for B. */
 .scroll-path{isolation:isolate}
 .scroll-path-incoming,.scroll-path-outgoing{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.scroll-path-outgoing{position:absolute;top:0;left:0;pointer-events:none;animation:breadcrumb-exit 180ms ease-in both}
-.scroll-path-incoming{position:relative;animation:breadcrumb-enter 220ms cubic-bezier(.22,1,.36,1) both}
-@keyframes breadcrumb-exit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}
-@keyframes breadcrumb-enter{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){.scroll-path-incoming,.scroll-path-outgoing{animation:none}}
+.scroll-path-outgoing{position:absolute;top:0;left:0;pointer-events:none;animation:breadcrumb-fade-out 350ms ease-in-out both}
+.scroll-path-incoming{position:relative;animation:breadcrumb-fade-in 350ms ease-in-out both}
+@keyframes breadcrumb-fade-out{from{opacity:1}to{opacity:0}}
+@keyframes breadcrumb-fade-in{from{opacity:0}to{opacity:1}}
 
-/* Optional soft crossfade preview: ?breadcrumb=fade. Default keeps the slide transition. */
-html.breadcrumb-pure-fade .scroll-path-outgoing{animation:breadcrumb-pure-exit 350ms ease-in-out both}
-html.breadcrumb-pure-fade .scroll-path-incoming{animation:breadcrumb-pure-enter 350ms ease-in-out both}
-@keyframes breadcrumb-pure-exit{from{opacity:1}to{opacity:0}}
-@keyframes breadcrumb-pure-enter{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){html.breadcrumb-pure-fade .scroll-path-incoming,html.breadcrumb-pure-fade .scroll-path-outgoing{animation:none}}
+/* Previous A version is opt-in only: ?breadcrumb=slide. */
+html.breadcrumb-slide .scroll-path-outgoing{animation:breadcrumb-slide-out 180ms ease-in both}
+html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms cubic-bezier(.22,1,.36,1) both}
+@keyframes breadcrumb-slide-out{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}
+@keyframes breadcrumb-slide-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+  .scroll-path-incoming,.scroll-path-outgoing,
+  html.breadcrumb-slide .scroll-path-incoming,html.breadcrumb-slide .scroll-path-outgoing{animation:none}
+}
