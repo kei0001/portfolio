@@ -165,8 +165,33 @@ document.querySelectorAll('.key').forEach(k=>{
   const contact=document.getElementById('contact');
   let raf=0;
   let activePath=pathLabel.textContent.trim();
-  let pathAnimation=null;
+  let cleanupTimer=0;
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function changePath(nextPath){
+    if(nextPath===activePath)return;
+    const previousPath=activePath;
+    activePath=nextPath;
+    window.clearTimeout(cleanupTimer);
+    if(reduceMotion.matches){
+      pathLabel.textContent=nextPath;
+      pathLabel.style.width='';
+      return;
+    }
+    // Keep both labels in the DOM so the old one can fade OUT as the new one fades IN.
+    const outgoing=document.createElement('span');
+    outgoing.className='scroll-path-outgoing';
+    outgoing.textContent=previousPath;
+    const incoming=document.createElement('span');
+    incoming.className='scroll-path-incoming';
+    incoming.textContent=nextPath;
+    pathLabel.style.width=Math.max(previousPath.length,nextPath.length)+'ch';
+    pathLabel.replaceChildren(outgoing,incoming);
+    cleanupTimer=window.setTimeout(()=>{
+      pathLabel.textContent=activePath;
+      pathLabel.style.width='';
+      cleanupTimer=0;
+    },260);
+  }
   function update(){
     raf=0;
     const threshold=window.innerHeight*.25;
@@ -179,17 +204,7 @@ document.querySelectorAll('.key').forEach(k=>{
     if(contact&&about&&contact.getBoundingClientRect().top-about.getBoundingClientRect().top>80&&contact.getBoundingClientRect().top<=threshold){
       current='~/portfolio/contact';
     }
-    if(current!==activePath){
-      activePath=current;
-      if(pathAnimation){pathAnimation.cancel();pathAnimation=null;}
-      pathLabel.textContent=current;
-      if(!reduceMotion.matches&&typeof pathLabel.animate==='function'){
-        pathAnimation=pathLabel.animate([
-          {opacity:0,transform:'translateY(4px)'},
-          {opacity:1,transform:'translateY(0)'}
-        ],{duration:200,easing:'cubic-bezier(.22,1,.36,1)'});
-      }
-    }
+    changePath(current);
   }
   function requestUpdate(){if(!raf)raf=requestAnimationFrame(update)}
   update();
