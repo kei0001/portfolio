@@ -285,3 +285,18 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
  .topnav .brand{font-size:12px;line-height:1.5}
  .topnav .navlinks{align-self:flex-end;justify-content:flex-end;flex-wrap:wrap}
 }
+
+/* Case-study paths use exactly the same fixed position, type and color as the homepage scroll-path. */
+.case-header .case-path{pointer-events:auto;max-width:calc(100vw - 360px)}
+.case-header .case-path a:hover{text-decoration:underline}
+.case-navlinks{position:fixed;z-index:1001;top:clamp(24px,4.1vw,57px);right:clamp(22px,5.6vw,90px);display:flex;align-items:center;gap:clamp(12px,1.8vw,25px);font:400 clamp(11px,.95vw,13px)/1.5 var(--mono);color:var(--secondary)}
+.case-study.page{padding-top:112px}
+@media(max-width:900px){
+  .case-header .case-path{max-width:calc(100vw - 44px)}
+  .case-navlinks{top:64px}
+  .case-study.page{padding-top:122px}
+}
+@media(max-width:560px){
+  .case-navlinks{top:50px;right:22px;gap:12px;max-width:calc(100vw - 44px);flex-wrap:wrap;justify-content:flex-end;font-size:11px}
+  .case-study.page{padding-top:100px}
+}
