@@ -352,7 +352,7 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 }
 @media(prefers-reduced-motion:reduce){.gallery-link img{transition:none}}
 /* BELLE CLUB multi-image modal. */
-#belle-club{scroll-margin-top:70px}
+#belle-club,#top-dandy-osaka{scroll-margin-top:70px}
 .gallery-count-tag{position:absolute;left:12px;bottom:12px;padding:5px 9px;background:rgba(0,0,0,.72);color:#fff;font:400 11px/1.5 var(--mono);pointer-events:none}
 .gallery-dialog-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:14px;font:400 12px/1.5 var(--mono)}
 .gallery-dialog-controls[hidden]{display:none}
