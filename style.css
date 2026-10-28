@@ -351,3 +351,12 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
  .gallery-splitgram-grid{border-width:2px;gap:2px}
 }
 @media(prefers-reduced-motion:reduce){.gallery-link img{transition:none}}
+/* BELLE CLUB multi-image modal. */
+#belle-club{scroll-margin-top:70px}
+.gallery-count-tag{position:absolute;left:12px;bottom:12px;padding:5px 9px;background:rgba(0,0,0,.72);color:#fff;font:400 11px/1.5 var(--mono);pointer-events:none}
+.gallery-dialog-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:14px;font:400 12px/1.5 var(--mono)}
+.gallery-dialog-controls[hidden]{display:none}
+.gallery-dialog-controls button{background:none;border:0;color:var(--ink);padding:7px 0;font:inherit;cursor:pointer}
+.gallery-dialog-controls button:hover{text-decoration:underline;text-underline-offset:4px}
+.gallery-dialog-counter{color:var(--secondary);font-variant-numeric:tabular-nums}
+@media(max-width:560px){.gallery-count-tag{left:8px;bottom:8px;font-size:10px;padding:4px 6px}.gallery-dialog-controls{font-size:11px}}
