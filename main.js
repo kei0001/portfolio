@@ -213,3 +213,16 @@ document.querySelectorAll('.key').forEach(k=>{
   window.addEventListener('scroll',requestUpdate,{passive:true});
   window.addEventListener('resize',requestUpdate,{passive:true});
 })();
+
+/* Enlarge image-only work without inventing a case-study page. */
+(function(){
+ const dlg=document.getElementById('gallery-dialog');if(!dlg)return;
+ const pic=dlg.querySelector('.gallery-dialog-image');
+ const title=dlg.querySelector('.gallery-dialog-title');
+ document.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>{
+   pic.src=btn.dataset.galleryImage;pic.alt=btn.dataset.galleryName+'の作品ビジュアル';title.textContent=btn.dataset.galleryName;
+   if(typeof dlg.showModal==='function')dlg.showModal();else window.open(pic.src,'_blank','noopener');
+ }));
+ dlg.querySelector('.gallery-dialog-close').addEventListener('click',()=>dlg.close());
+ dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+})();
