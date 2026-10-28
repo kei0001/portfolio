@@ -214,15 +214,31 @@ document.querySelectorAll('.key').forEach(k=>{
   window.addEventListener('resize',requestUpdate,{passive:true});
 })();
 
-/* Enlarge image-only work without inventing a case-study page. */
+
+/* Image lightbox with optional artwork carousel. */
 (function(){
  const dlg=document.getElementById('gallery-dialog');if(!dlg)return;
- const pic=dlg.querySelector('.gallery-dialog-image');
- const title=dlg.querySelector('.gallery-dialog-title');
+ const pic=dlg.querySelector('.gallery-dialog-image'),title=dlg.querySelector('.gallery-dialog-title');
+ const controls=dlg.querySelector('.gallery-dialog-controls'),counter=dlg.querySelector('.gallery-dialog-counter');
+ let images=[],labels=[],name='',slide=0;
+ const render=()=>{
+  const label=labels[slide]||'';
+  pic.src=images[slide];pic.alt=name+(label?' — '+label:'')+'の作品ビジュアル';
+  title.textContent=name+(label?' / '+label:'');
+  counter.textContent=String(slide+1).padStart(2,'0')+' / '+String(images.length).padStart(2,'0');
+ };
+ const move=d=>{if(images.length<2)return;slide=(slide+d+images.length)%images.length;render()};
  document.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>{
-   pic.src=btn.dataset.galleryImage;pic.alt=btn.dataset.galleryName+'の作品ビジュアル';title.textContent=btn.dataset.galleryName;
-   if(typeof dlg.showModal==='function')dlg.showModal();else window.open(pic.src,'_blank','noopener');
+  images=(btn.dataset.galleryImages||btn.dataset.galleryImage).split('|');labels=(btn.dataset.galleryLabels||'').split('|');
+  name=btn.dataset.galleryName||'作品';slide=0;controls.hidden=images.length<2;render();
+  if(typeof dlg.showModal==='function')dlg.showModal();else window.open(pic.src,'_blank','noopener');
  }));
+ dlg.querySelector('.gallery-dialog-prev').addEventListener('click',()=>move(-1));
+ dlg.querySelector('.gallery-dialog-next').addEventListener('click',()=>move(1));
  dlg.querySelector('.gallery-dialog-close').addEventListener('click',()=>dlg.close());
  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+ dlg.addEventListener('keydown',e=>{if(!dlg.open||images.length<2)return;
+   if(e.key==='ArrowLeft'){e.preventDefault();move(-1)}
+   if(e.key==='ArrowRight'){e.preventDefault();move(1)}
+ });
 })();
