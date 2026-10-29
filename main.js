@@ -282,3 +282,39 @@ document.querySelectorAll('.key').forEach(k=>{
   dlg.addEventListener('click',event=>{if(event.target===dlg)dlg.close();});
   dlg.addEventListener('close',()=>{imageList.querySelectorAll('video').forEach(video=>video.pause());imageList.replaceChildren();});
 })();
+
+/* Hover-only video preview; touch and reduced-motion users keep the static poster. */
+(function(){
+  const canHover=window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll('button.gallery-motion[data-gallery-video]').forEach(button=>{
+    const video=button.querySelector('video.gallery-motion-preview');
+    if(!video)return;
+    const stop=()=>{
+      video.pause();
+      button.classList.remove('is-previewing');
+      try{video.currentTime=0;}catch(e){}
+    };
+    const start=event=>{
+      if(!canHover.matches||reducedMotion.matches||(event&&event.pointerType&&event.pointerType!=='mouse'))return;
+      if(!video.src)video.src=button.dataset.galleryVideo;
+      video.muted=true;
+      video.loop=true;
+      video.playsInline=true;
+      const promise=video.play();
+      if(promise&&typeof promise.catch==='function')promise.catch(()=>button.classList.remove('is-previewing'));
+    };
+    video.addEventListener('playing',()=>{
+      if(button.matches(':hover')&&canHover.matches&&!reducedMotion.matches)button.classList.add('is-previewing');
+      else stop();
+    });
+    video.addEventListener('error',stop);
+    button.addEventListener('pointerenter',start);
+    button.addEventListener('pointerleave',stop);
+    button.addEventListener('click',stop);
+    reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)stop()});
+    canHover.addEventListener('change',()=>{if(!canHover.matches)stop()});
+    const dialog=document.getElementById('gallery-dialog');
+    if(dialog)dialog.addEventListener('close',stop);
+  });
+})();

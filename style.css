@@ -386,3 +386,9 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .gallery-motion:hover .gallery-motion-play,.gallery-motion:focus-visible .gallery-motion-play{background:#141414ed;scale:1.08}
 .gallery-viewer-motion video{display:block;max-width:100%;width:auto;max-height:min(76dvh,1000px);height:auto;margin:0 auto;background:#111;object-fit:contain}
 @media(prefers-reduced-motion:reduce){.gallery-motion-play{transition:none}}
+
+/* Silent hover preview: poster stays visible until video frames are playing. */
+.gallery-motion-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;opacity:0;pointer-events:none;background:transparent;transition:opacity .15s ease}
+.gallery-motion.is-previewing .gallery-motion-preview{opacity:1}
+.gallery-motion.is-previewing .gallery-motion-play{opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.gallery-motion-preview{transition:none}}
