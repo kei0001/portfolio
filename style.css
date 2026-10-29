@@ -319,12 +319,33 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .gallery-caption>a,.gallery-caption>span{font:500 clamp(16px,1.55vw,21px)/1.4 var(--sans)}
 .gallery-caption>span{color:var(--muted)}
 .gallery-caption small{flex-shrink:0;color:var(--secondary);font:400 11px/1.8 var(--mono)}
-.gallery-dialog{width:min(94vw,1100px);max-width:94vw;max-height:94dvh;padding:0;border:0;color:var(--ink);background:var(--paper);box-shadow:0 15px 70px #0004}
+/* A scrollable artwork document, not a carousel. The native dialog preserves the list position. */
+.gallery-dialog{position:fixed;inset:0;width:min(100vw,1320px);height:100dvh;max-width:100vw;max-height:100dvh;margin:auto;padding:0;border:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;color:var(--ink);background:var(--paper);box-shadow:0 15px 70px #0004}
 .gallery-dialog::backdrop{background:rgba(0,0,0,.82)}
-.gallery-dialog>div{display:flex;flex-direction:column;gap:12px;padding:clamp(14px,2vw,28px)}
-.gallery-dialog-close{align-self:flex-end;padding:0;border:0;background:none;color:inherit;font:400 12px/1.5 var(--mono)}
-.gallery-dialog-image{display:block;align-self:center;max-width:100%;max-height:calc(94dvh - 125px);object-fit:contain}
-.gallery-dialog-title{margin:0;color:var(--secondary);font:400 12px var(--mono)}
+.gallery-viewer{min-height:100%;display:flex;flex-direction:column}
+.gallery-viewer-header{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:clamp(18px,2.8vw,32px) clamp(20px,5vw,72px);background:var(--paper);border-bottom:1px solid var(--line)}
+.gallery-viewer-heading{min-width:0}
+.gallery-viewer-path{margin:0 0 7px;font:400 11px/1.5 var(--mono);color:var(--secondary);overflow-wrap:anywhere}
+.gallery-dialog-title{margin:0;font:500 clamp(20px,2.2vw,30px)/1.3 var(--sans);overflow-wrap:anywhere}
+.gallery-dialog-close,.gallery-viewer-footer-close{flex-shrink:0;padding:7px 0;border:0;background:none;color:var(--ink);font:400 12px/1.5 var(--mono);cursor:pointer}
+.gallery-dialog-close:hover,.gallery-viewer-footer-close:hover{text-decoration:underline;text-underline-offset:4px}
+.gallery-viewer-content{width:100%;max-width:1160px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,7vw,100px);padding:clamp(28px,4.5vw,62px) clamp(20px,5vw,64px);box-sizing:border-box}
+.gallery-viewer-figure{margin:0;min-width:0}
+.gallery-viewer-figure img{display:block;width:100%;height:auto;object-fit:contain}
+.gallery-viewer-figure figcaption{display:flex;justify-content:space-between;gap:20px;padding-top:14px;color:var(--secondary);font:400 12px/1.6 var(--mono);font-variant-numeric:tabular-nums}
+.gallery-viewer-footer{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%;max-width:1160px;margin:auto auto 0;padding:24px clamp(20px,5vw,64px) 40px;box-sizing:border-box;border-top:1px solid var(--line);font:400 12px/1.5 var(--mono);color:var(--secondary)}
+.gallery-title-button{padding:0;border:0;background:none;color:var(--ink);font:500 clamp(16px,1.55vw,21px)/1.4 var(--sans);text-align:left;cursor:pointer}
+.gallery-title-button:hover{text-decoration:underline;text-underline-offset:5px}
+@media(max-width:560px){
+ .gallery-dialog{width:100vw;max-width:100vw;height:100dvh}
+ .gallery-viewer-header{padding:17px 20px;gap:14px}
+ .gallery-dialog-title{font-size:20px}
+ .gallery-viewer-path{font-size:10px}
+ .gallery-viewer-content{padding:24px 14px;gap:48px}
+ .gallery-viewer-figure figcaption{padding:10px 4px 0;font-size:10px}
+ .gallery-viewer-footer{padding:18px 18px 32px}
+ .gallery-title-button{font-size:15px}
+}
 /* Case-study images and titles share navigation behavior. Image-only work can retain gallery-zoom. */
 .gallery-link{cursor:pointer;text-decoration:none}
 .gallery-link:hover img,.gallery-link:focus-visible img{transform:scale(1.03)}
@@ -351,15 +372,10 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
  .gallery-splitgram-grid{border-width:2px;gap:2px}
 }
 @media(prefers-reduced-motion:reduce){.gallery-link img{transition:none}}
-/* BELLE CLUB multi-image modal. */
+/* Image count on thumbnails for multi-image artwork. */
 #belle-club,#top-dandy-osaka,#wakabahai{scroll-margin-top:70px}
 .gallery-count-tag{position:absolute;left:12px;bottom:12px;padding:5px 9px;background:rgba(0,0,0,.72);color:#fff;font:400 11px/1.5 var(--mono);pointer-events:none}
-.gallery-dialog-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:14px;font:400 12px/1.5 var(--mono)}
-.gallery-dialog-controls[hidden]{display:none}
-.gallery-dialog-controls button{background:none;border:0;color:var(--ink);padding:7px 0;font:inherit;cursor:pointer}
-.gallery-dialog-controls button:hover{text-decoration:underline;text-underline-offset:4px}
-.gallery-dialog-counter{color:var(--secondary);font-variant-numeric:tabular-nums}
-@media(max-width:560px){.gallery-count-tag{left:8px;bottom:8px;font-size:10px;padding:4px 6px}.gallery-dialog-controls{font-size:11px}}
+@media(max-width:560px){.gallery-count-tag{left:8px;bottom:8px;font-size:10px;padding:4px 6px}}
 
 #2021-07-magazine-ad{scroll-margin-top:70px}
 
