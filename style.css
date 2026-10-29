@@ -95,11 +95,12 @@
 .entry-scene{position:absolute;top:50%;left:50%;transform:translate3d(-50%,-50%,0);width:max-content;max-width:calc(100vw - 42px);visibility:hidden;pointer-events:none;font-family:var(--mono)}
 .entry-sticky.is-ready .entry-scene{visibility:visible}
 .entry-sticky.is-complete .entry-scene{pointer-events:auto}
-.entry-prompt{font:400 clamp(12px,1.17vw,17px)/1.5 var(--mono);height:2.1em;white-space:pre;opacity:0;will-change:opacity}
+.entry-prompt,.entry-scene .tree-nav{font:300 clamp(12px,1.12vw,17px)/1.29 var(--mono);letter-spacing:0}
+.entry-prompt{height:2.1em;white-space:pre;opacity:0;will-change:opacity}
 .entry-symbol{color:#929292}
 .entry-cursor{display:inline-block;animation:entry-caret 900ms steps(1) infinite}
 @keyframes entry-caret{50%{opacity:0}}
-.entry-scene .tree-nav{margin:8px 0 0;white-space:normal;overflow:visible;font:300 clamp(12px,1.12vw,17px)/1.29 var(--mono);letter-spacing:0}
+.entry-scene .tree-nav{margin:8px 0 0;white-space:normal;overflow:visible}
 .entry-scene .entry-tree-line{display:block;height:1.29em;line-height:1.29;white-space:pre}
 .entry-scene .tree-nav a{color:inherit;text-decoration:none}
 .entry-scene .tree-nav a:hover,.entry-scene .tree-nav a:focus-visible{background:var(--ink);color:var(--paper)}
@@ -116,7 +117,7 @@
 .entry-progress{position:absolute;bottom:0;left:0;right:0;height:2px;z-index:10}
 .entry-progress-bar{width:100%;height:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;will-change:transform}
 @media(max-width:900px){
- .entry-scene .tree-nav{font-size:clamp(10px,1.3vw,14px)}
+ .entry-prompt,.entry-scene .tree-nav{font-size:clamp(10px,1.3vw,14px)}
  .entry-scene{max-width:calc(100vw - 32px)}
  .entry-identity h1{font-size:clamp(64px,12vw,116px)}
  .entry-identity p{font-size:12px}
@@ -129,9 +130,9 @@
  .entry-identity h1{font-size:clamp(52px,14vw,78px)}
  .entry-identity p{font-size:11px}
  .entry-scene{max-width:calc(100vw - 24px)}
- .entry-scene .tree-nav{font-size:clamp(7.6px,2.35vw,11px);line-height:1.28}
+ .entry-prompt,.entry-scene .tree-nav{font-size:clamp(7.6px,2.35vw,11px);line-height:1.28}
  .entry-scene .entry-tree-line{height:1.28em;line-height:1.28}
- .entry-prompt{font-size:12px}
+ 
  .entry-bottom{left:22px;right:22px;bottom:22px;font-size:10px;gap:8px}
  #entry-phase{display:none}
 }
