@@ -230,7 +230,7 @@ document.querySelectorAll('.key').forEach(k=>{
     const name=source.dataset.galleryName||'作品';
     const category=source.closest('.category-section');
     title.textContent=name;
-    path.textContent=(category?.querySelector('.category-path')?.textContent.trim()||'~/portfolio/works')+' / '+(videoSource?'motion · 00:09':String(images.length).padStart(2,'0')+' images');
+    path.textContent=(category?.querySelector('.category-path')?.textContent.trim()||'~/portfolio/works')+' / '+(videoSource?'motion · '+(source.dataset.galleryDuration||'00:00'):String(images.length).padStart(2,'0')+' images');
     const fragment=document.createDocumentFragment();
     if(videoSource){
       const figure=document.createElement('figure');
@@ -243,7 +243,7 @@ document.querySelectorAll('.key').forEach(k=>{
       video.preload='metadata';
       video.setAttribute('aria-label',name+' の動画');
       const caption=document.createElement('figcaption');
-      caption.textContent='motion graphic / 00:09';
+      caption.textContent='motion graphic / '+(source.dataset.galleryDuration||'00:00');
       figure.append(video,caption);
       fragment.append(figure);
     }

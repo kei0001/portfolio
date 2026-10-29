@@ -392,3 +392,5 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .gallery-motion.is-previewing .gallery-motion-preview{opacity:1}
 .gallery-motion.is-previewing .gallery-motion-play{opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.gallery-motion-preview{transition:none}}
+
+#sakito-osaka-guest{scroll-margin-top:70px}
