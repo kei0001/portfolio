@@ -7,36 +7,18 @@ permissions:
   contents: write
 jobs:
   screenshot:
-    runs-on: ubuntu-latest
-    timeout-minutes: 7
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Install browser
-        run: |
-          npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium
       - name: Capture live site
         run: |
-          node <<'JS'
-          const {chromium}=require('playwright');
-          (async()=>{
-            const browser=await chromium.launch({headless:true});
-            const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1,ignoreHTTPSErrors:true});
-            const response=await page.goto('https://tdjuice.club/yuki/',{waitUntil:'domcontentloaded',timeout:40000});
-            console.log('STATUS',response?.status(),'FINAL_URL',page.url(),'TITLE',await page.title());
-            if(!response||response.status()>=400)throw Error('Source page did not load successfully');
-            await page.waitForTimeout(3500);
-            await page.screenshot({path:'/tmp/tdjuice-yuki.png',animations:'disabled'});
-            await browser.close();
-          })().catch(e=>{console.error(e);process.exit(1)});
-          JS
-      - name: Optimize screenshot
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get -qq install -y ffmpeg
+          set -euo pipefail
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+          curl -fLsS --retry 2 --max-time 35 -A 'Mozilla/5.0' https://tdjuice.club/yuki/ -o /tmp/tdjuice.html
+          test "$(stat -c%s /tmp/tdjuice.html)" -gt 1000
+          timeout 45 google-chrome --headless --disable-gpu --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=6000 --window-size=1440,900 --screenshot=/tmp/tdjuice-yuki.png https://tdjuice.club/yuki/
+          file /tmp/tdjuice-yuki.png
           ffmpeg -hide_banner -loglevel error -y -i /tmp/tdjuice-yuki.png -vf 'scale=1100:-2' -q:v 4 assets/tdjuice-yuki-preview.jpg
           test "$(stat -c%s assets/tdjuice-yuki-preview.jpg)" -gt 20000
       - name: Save image
