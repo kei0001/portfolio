@@ -1,0 +1,35 @@
+name: Import Nagoya Halloween artwork
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/import-nagoya-halloween.yml
+permissions:
+  contents: write
+jobs:
+  import-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch artwork and optimize
+        env:
+          VIDEO_SOURCE: https://at.adobe.com/zWsYlKkgPuipZ1o7
+        run: |
+          mkdir -p assets
+          curl -fLsS --retry 3 --max-time 120 "$VIDEO_SOURCE" -o /tmp/source.mp4
+          file /tmp/source.mp4
+          test "$(stat -c%s /tmp/source.mp4)" -gt 100000
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y ffmpeg
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/source.mp4 -vf "scale=720:-2:flags=lanczos" -c:v libx264 -preset fast -crf 24 -maxrate 3500k -bufsize 7000k -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 128k assets/nagoya-halloween-2025.mp4
+          test "$(stat -c%s assets/nagoya-halloween-2025.mp4)" -gt 100000
+      - name: Commit video
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/nagoya-halloween-2025.mp4
+          git commit -m "Add TOP DANDY NAGOYA Halloween motion video" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
