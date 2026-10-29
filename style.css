@@ -409,3 +409,21 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
   .gallery-caption small{font-size:10px;line-height:1.5}
   .gallery-heading{font-size:10px;gap:12px;padding:12px 0 20px}
 }
+
+/* Editorial-style link thumbnail for the YUKI microsite.
+   The original site could not be captured, so this is intentionally not a screenshot. */
+#tdjuice-yuki{scroll-margin-top:70px}
+.gallery-web-preview{flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:clamp(15px,2.1vw,30px);background:#141414;color:#fafafa;overflow:hidden}
+.gallery-web-preview:hover,.gallery-web-preview:focus-visible{text-decoration:none}
+.gallery-web-preview-top{font:500 clamp(11px,1.1vw,16px)/1.15 var(--sans);letter-spacing:-.02em}
+.gallery-web-preview-title{font:500 clamp(36px,6vw,84px)/.95 var(--sans);letter-spacing:-.065em;align-self:center;max-width:100%;white-space:nowrap}
+.gallery-web-preview-period{color:#a1a1a1}
+.gallery-web-preview-url{max-width:100%;font:400 clamp(9px,1vw,12px)/1.5 var(--mono);overflow-wrap:anywhere}
+.gallery-web-preview .gallery-expand{z-index:1}
+.gallery-web-preview.gallery-link:hover,.gallery-web-preview.gallery-link:focus-visible{background:#1e1e1e}
+@media(max-width:560px){
+ .gallery-web-preview{padding:14px;gap:6px}
+ .gallery-web-preview-top{font-size:10px}
+ .gallery-web-preview-title{font-size:clamp(28px,8vw,45px)}
+ .gallery-web-preview-url{font-size:9px}
+}
