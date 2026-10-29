@@ -394,3 +394,18 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 @media(prefers-reduced-motion:reduce){.gallery-motion-preview{transition:none}}
 
 #sakito-osaka-guest{scroll-margin-top:70px}
+/* Responsive gallery layout and readable card metadata.
+   Never let the type label consume width from the artwork title. */
+.gallery-caption{flex-direction:column;align-items:stretch;gap:4px}
+.gallery-caption>a,.gallery-caption>span,.gallery-title-button{display:block;max-width:100%;width:100%;min-width:0;overflow-wrap:break-word;word-break:normal}
+.gallery-caption small{display:block;flex-shrink:1;max-width:100%;overflow-wrap:anywhere}
+@media(max-width:850px){
+  .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;row-gap:32px}
+}
+@media(max-width:560px){
+  .gallery-grid{column-gap:12px;row-gap:28px}
+  .gallery-caption{padding-top:10px;gap:3px}
+  .gallery-title-button,.gallery-caption>a,.gallery-caption>span{font-size:15px;line-height:1.45}
+  .gallery-caption small{font-size:10px;line-height:1.5}
+  .gallery-heading{font-size:10px;gap:12px;padding:12px 0 20px}
+}
