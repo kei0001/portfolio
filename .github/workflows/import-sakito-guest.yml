@@ -1,0 +1,36 @@
+name: Import Sakito Osaka Guest Motion
+on:
+  push:
+    paths:
+      - .github/workflows/import-sakito-guest.yml
+permissions:
+  contents: write
+jobs:
+  import-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and optimize Sakito video
+        env:
+          VIDEO_SOURCE: https://at.adobe.com/uYHfUvqSJNdeA17V
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fLsS --retry 3 --max-time 150 "$VIDEO_SOURCE" -o /tmp/sakito-source.mp4
+          file /tmp/sakito-source.mp4
+          test "$(stat -c%s /tmp/sakito-source.mp4)" -gt 100000
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y ffmpeg
+          ffprobe -v error /tmp/sakito-source.mp4
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/sakito-source.mp4 -c:v libx264 -preset medium -crf 22 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 128k assets/sakito-osaka-guest.mp4
+          test "$(stat -c%s assets/sakito-osaka-guest.mp4)" -gt 100000
+      - name: Commit video
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/sakito-osaka-guest.mp4
+          git commit -m "Add Sakito Osaka guest appearance motion clip" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
