@@ -215,30 +215,54 @@ document.querySelectorAll('.key').forEach(k=>{
 })();
 
 
-/* Image lightbox with optional artwork carousel. */
+/* Shared vertical viewer for image-only works. Case studies keep normal page links. */
 (function(){
- const dlg=document.getElementById('gallery-dialog');if(!dlg)return;
- const pic=dlg.querySelector('.gallery-dialog-image'),title=dlg.querySelector('.gallery-dialog-title');
- const controls=dlg.querySelector('.gallery-dialog-controls'),counter=dlg.querySelector('.gallery-dialog-counter');
- let images=[],labels=[],name='',slide=0;
- const render=()=>{
-  const label=labels[slide]||'';
-  pic.src=images[slide];pic.alt=name+(label?' — '+label:'')+'の作品ビジュアル';
-  title.textContent=name+(label?' / '+label:'');
-  counter.textContent=String(slide+1).padStart(2,'0')+' / '+String(images.length).padStart(2,'0');
- };
- const move=d=>{if(images.length<2)return;slide=(slide+d+images.length)%images.length;render()};
- document.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>{
-  images=(btn.dataset.galleryImages||btn.dataset.galleryImage).split('|');labels=(btn.dataset.galleryLabels||'').split('|');
-  name=btn.dataset.galleryName||'作品';slide=0;controls.hidden=images.length<2;render();
-  if(typeof dlg.showModal==='function')dlg.showModal();else window.open(pic.src,'_blank','noopener');
- }));
- dlg.querySelector('.gallery-dialog-prev').addEventListener('click',()=>move(-1));
- dlg.querySelector('.gallery-dialog-next').addEventListener('click',()=>move(1));
- dlg.querySelector('.gallery-dialog-close').addEventListener('click',()=>dlg.close());
- dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
- dlg.addEventListener('keydown',e=>{if(!dlg.open||images.length<2)return;
-   if(e.key==='ArrowLeft'){e.preventDefault();move(-1)}
-   if(e.key==='ArrowRight'){e.preventDefault();move(1)}
- });
+  const dlg=document.getElementById('gallery-dialog');
+  if(!dlg)return;
+  const imageList=dlg.querySelector('.gallery-viewer-content');
+  const title=dlg.querySelector('.gallery-dialog-title');
+  const path=dlg.querySelector('.gallery-viewer-path');
+  const openArtwork=source=>{
+    const images=(source.dataset.galleryImages||source.dataset.galleryImage||'').split('|').filter(Boolean);
+    if(!images.length)return;
+    const labels=(source.dataset.galleryLabels||'').split('|');
+    const name=source.dataset.galleryName||'作品';
+    const category=source.closest('.category-section');
+    title.textContent=name;
+    path.textContent=(category?.querySelector('.category-path')?.textContent.trim()||'~/portfolio/works')+' / '+String(images.length).padStart(2,'0')+' images';
+    const fragment=document.createDocumentFragment();
+    images.forEach((src,index)=>{
+      const figure=document.createElement('figure');
+      figure.className='gallery-viewer-figure';
+      const img=document.createElement('img');
+      img.src=src;
+      img.alt=name+(labels[index]?' — '+labels[index]:'')+' の作品画像';
+      img.loading=index===0?'eager':'lazy';
+      img.decoding='async';
+      const caption=document.createElement('figcaption');
+      const number=document.createElement('span');
+      number.textContent=String(index+1).padStart(2,'0')+' / '+String(images.length).padStart(2,'0');
+      const description=document.createElement('span');
+      description.textContent=labels[index]||name;
+      caption.append(number,description);
+      figure.append(img,caption);
+      fragment.append(figure);
+    });
+    imageList.replaceChildren(fragment);
+    if(typeof dlg.showModal==='function'){
+      dlg.showModal();
+      dlg.scrollTop=0;
+    }else{
+      window.open(images[0],'_blank','noopener');
+    }
+  };
+  document.querySelectorAll('button[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>openArtwork(btn)));
+  document.querySelectorAll('button[data-gallery-open]').forEach(btn=>btn.addEventListener('click',()=>{
+    const artwork=document.getElementById(btn.dataset.galleryOpen)?.querySelector('button[data-gallery-image]');
+    if(artwork)openArtwork(artwork);
+  }));
+  dlg.querySelector('.gallery-dialog-close').addEventListener('click',()=>dlg.close());
+  dlg.querySelector('.gallery-viewer-footer-close').addEventListener('click',()=>dlg.close());
+  dlg.addEventListener('click',event=>{if(event.target===dlg)dlg.close();});
+  dlg.addEventListener('close',()=>imageList.replaceChildren());
 })();
