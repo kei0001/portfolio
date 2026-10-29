@@ -223,14 +223,30 @@ document.querySelectorAll('.key').forEach(k=>{
   const title=dlg.querySelector('.gallery-dialog-title');
   const path=dlg.querySelector('.gallery-viewer-path');
   const openArtwork=source=>{
+    const videoSource=source.dataset.galleryVideo;
     const images=(source.dataset.galleryImages||source.dataset.galleryImage||'').split('|').filter(Boolean);
-    if(!images.length)return;
+    if(!images.length&&!videoSource)return;
     const labels=(source.dataset.galleryLabels||'').split('|');
     const name=source.dataset.galleryName||'作品';
     const category=source.closest('.category-section');
     title.textContent=name;
-    path.textContent=(category?.querySelector('.category-path')?.textContent.trim()||'~/portfolio/works')+' / '+String(images.length).padStart(2,'0')+' images';
+    path.textContent=(category?.querySelector('.category-path')?.textContent.trim()||'~/portfolio/works')+' / '+(videoSource?'motion · 00:09':String(images.length).padStart(2,'0')+' images');
     const fragment=document.createDocumentFragment();
+    if(videoSource){
+      const figure=document.createElement('figure');
+      figure.className='gallery-viewer-figure gallery-viewer-motion';
+      const video=document.createElement('video');
+      video.src=videoSource;
+      video.poster=source.dataset.galleryPoster||'';
+      video.controls=true;
+      video.playsInline=true;
+      video.preload='metadata';
+      video.setAttribute('aria-label',name+' の動画');
+      const caption=document.createElement('figcaption');
+      caption.textContent='motion graphic / 00:09';
+      figure.append(video,caption);
+      fragment.append(figure);
+    }
     images.forEach((src,index)=>{
       const figure=document.createElement('figure');
       figure.className='gallery-viewer-figure';
@@ -253,16 +269,16 @@ document.querySelectorAll('.key').forEach(k=>{
       dlg.showModal();
       dlg.scrollTop=0;
     }else{
-      window.open(images[0],'_blank','noopener');
+      window.open(videoSource||images[0],'_blank','noopener');
     }
   };
-  document.querySelectorAll('button[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>openArtwork(btn)));
+  document.querySelectorAll('button[data-gallery-image],button[data-gallery-video]').forEach(btn=>btn.addEventListener('click',()=>openArtwork(btn)));
   document.querySelectorAll('button[data-gallery-open]').forEach(btn=>btn.addEventListener('click',()=>{
-    const artwork=document.getElementById(btn.dataset.galleryOpen)?.querySelector('button[data-gallery-image]');
+    const artwork=document.getElementById(btn.dataset.galleryOpen)?.querySelector('button[data-gallery-image],button[data-gallery-video]');
     if(artwork)openArtwork(artwork);
   }));
   dlg.querySelector('.gallery-dialog-close').addEventListener('click',()=>dlg.close());
   dlg.querySelector('.gallery-viewer-footer-close').addEventListener('click',()=>dlg.close());
   dlg.addEventListener('click',event=>{if(event.target===dlg)dlg.close();});
-  dlg.addEventListener('close',()=>imageList.replaceChildren());
+  dlg.addEventListener('close',()=>{imageList.querySelectorAll('video').forEach(video=>video.pause());imageList.replaceChildren();});
 })();

@@ -380,3 +380,9 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 #2021-07-magazine-ad{scroll-margin-top:70px}
 
 #gd-2022-new-year-booklet{scroll-margin-top:70px}
+
+/* Motion art uses the same gallery, with a poster frame and video controls in the viewer. */
+.gallery-motion-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:52px;height:52px;border:1px solid #ffffffab;border-radius:50%;background:#141414b8;color:white;font:400 17px var(--mono);pointer-events:none;transition:background .2s,scale .2s}
+.gallery-motion:hover .gallery-motion-play,.gallery-motion:focus-visible .gallery-motion-play{background:#141414ed;scale:1.08}
+.gallery-viewer-motion video{display:block;max-width:100%;width:auto;max-height:min(76dvh,1000px);height:auto;margin:0 auto;background:#111;object-fit:contain}
+@media(prefers-reduced-motion:reduce){.gallery-motion-play{transition:none}}
