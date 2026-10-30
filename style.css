@@ -439,16 +439,13 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 #tdjuice-yuki{scroll-margin-top:70px}
 #tdjuice-yuki .gallery-media img{object-fit:cover;object-position:center}
 
-/* Unicode block-art nameplate: the exact generated text on desktop,
-   split into KEI / KAWAKAMI on phones, scaled to fit two stacked words. */
+/* Unicode block-art nameplate: KEI KAWAKAMI remains one continuous line
+   at every viewport size. On phones only its horizontal width is compressed. */
 .entry-identity h1.entry-ascii-heading{margin:0;font:400 13px/1 ui-monospace,"SFMono-Regular",Menlo,"DejaVu Sans Mono",monospace;letter-spacing:0;max-width:calc(100vw - 48px)}
 .entry-ascii-wide{display:block;font:inherit;font-size:clamp(6px,.88vw,13px);line-height:1.08;white-space:pre;text-align:left}
-.entry-ascii-narrow{display:none}
 .entry-identity .entry-ascii-heading + p{margin-top:clamp(24px,3.1vw,44px);text-transform:uppercase;font-weight:400;letter-spacing:.05em}
 @media(max-width:700px){
-  .entry-identity h1.entry-ascii-heading{max-width:calc(100vw - 24px)}
-  .entry-ascii-wide{display:none}
-  .entry-ascii-narrow{display:flex;align-items:center;flex-direction:column;gap:clamp(12px,4.4vw,23px)}
-  .entry-ascii-row{display:block;font:400 clamp(3.8px,1.18vw,8px)/1.08 ui-monospace,"SFMono-Regular",Menlo,"DejaVu Sans Mono",monospace;white-space:pre;text-align:left}
+  .entry-identity h1.entry-ascii-heading{width:calc(100vw - 32px);max-width:none;display:flex;justify-content:center}
+  .entry-ascii-wide{flex:none;width:max-content;font-size:clamp(8px,2vw,12px);transform-origin:center center;transform:scaleX(var(--ascii-fit,.4))}
   .entry-identity .entry-ascii-heading + p{margin-top:24px;white-space:nowrap}
 }
