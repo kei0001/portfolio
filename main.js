@@ -74,15 +74,29 @@ document.querySelectorAll('.key').forEach(k=>{
       Array.from(node.textContent).forEach(char=>{
         const el=document.createElement('span');
         const i=glyphs.length;
-        const glint=char!==' '&&hash(i+991)>.78;
-        el.className='entry-glyph'+(char===' '?' space':'')+(glint?' twinkle':'');
-        if(glint){
+        // Independent phases keep the dispersed characters gently drifting,
+        // while about half of the visible glyphs twinkle at different times.
+        const floating=char!==' '&&hash(i+271)>.32;
+        const glint=char!==' '&&hash(i+991)>.50;
+        el.className='entry-glyph'+(char===' '?' space':'')+(floating?' floating':'')+(glint?' twinkle':'');
+        if(floating||glint){
+          const drift=document.createElement('span');
+          drift.className='entry-drift';
           const ink=document.createElement('span');
           ink.className='entry-glint';
           ink.textContent=char;
-          ink.style.setProperty('--glint-delay',(-4.5*hash(i+367)).toFixed(2)+'s');
-          ink.style.setProperty('--glint-duration',(2.4+2.3*hash(i+599)).toFixed(2)+'s');
-          el.appendChild(ink);
+          if(floating){
+            drift.style.setProperty('--drift-x',((hash(i+457)-.5)*28).toFixed(1)+'px');
+            drift.style.setProperty('--drift-y',((hash(i+683)-.5)*25).toFixed(1)+'px');
+            drift.style.setProperty('--drift-duration',(4.5+4.5*hash(i+715)).toFixed(2)+'s');
+            drift.style.setProperty('--drift-delay',(-9*hash(i+349)).toFixed(2)+'s');
+          }
+          if(glint){
+            ink.style.setProperty('--glint-delay',(-5.5*hash(i+367)).toFixed(2)+'s');
+            ink.style.setProperty('--glint-duration',(3.1+2.6*hash(i+599)).toFixed(2)+'s');
+          }
+          drift.appendChild(ink);
+          el.appendChild(drift);
         }else{
           el.textContent=char===' '?String.fromCharCode(160):char;
         }
@@ -130,9 +144,11 @@ document.querySelectorAll('.key').forEach(k=>{
     wordmark.style.opacity=String(1-fade);
     wordmark.style.transform='translate3d(-50%,-50%,0) scale('+(1-.04*fade)+')';
     const assembled=ease((p-.17)/.76);
-    // Twinkling only while the scattered characters are still floating.
-    // The finished navigation remains completely still and legible.
-    stage.classList.toggle('is-sparkling',!reduce.matches&&p<.48);
+    // Fade the drifting/twinkling amplitude out as the glyphs assemble.
+    // This prevents a visible jump when the completed tree becomes static.
+    const floatStrength=reduce.matches?0:1-ease((p-.24)/.47);
+    stage.style.setProperty('--float-strength',floatStrength.toFixed(3));
+    stage.classList.toggle('is-sparkling',floatStrength>.001);
     animations.forEach(a=>a.currentTime=assembled*1390);
     prompt.style.opacity=String(ease((p-.58)/.26));
     typed.textContent=command.slice(0,Math.round(command.length*ease((p-.56)/.34)));

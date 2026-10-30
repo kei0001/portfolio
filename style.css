@@ -110,15 +110,25 @@
 .entry-scene .tree-nav .disabled{color:#999}
 .entry-glyph{position:relative;display:inline-block;width:1ch;white-space:pre;text-align:center;will-change:transform,opacity}
 .entry-glyph.space{color:transparent}
-.entry-glint{display:inline-block;transform-origin:center;white-space:pre}
+/* Two independent motion layers: a slow orbit and an irregular light flicker.
+   Both fade to zero before the terminal tree becomes readable. */
+.entry-drift,.entry-glint{display:inline-block;transform-origin:center;white-space:pre}
+.entry-sticky.is-sparkling .entry-glyph.floating .entry-drift{
+  animation:entry-drift var(--drift-duration,6.5s) ease-in-out var(--drift-delay,0s) infinite alternate;
+}
 .entry-sticky.is-sparkling .entry-glyph.twinkle .entry-glint{
-  animation:entry-twinkle var(--glint-duration,3.2s) ease-in-out var(--glint-delay,0s) infinite;
+  animation:entry-twinkle var(--glint-duration,4s) ease-in-out var(--glint-delay,0s) infinite;
+}
+@keyframes entry-drift{
+  0%{transform:translate3d(calc(var(--drift-x)*var(--float-strength)*-.55),calc(var(--drift-y)*var(--float-strength)*-.55),0) rotate(calc(-2deg*var(--float-strength)))}
+  50%{transform:translate3d(calc(var(--drift-x)*var(--float-strength)*.5),calc(var(--drift-y)*var(--float-strength)*1.15),0) rotate(calc(2deg*var(--float-strength)))}
+  100%{transform:translate3d(calc(var(--drift-x)*var(--float-strength)*-.9),calc(var(--drift-y)*var(--float-strength)*-.8),0) rotate(calc(-1deg*var(--float-strength)))}
 }
 @keyframes entry-twinkle{
-  0%,23%,74%,100%{opacity:.74;transform:translate3d(0,0,0) rotate(0deg) scale(1);text-shadow:none}
-  33%{opacity:.25;transform:translate3d(-1px,1px,0) rotate(-5deg) scale(.94);text-shadow:none}
-  45%,52%{opacity:1;transform:translate3d(1px,-2px,0) rotate(5deg) scale(1.24);text-shadow:0 0 5px rgba(20,20,20,.3)}
-  60%{opacity:.55;transform:translate3d(-1px,-1px,0) rotate(-3deg) scale(1.06);text-shadow:none}
+  0%,18%,77%,100%{opacity:1;transform:scale(1);text-shadow:none}
+  28%{opacity:calc(1 - .6*var(--float-strength));transform:scale(calc(1 - .05*var(--float-strength)));text-shadow:none}
+  46%,52%{opacity:1;transform:scale(calc(1 + .19*var(--float-strength)));text-shadow:0 0 5px rgba(20,20,20,.18)}
+  64%{opacity:calc(1 - .36*var(--float-strength));transform:scale(1);text-shadow:none}
 }
 .entry-sticky.is-complete .entry-glyph{will-change:auto}
 .entry-bottom{position:absolute;bottom:clamp(22px,4.5vw,58px);left:clamp(22px,5.6vw,90px);right:clamp(22px,5.6vw,90px);z-index:10;display:flex;justify-content:space-between;align-items:center;gap:16px;font:400 12px/1.5 var(--mono);letter-spacing:0;color:var(--secondary)}
@@ -159,7 +169,7 @@
  .entry-bottom{position:relative;bottom:auto;left:auto;right:auto;margin-top:30px}
  .entry-progress{display:none}
  .entry-glyph{will-change:auto}
- .entry-glint{animation:none!important;transform:none!important;text-shadow:none!important;opacity:1!important}
+ .entry-drift,.entry-glint{animation:none!important;transform:none!important;text-shadow:none!important;opacity:1!important}
  .entry-cursor{animation:none}
 }
 
