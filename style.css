@@ -449,3 +449,6 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
   .entry-ascii-wide{flex:none;width:max-content;font-size:clamp(8px,2vw,12px);transform-origin:center top;transform:scale(var(--ascii-fit,.4))}
   .entry-identity .entry-ascii-heading + p{margin-top:20px;white-space:nowrap}
 }
+
+/* The Keymapper tile shows a real application screenshot, not a CSS keyboard mock-up. */
+.gallery-media--keymapper,.gallery-media--keymapper img{background:#e8eaee}
