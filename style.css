@@ -328,7 +328,7 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 
 /* Thumbnail galleries for identity and visual works. */
 .gallery-heading{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:16px 0 28px;font:400 12px/1.5 var(--mono);color:var(--secondary)}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px)}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.3vw,32px)}
 .gallery-tile{min-width:0}
 .gallery-media{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1;overflow:hidden;background:#eaeaea}
 .gallery-visual .gallery-media{aspect-ratio:4/5}
