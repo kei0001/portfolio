@@ -5,7 +5,7 @@ document.querySelectorAll('.key').forEach(k=>{
  const select=()=>{const parent=k.closest('.km-crop');if(!parent)return;parent.querySelectorAll('.key').forEach(x=>x.classList.remove('accent'));k.classList.add('accent')};
  k.addEventListener('click',select);k.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}})
 });
-/* Keep the Unicode nameplate as one line on mobile without tiny vertical glyphs. */
+/* Fit the one-line Unicode nameplate uniformly, without stretching glyphs. */
 (function(){
   const title=document.querySelector('.entry-ascii-heading');
   const art=title?.querySelector('.entry-ascii-wide');
@@ -13,12 +13,17 @@ document.querySelectorAll('.key').forEach(k=>{
   function fit(){
     if(window.innerWidth>700){
       art.style.removeProperty('--ascii-fit');
+      title.style.removeProperty('--ascii-mobile-height');
       return;
     }
-    const natural=art.offsetWidth;
+    const naturalWidth=art.offsetWidth;
+    const naturalHeight=art.offsetHeight;
     const available=title.clientWidth-4;
-    if(natural>0&&available>0)
-      art.style.setProperty('--ascii-fit',String(Math.min(1,available/natural).toFixed(4)));
+    if(naturalWidth>0&&naturalHeight>0&&available>0){
+      const scale=Math.min(1,available/naturalWidth);
+      art.style.setProperty('--ascii-fit',String(scale.toFixed(4)));
+      title.style.setProperty('--ascii-mobile-height',(naturalHeight*scale).toFixed(2)+'px');
+    }
   }
   window.addEventListener('resize',fit,{passive:true});
   if(document.fonts?.ready)document.fonts.ready.then(fit);
