@@ -15,12 +15,12 @@
 @media(max-width:560px){.topnav{font-size:12px}.topnav .navlinks{gap:12px}.topnav .navlinks a:nth-last-child(2){display:none}.page{padding-bottom:44px}.page-hero h1{font-size:68px}.page-hero h1.long{font-size:48px}.page-hero .lead{font-size:17px}.meta-grid{grid-template-columns:1fr 1fr;gap:22px 15px;margin-top:27px;padding:24px 0}.metadata dd{font-size:15px}.main-section{padding-top:76px}.section-heading{font-size:30px;margin-bottom:26px}.section-heading.en{font-size:43px}.body-copy,.detail-copy{font-size:16px;line-height:1.85}.decision-title,.decision-cards .decision-title{font-size:21px}.section-id{font-size:14px}.stats{grid-template-columns:1fr 1fr;row-gap:28px}.stat-label{font-size:12px}.stat-value{font-size:43px}.analytics{margin-top:44px}.page-footer{flex-wrap:wrap;gap:22px;font-size:14px;margin-top:64px}.home{padding-top:47px}.tree-nav{font-size:15px;line-height:1.45;letter-spacing:0}.home-after{grid-template-columns:1fr}.intro-metadata{font-size:12px}.km-window{padding:10px}.km-actions{flex-wrap:wrap}.km-actions>div{display:flex;flex-wrap:wrap;gap:5px}.km-actions .km-btn{font-size:10px;padding:5px 7px}.km-appbar span{display:none}.km-keyboard{gap:12px;padding:20px 5px}.kb-row{gap:2px}.key{font-size:9px;border-radius:4px;border-bottom-width:2px}.km-tab{font-size:10px;padding:4px 10px}.km-inspector{padding:14px}.km-crop{min-height:230px;padding:14px}.km-crop .key{font-size:11px}.decision-cards{gap:50px}.path{font-size:12px;overflow-wrap:anywhere}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 /* Numbered category covers — works is the parent directory. */
-.works-sections{margin-top:clamp(120px,15vw,215px);scroll-margin-top:32px}
+.works-sections{margin-top:clamp(76px,9vw,124px);scroll-margin-top:32px}
 .category-section{scroll-margin-top:32px}
-.category-section + .category-section{margin-top:clamp(95px,12vw,185px)}
-.category-cover{min-height:min(78svh,800px);display:flex;flex-direction:column;padding-top:18px}
+.category-section + .category-section{margin-top:clamp(88px,10vw,144px)}
+.category-cover{display:flex;flex-direction:column;padding:0 0 clamp(64px,7vw,105px)}
 .category-path{font-size:18px;font-weight:500;line-height:1.5;margin:0}
-.category-headline{display:flex;align-items:flex-end;gap:clamp(22px,3vw,42px);margin:65px 0 0;line-height:1;font-weight:200}
+.category-headline{display:flex;align-items:flex-end;gap:clamp(22px,3vw,42px);margin:clamp(24px,3.3vw,48px) 0 0;line-height:1;font-weight:200}
 .category-number{display:block;flex:none;font-family:"Geist Pixel",var(--mono);font-size:clamp(120px,23vw,326px);font-weight:400;font-variation-settings:"ELSH" 20;font-synthesis:none;line-height:.88;letter-spacing:-.03em;white-space:nowrap;font-variant-numeric:lining-nums}
 .category-headline-text{font:200 clamp(42px,7vw,96px)/1.03 var(--mono);letter-spacing:0;white-space:nowrap;padding-bottom:2px}
 .category-directory{padding-top:0}
@@ -36,18 +36,18 @@
 .category-progress{font:400 14px/1.5 var(--mono);color:var(--muted);margin:26px 0 0}
 .works-sections + .home-after{margin-top:clamp(110px,14vw,190px)}
 @media(max-width:850px){
- .works-sections{margin-top:120px}
- .category-cover{min-height:min(66svh,620px)}
- .category-headline{gap:clamp(13px,3vw,32px);margin-top:70px}
+ .works-sections{margin-top:80px}
+ .category-cover{padding-bottom:clamp(58px,7vw,82px)}
+ .category-headline{gap:clamp(13px,3vw,32px);margin-top:clamp(22px,3.5vw,30px)}
  .category-number{font-size:clamp(125px,23vw,255px)}
  .category-headline-text{font-size:clamp(35px,7.1vw,73px)}
 }
 @media(max-width:560px){
- .works-sections{margin-top:105px}
- .category-section + .category-section{margin-top:90px}
- .category-cover{min-height:min(65svh,540px);padding-top:12px}
+ .works-sections{margin-top:65px}
+ .category-section + .category-section{margin-top:78px}
+ .category-cover{padding:0 0 56px}
  .category-path{font-size:13px}
- .category-headline{gap:12px;margin-top:65px}
+ .category-headline{gap:12px;margin-top:20px}
  .category-number{font-size:clamp(108px,33vw,151px);letter-spacing:-.03em}
  .category-headline-text{font-size:clamp(29px,7.8vw,46px);letter-spacing:0}
  .work-entry{grid-template-columns:minmax(0,1fr) 24px;gap:9px;padding:20px 0}
