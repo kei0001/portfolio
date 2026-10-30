@@ -37,7 +37,7 @@ jobs:
             if(new Set(positions.map(x=>x.top)).size<2)throw new Error('Expected physical column staggering');
             await page.screenshot({path:'assets/torabo-keymapper-screenshot.png',animations:'disabled'});
             // Separate real-app capture for the key-position design decision.
-            await page.getByRole('button',{name:'番号を表示'}).click();
+            // Position numbers are already visible in the current UI.
             await page.waitForTimeout(300);
             await page.locator('#boardwrap').screenshot({path:'assets/torabo-keymapper-positions.png',animations:'disabled'});
             console.log('Captured live UI with',keyCount,'keys, positions',JSON.stringify(positions));
