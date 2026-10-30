@@ -73,8 +73,19 @@ document.querySelectorAll('.key').forEach(k=>{
       const part=document.createDocumentFragment();
       Array.from(node.textContent).forEach(char=>{
         const el=document.createElement('span');
-        el.className='entry-glyph'+(char===' '?' space':'');
-        el.textContent=char===' '?String.fromCharCode(160):char;
+        const i=glyphs.length;
+        const glint=char!==' '&&hash(i+991)>.78;
+        el.className='entry-glyph'+(char===' '?' space':'')+(glint?' twinkle':'');
+        if(glint){
+          const ink=document.createElement('span');
+          ink.className='entry-glint';
+          ink.textContent=char;
+          ink.style.setProperty('--glint-delay',(-4.5*hash(i+367)).toFixed(2)+'s');
+          ink.style.setProperty('--glint-duration',(2.4+2.3*hash(i+599)).toFixed(2)+'s');
+          el.appendChild(ink);
+        }else{
+          el.textContent=char===' '?String.fromCharCode(160):char;
+        }
         el.setAttribute('aria-hidden','true');
         part.appendChild(el);
         glyphs.push(el);
@@ -119,6 +130,9 @@ document.querySelectorAll('.key').forEach(k=>{
     wordmark.style.opacity=String(1-fade);
     wordmark.style.transform='translate3d(-50%,-50%,0) scale('+(1-.04*fade)+')';
     const assembled=ease((p-.17)/.76);
+    // Twinkling only while the scattered characters are still floating.
+    // The finished navigation remains completely still and legible.
+    stage.classList.toggle('is-sparkling',!reduce.matches&&p<.48);
     animations.forEach(a=>a.currentTime=assembled*1390);
     prompt.style.opacity=String(ease((p-.58)/.26));
     typed.textContent=command.slice(0,Math.round(command.length*ease((p-.56)/.34)));
