@@ -424,8 +424,8 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .gallery-caption{flex-direction:column;align-items:stretch;gap:4px}
 .gallery-caption>a,.gallery-caption>span,.gallery-title-button{display:block;max-width:100%;width:100%;min-width:0;overflow-wrap:break-word;word-break:normal}
 .gallery-caption small{display:block;flex-shrink:1;max-width:100%;overflow-wrap:anywhere}
-@media(max-width:850px){
-  .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;row-gap:32px}
+@media(max-width:1024px){
+  .gallery-grid{grid-template-columns:minmax(0,1fr);row-gap:40px}
 }
 @media(max-width:560px){
   .gallery-grid{grid-template-columns:minmax(0,1fr);row-gap:40px}
