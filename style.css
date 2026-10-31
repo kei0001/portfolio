@@ -453,15 +453,9 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 /* The Keymapper tile shows a real application screenshot, not a CSS keyboard mock-up. */
 .gallery-media--keymapper,.gallery-media--keymapper img{background:#e8eaee}
 
-/* Editorial lead works: one full grid row on desktop, original artwork proportions. */
+/* Featured works span both desktop gallery columns, without a width cap. */
 @media(min-width:1025px){
-  .gallery-grid .gallery-tile--featured{grid-column:1/-1;--featured-width:920px}
-  .gallery-identity .gallery-tile--featured{--featured-width:760px}
-  .gallery-tile--featured .gallery-media,
-  .gallery-tile--featured .gallery-caption,
-  .gallery-tile--featured .gallery-product-description{
-    width:100%;max-width:var(--featured-width);margin-left:auto;margin-right:auto
-  }
-  .gallery-tile--featured .gallery-media{aspect-ratio:auto;height:auto}
+  .gallery-grid .gallery-tile--featured{grid-column:1/-1}
+  .gallery-tile--featured .gallery-media{width:100%;aspect-ratio:auto;height:auto}
   .gallery-tile--featured .gallery-media img{width:100%;height:auto;object-fit:contain}
 }
