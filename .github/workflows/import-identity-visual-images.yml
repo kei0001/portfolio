@@ -1,0 +1,30 @@
+name: Import Neraiuchi and GD Neutral Boy images
+on:
+  push:
+    paths:
+      - .github/workflows/import-identity-visual-images.yml
+permissions:
+  contents: write
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download supplied artworks
+        env:
+          NERAIUCHI_URL: "https://at.adobe.com/5hrgMT4JNaEKOT73"
+          GD_NEUTRAL_BOY_URL: "https://at.adobe.com/JcDQoKoscrotqcEY"
+        run: |
+          curl -fLsS --retry 3 --retry-delay 2 "$NERAIUCHI_URL" -o assets/neraiuchi-rice-bag.jpg
+          curl -fLsS --retry 3 --retry-delay 2 "$GD_NEUTRAL_BOY_URL" -o assets/gd-neutral-boy.jpg
+          printf '%s  %s\n' \
+            "0865c386a817d378dfc44673b93cac6c1b211e462d660e3f9a71d2174896470f" "assets/neraiuchi-rice-bag.jpg" \
+            "ee9d92c38898f59e5d7fd240e39ee7de556744966c492cb2d4c1acd52df5111f" "assets/gd-neutral-boy.jpg" | sha256sum -c -
+          file assets/neraiuchi-rice-bag.jpg assets/gd-neutral-boy.jpg
+      - name: Commit supplied artworks
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/neraiuchi-rice-bag.jpg assets/gd-neutral-boy.jpg
+          git commit -m 'Add Neraiuchi rice bag and GD Neutral Boy artworks'
+          git push
