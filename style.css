@@ -261,7 +261,8 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .neraiuchi-case .nri-hero .lead{margin-bottom:0}
 .neraiuchi-case .nri-hero-subtitle{font:400 clamp(15px,1.4vw,19px)/1.65 var(--sans);color:var(--secondary);margin:20px 0 70px}
 .neraiuchi-case .nri-hero-art{margin:0}
-.neraiuchi-case .nri-hero-art img{display:block;max-width:100%;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#fff}
+.neraiuchi-case .nri-hero-art img{display:block;max-width:100%;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;background:#fff}
+.neraiuchi-case .nri-hero-art + .nri-hero-art{margin-top:clamp(30px,4vw,72px)}
 .neraiuchi-case .nri-hero-art figcaption{display:flex;justify-content:space-between;gap:20px;font:400 12px/1.5 var(--mono);color:var(--secondary);padding:18px 3px 0}
 .neraiuchi-case .meta-grid{margin-top:42px}
 .neraiuchi-case .nri-concept .section-heading{margin-bottom:32px}
