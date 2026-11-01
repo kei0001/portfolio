@@ -1,0 +1,29 @@
+name: Unlock stale Pages deployment
+on:
+  push:
+    paths:
+      - .github/workflows/unlock-pages-deployment.yml
+permissions:
+  contents: read
+  actions: read
+  deployments: write
+  pages: write
+jobs:
+  unlock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect and cancel stale Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          OLD_SHA=d2f170cc0eaca6e079569e158086f6555b6457d1
+          echo "Pages record before cancellation:"
+          gh api "repos/$GITHUB_REPOSITORY/pages/deployments/$OLD_SHA" --jq '{id:.id,status:.status,sha:.sha}' || true
+          echo "Attempting cancel against the blocked deployment SHA, even if record says succeed:"
+          gh api -i --method POST "repos/$GITHUB_REPOSITORY/pages/deployments/$OLD_SHA/cancel" || true
+          echo "Pages record after cancellation:"
+          gh api "repos/$GITHUB_REPOSITORY/pages/deployments/$OLD_SHA" --jq '{id:.id,status:.status,sha:.sha}' || true
+          echo "Regular GitHub deployment records for this commit:"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/deployments?per_page=100" --jq ".[] | select(.sha==\"$OLD_SHA\") | {id,sha,environment,created_at,statuses_url}" || true
