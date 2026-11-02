@@ -331,10 +331,12 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .gallery-heading{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:16px 0 28px;font:400 12px/1.5 var(--mono);color:var(--secondary)}
 .gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.3vw,32px)}
 .gallery-tile{min-width:0}
-.gallery-media{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1;overflow:hidden;background:#eaeaea}
-.gallery-visual .gallery-media{aspect-ratio:4/5}
+/* Use each artwork's natural aspect ratio, eliminating unused letterbox space. */
+.gallery-media{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:auto;overflow:hidden;background:transparent}
+/* CSS-drawn Splitgram thumbnail needs an explicit square canvas. */
+.gallery-media--generated{aspect-ratio:1}
 .gallery-zoom{padding:0;border:0;cursor:zoom-in}
-.gallery-media img,.gallery-media video{width:100%;height:100%;object-fit:contain;display:block;background:white;transition:transform .3s ease}
+.gallery-media img,.gallery-media video{width:100%;height:auto;object-fit:cover;display:block;background:transparent;transition:transform .3s ease}
 .gallery-zoom:hover img,.gallery-zoom:focus-visible img{transform:scale(1.03)}
 .gallery-expand{position:absolute;bottom:12px;right:12px;padding:5px 10px;background:var(--ink);color:var(--paper);font:400 11px var(--mono);opacity:0;transition:opacity .2s}
 .gallery-zoom:hover .gallery-expand,.gallery-zoom:focus-visible .gallery-expand{opacity:1}
@@ -414,7 +416,7 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 @media(prefers-reduced-motion:reduce){.gallery-motion-play{transition:none}}
 
 /* Silent hover preview: poster stays visible until video frames are playing. */
-.gallery-motion .gallery-motion-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;opacity:0;pointer-events:none;background:transparent;transition:opacity .15s ease}
+.gallery-motion .gallery-motion-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;pointer-events:none;background:transparent;transition:opacity .15s ease}
 .gallery-motion.is-previewing .gallery-motion-preview{opacity:1}
 .gallery-motion.is-previewing .gallery-motion-play{opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.gallery-motion-preview{transition:none}}
@@ -436,9 +438,8 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
   .gallery-heading{font-size:10px;gap:12px;padding:12px 0 20px}
 }
 
-/* YUKI photographic card: use the supplied key visual without letterboxing. */
+/* The YUKI card uses its original poster proportions like the other works. */
 #tdjuice-yuki{scroll-margin-top:70px}
-#tdjuice-yuki .gallery-media img{object-fit:cover;object-position:center}
 
 /* Unicode block-art nameplate stays on one line at every viewport size.
    Small screens scale both axes equally to preserve original glyph proportions. */
@@ -461,7 +462,3 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
   .gallery-tile--featured .gallery-media img{width:100%;height:auto;object-fit:contain}
 }
 
-/* Black letterboxing for the Nagoya Halloween thumbnail and motion preview. */
-#top-dandy-nagoya-halloween-2025 .gallery-media,
-#top-dandy-nagoya-halloween-2025 .gallery-media img,
-#top-dandy-nagoya-halloween-2025 .gallery-motion-preview{background:#000}
