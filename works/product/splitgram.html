@@ -3,7 +3,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f4f4">
 <title>Splitgram — Portfolio</title>
 <meta name="description" content="Splitgram: Instagram carousel and grid splitter. Overlapping 4:5 crops for a connected 3:4 profile grid, built for the browser.">
-<link rel="stylesheet" href="../../style.css?v=splitgram-overlap-20261102">
+<link rel="stylesheet" href="../../style.css?v=splitgram-compare-20261102">
 </head><body><div id="site-loader" class="site-loader" role="status" aria-label="Portfolio loading" aria-live="polite"><div class="loader-content"><div class="loader-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><p class="loader-line">&gt; <span data-loader-status>loading portfolio</span><span class="loader-cursor" aria-hidden="true">_</span></p></div></div>
 <nav class="case-header" aria-label="サイトナビゲーション"><div class="scroll-path case-path" aria-label="現在のパス"><a href="../../index.html">~/portfolio</a><span>/works/product/splitgram</span></div><div class="case-navlinks"><a href="../../index.html">index/</a><a href="torabo-tsuki-keymapper.html">previous ↖</a><a href="https://splitgram.app/" target="_blank" rel="noopener noreferrer">live ↗</a></div></nav>
 <main class="site page case-study splitgram-case">
@@ -32,14 +32,24 @@
 <p class="small-label">01 / overlap geometry</p>
 <h3 class="decision-title">隣り合う画像の切り出し範囲を重ねる</h3>
 <p class="detail-copy">元画像から4:5の投稿画像を切り出す際、隣り合う画像どうしに同じ絵柄の一部が入るよう、切り出し範囲を重ねる。プロフィールでは各画像の中央の3:4領域が表示され、ひと続きの構図になる。投稿を開くと、隣の画像と重複する部分まで見える。</p>
-<div class="sg-overlap-example">
-<figure><img src="../../assets/splitgram-example-source.jpg" alt="分割前の横長のランキング画像。左・中央・右に3人を配置" width="3100" height="1350" loading="lazy" decoding="async"><figcaption>元画像</figcaption></figure>
-<div class="sg-export-examples">
-<figure><img src="../../assets/splitgram-example-left.png" alt="左の4:5投稿画像。右端に中央の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>左の投稿画像</figcaption></figure>
-<figure><img src="../../assets/splitgram-example-center.png" alt="中央の4:5投稿画像。左右の端に隣の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>中央の投稿画像</figcaption></figure>
-<figure><img src="../../assets/splitgram-example-right.png" alt="右の4:5投稿画像。左端に中央の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>右の投稿画像</figcaption></figure>
+<div class="sg-overlap-demo">
+<p class="sg-demo-intro">同じ3枚。表示する範囲が変わると、つながる。</p>
+<fieldset class="sg-view-switch">
+<legend>表示を切り替えて比較</legend>
+<input type="radio" name="sg-view" id="sg-view-post" checked><label for="sg-view-post">① 投稿画像 · 4:5</label>
+<input type="radio" name="sg-view" id="sg-view-grid"><label for="sg-view-grid">② プロフィール · 3:4</label>
+<div class="sg-view-stage">
+<div class="sg-view-strip">
+<div class="sg-view-crop"><img src="../../assets/splitgram-example-left.png" alt="左の投稿画像" width="1080" height="1350" loading="lazy" decoding="async"><span class="sg-edge sg-edge-left"></span><span class="sg-edge sg-edge-right"></span></div>
+<div class="sg-view-crop"><img src="../../assets/splitgram-example-center.png" alt="中央の投稿画像" width="1080" height="1350" loading="lazy" decoding="async"><span class="sg-edge sg-edge-left"></span><span class="sg-edge sg-edge-right"></span></div>
+<div class="sg-view-crop"><img src="../../assets/splitgram-example-right.png" alt="右の投稿画像" width="1080" height="1350" loading="lazy" decoding="async"><span class="sg-edge sg-edge-left"></span><span class="sg-edge sg-edge-right"></span></div>
 </div>
-<p class="detail-copy">4:5で書き出した3枚。隣り合う画像の端に同じ絵柄が含まれるため、このまま横に並べると重複が見える。プロフィールでは左右が隠れ、中央の3:4領域どうしがつながる。</p>
+<p class="sg-view-note sg-note-post"><span class="sg-edge-key" aria-hidden="true"></span>色付きの帯は、プロフィールで隠れる左右の端。隣り合う投稿には、同じ絵柄が重複して入っています。</p>
+<p class="sg-view-note sg-note-grid">左右の端が隠れ、中央の3:4領域が並びます。継ぎ目を見ながら①と②を切り替えてみてください。</p>
+</div>
+</fieldset>
+<p class="sg-demo-footnote">表示範囲の違いを示す比較です。プロフィール表示は、各投稿画像の中央を3:4に切り取って再現しています。</p>
+<details class="sg-source-details"><summary>分割前の元画像を見る</summary><img src="../../assets/splitgram-example-source.jpg" alt="分割前の横長のランキング画像" width="3100" height="1350" loading="lazy" decoding="async"></details>
 </div>
 <p class="tags">3:4 thumbnail / 4:5 post / overlapping crops / canvas export</p>
 </div>
