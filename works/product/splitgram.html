@@ -18,20 +18,10 @@
 <div class="metadata"><dt>url</dt><dd><a href="https://splitgram.app/" target="_blank" rel="noopener noreferrer">splitgram.app ↗</a></dd></div>
 </dl>
 </header>
-<section class="main-section context" id="context">
-<p class="section-id">01_context/</p>
-<h2 class="section-heading">正しく分割したはずなのに、<br>Instagramでは継ぎ目がズレる。</h2>
-<p class="small-label">problem</p>
-<p class="body-copy">4:5の投稿画像を3:4のプロフィールグリッドで表示すると、左右の一部が隠れる。元画像を重なりなく切り分けるだけでは、その隠れた部分によってグリッドの継ぎ目がズレてしまう。Splitgramは、投稿画像とプロフィール上の表示領域の違いを前提に設計した。</p>
-</section>
-<div class="section-divider"></div>
 <section class="main-section" id="design">
-<p class="section-id">02_design-decisions/</p>
-<h2 class="section-heading en">Seamless by design.</h2>
-<div class="decision-block">
-<p class="small-label">01 / overlap geometry</p>
-<h3 class="decision-title">隣り合う画像の切り出し範囲を重ねる</h3>
-<p class="detail-copy">元画像から4:5の投稿画像を切り出す際、隣り合う画像どうしに同じ絵柄の一部が入るよう、切り出し範囲を重ねる。プロフィールでは各画像の中央の3:4領域が表示され、ひと続きの構図になる。投稿を開くと、隣の画像と重複する部分まで見える。</p>
+<p class="section-id" id="context">01_design/</p>
+<h2 class="section-heading">表示比率が変わっても、<br>プロフィールでつながる。</h2>
+<p class="body-copy">4:5の投稿画像は、プロフィールでは左右が隠れて3:4になる。そのまま分割すると継ぎ目がズレるため、隣り合う画像の切り出し範囲を重ねた。中央の3:4領域を並べると、ひと続きの構図になる。</p>
 <div class="sg-overlap-demo">
 <p class="sg-demo-intro">同じ3枚。表示する範囲が変わると、つながる。</p>
 <fieldset class="sg-view-switch">
@@ -48,29 +38,13 @@
 <p class="sg-view-note sg-note-grid">左右の端が隠れ、中央の3:4領域が並びます。継ぎ目を見ながら①と②を切り替えてみてください。</p>
 </div>
 </fieldset>
-<p class="sg-demo-footnote">表示範囲の違いを示す比較です。1枚の画像から重なりのある4:5領域を表示し、プロフィールではその中央を3:4に切り取っています。</p>
+<p class="sg-demo-footnote">比較用ビジュアルで、中央を3:4に切り取る表示を再現しています。</p>
 <details class="sg-source-details"><summary>分割前の元画像を見る</summary><img src="../../assets/splitgram-overlap-art.png" alt="3つのアーチをライム色のリボンが横断する、分割前の横長ビジュアル" width="1900" height="828" loading="lazy" decoding="async"></details>
-</div>
-<p class="tags">3:4 thumbnail / 4:5 post / overlapping crops / canvas export</p>
-</div>
-<div class="decision-layout compact">
-<div>
-<p class="small-label">02 / preview &amp; control</p>
-<h3 class="decision-title">分割前に、完成形を確かめられる</h3>
-<p class="detail-copy">カルーセルとプロフィールグリッドのレイアウトを選択し、画像をドラッグ・ズームして見せたい範囲を調整。分割ガイドとプレビューを用意し、書き出す前に構図を確認できるようにした。</p>
-<p class="tags">レイアウト選択 / パン・ズーム / プレビュー / ガイド線</p>
-</div>
-<div>
-<p class="small-label">03 / local processing</p>
-<h3 class="decision-title">画像をアップロードせずに完結する</h3>
-<p class="detail-copy">画像の読み込みから分割・書き出しまでをブラウザ内で処理。外部サーバーへの画像アップロードを必要としない、シンプルな制作フローにした。</p>
-<p class="tags">Browser only / Canvas / No image upload</p>
-</div>
 </div>
 </section>
 <div class="section-divider"></div>
 <section class="main-section" id="product">
-<p class="section-id">03_product/</p>
+<p class="section-id">02_product/</p>
 <h2 class="section-heading">必要な機能を無料で。<br>公開品質の書き出しをProに。</h2>
 <p class="body-copy">画像分割とプレビューは無料で使える。無料版は720pxの書き出し、Proでは透かしなし・1080×1350pxのフル解像度書き出しに対応。日本語と英語の表示切り替えも備えている。</p>
 <div class="sg-feature-list" aria-label="Splitgramの機能一覧">
