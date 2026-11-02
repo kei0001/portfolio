@@ -462,3 +462,8 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
   .gallery-tile--featured .gallery-media img{width:100%;height:auto;object-fit:contain}
 }
 
+
+/* Give each product its own row on desktop, with a readable image width. */
+@media(min-width:1025px){
+  .gallery-grid.gallery-product{grid-template-columns:minmax(0,1fr);max-width:960px;margin-inline:auto;row-gap:64px}
+}
