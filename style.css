@@ -508,3 +508,6 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .sg-view-crop .sg-art-window img{left:0;transform:none;width:287.5%;height:100%;object-fit:cover}
 .sg-view-crop .sg-art-window--center img{left:-93.75%}
 .sg-view-crop .sg-art-window--right img{left:-187.5%}
+
+/* Keep product URLs visibly identifiable as links. */
+.metadata--url a{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
