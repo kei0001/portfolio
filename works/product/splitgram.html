@@ -2,15 +2,15 @@
 <html lang="ja"><head><script>(function(){try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('portfolio-loader-shown')){document.documentElement.classList.add('intro-active');window.__portfolioLoaderStart=performance.now();sessionStorage.setItem('portfolio-loader-shown','1');window.setTimeout(function(){document.documentElement.classList.remove('intro-active','intro-exit')},2500)}}catch(e){}})();</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f4f4">
 <title>Splitgram — Portfolio</title>
-<meta name="description" content="Splitgram: Instagram carousel and grid splitter. Seamless 3:4 thumbnails and 4:5 posts, built for the browser.">
-<link rel="stylesheet" href="../../style.css?v=shared-case-path-20261028">
+<meta name="description" content="Splitgram: Instagram carousel and grid splitter. Overlapping 4:5 crops for a connected 3:4 profile grid, built for the browser.">
+<link rel="stylesheet" href="../../style.css?v=splitgram-overlap-20261102">
 </head><body><div id="site-loader" class="site-loader" role="status" aria-label="Portfolio loading" aria-live="polite"><div class="loader-content"><div class="loader-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><p class="loader-line">&gt; <span data-loader-status>loading portfolio</span><span class="loader-cursor" aria-hidden="true">_</span></p></div></div>
 <nav class="case-header" aria-label="サイトナビゲーション"><div class="scroll-path case-path" aria-label="現在のパス"><a href="../../index.html">~/portfolio</a><span>/works/product/splitgram</span></div><div class="case-navlinks"><a href="../../index.html">index/</a><a href="torabo-tsuki-keymapper.html">previous ↖</a><a href="https://splitgram.app/" target="_blank" rel="noopener noreferrer">live ↗</a></div></nav>
 <main class="site page case-study splitgram-case">
 <header class="page-hero">
 
 <h1>Splitgram</h1>
-<p class="lead">投稿を開いても、継ぎ目がズレない画像分割ツール。</p>
+<p class="lead">隣り合う画像に重なりを持たせ、プロフィールでつなげる画像分割ツール。</p>
 <figure class="hero-image"><img src="../../assets/splitgram.jpg" alt="クリーム色の背景にライム色のアイコンと黒いSplitgramロゴ" width="1920" height="1080" decoding="async"></figure>
 <dl class="meta-grid">
 <div class="metadata"><dt>role</dt><dd>Product design, Development</dd></div>
@@ -22,7 +22,7 @@
 <p class="section-id">01_context/</p>
 <h2 class="section-heading">正しく分割したはずなのに、<br>Instagramでは継ぎ目がズレる。</h2>
 <p class="small-label">problem</p>
-<p class="body-copy">Instagramのプロフィールグリッドは3:4のサムネイル、投稿を開くと4:5で表示される。サムネイルに合わせて単純に画像を切り分けるだけでは、投稿を開いたときに隣り合う画像の位置関係が崩れてしまう。Splitgramは、この表示仕様の違いを前提にした画像分割ツールとして設計した。</p>
+<p class="body-copy">4:5の投稿画像を3:4のプロフィールグリッドで表示すると、左右の一部が隠れる。元画像を重なりなく切り分けるだけでは、その隠れた部分によってグリッドの継ぎ目がズレてしまう。Splitgramは、投稿画像とプロフィール上の表示領域の違いを前提に設計した。</p>
 </section>
 <div class="section-divider"></div>
 <section class="main-section" id="design">
@@ -30,16 +30,18 @@
 <h2 class="section-heading en">Seamless by design.</h2>
 <div class="decision-block">
 <p class="small-label">01 / overlap geometry</p>
-<h3 class="decision-title">表示比率の差を、書き出し時に吸収する</h3>
-<p class="detail-copy">サムネイルの3:4領域を基準にグリッドを揃えつつ、4:5の投稿画像には左右に少しずつ「のりしろ」を持たせる。各画像の中心部分はグリッドとしてつながり、投稿を開いた状態でも連続した構図を維持できる。</p>
-<div class="sg-ratio-diagram" role="img" aria-label="3:4のサムネイルに対して4:5の投稿は左右に広く、両端にオーバーラップを設ける設計図">
-<div class="sg-diagram-header"><span>GRID THUMBNAIL <b>3:4</b></span><span>OPENED POST <b>4:5</b></span></div>
-<div class="sg-ratio-figure">
-  <div class="sg-post-outline"><div class="sg-overlap left"></div><div class="sg-thumb-outline"><div class="sg-diagram-art"></div></div><div class="sg-overlap right"></div></div>
+<h3 class="decision-title">隣り合う画像の切り出し範囲を重ねる</h3>
+<p class="detail-copy">元画像から4:5の投稿画像を切り出す際、隣り合う画像どうしに同じ絵柄の一部が入るよう、切り出し範囲を重ねる。プロフィールでは各画像の中央の3:4領域が表示され、ひと続きの構図になる。投稿を開くと、隣の画像と重複する部分まで見える。</p>
+<div class="sg-overlap-example">
+<figure><img src="../../assets/splitgram-example-source.jpg" alt="分割前の横長のランキング画像。左・中央・右に3人を配置" width="2048" height="892" loading="lazy" decoding="async"><figcaption>元画像</figcaption></figure>
+<div class="sg-export-examples">
+<figure><img src="../../assets/splitgram-example-left.png" alt="左の4:5投稿画像。右端に中央の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>左の投稿画像</figcaption></figure>
+<figure><img src="../../assets/splitgram-example-center.png" alt="中央の4:5投稿画像。左右の端に隣の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>中央の投稿画像</figcaption></figure>
+<figure><img src="../../assets/splitgram-example-right.png" alt="右の4:5投稿画像。左端に中央の画像と共通する絵柄を含む" width="1080" height="1350" loading="lazy" decoding="async"><figcaption>右の投稿画像</figcaption></figure>
 </div>
-<div class="sg-diagram-footer"><span>← OVERLAP</span><span>SHARED VISIBLE AREA</span><span>OVERLAP →</span></div>
+<p class="detail-copy">4:5で書き出した3枚。隣り合う画像の端に同じ絵柄が含まれるため、このまま横に並べると重複が見える。プロフィールでは左右が隠れ、中央の3:4領域どうしがつながる。</p>
 </div>
-<p class="tags">3:4 thumbnail / 4:5 post / horizontal bleed / canvas export</p>
+<p class="tags">3:4 thumbnail / 4:5 post / overlapping crops / canvas export</p>
 </div>
 <div class="decision-layout compact">
 <div>
