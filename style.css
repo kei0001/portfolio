@@ -502,3 +502,9 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .sg-source-details{border-top:1px solid var(--line);padding-top:16px;font-size:13px}
 .sg-source-details summary{cursor:pointer}.sg-source-details img{width:100%;height:auto;display:block;margin-top:16px}
 @media(prefers-reduced-motion:reduce){.sg-view-strip,.sg-view-crop,.sg-edge{transition:none}}
+
+/* A shared panorama keeps the overlap and profile seams exact. */
+.sg-art-window{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;aspect-ratio:4/5}
+.sg-view-crop .sg-art-window img{left:0;transform:none;width:287.5%;height:100%;object-fit:cover}
+.sg-view-crop .sg-art-window--center img{left:-93.75%}
+.sg-view-crop .sg-art-window--right img{left:-187.5%}
