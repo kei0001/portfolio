@@ -516,7 +516,7 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 @media(max-width:560px){.sg-demo-intro{font-size:clamp(12px,5cqi,18px);line-height:1.65}}
 
 /* Light-theme signal texture: quiet scanlines and short, localized glitches. */
-body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(20,20,20,.025) 3px 4px);opacity:.55}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(20,20,20,.025) 3px 4px);opacity:.55}
 .entry-ascii-wide{position:relative}
 .entry-ascii-wide::after{content:attr(data-glitch);position:absolute;inset:0;white-space:pre;pointer-events:none;opacity:0;color:var(--ink);text-shadow:-2px 0 rgba(255,0,0,.5),0 1px rgba(0,180,0,.35),2px 0 rgba(0,0,255,.5);clip-path:inset(35% 0 48% 0)}
 @media(prefers-reduced-motion:no-preference){
@@ -564,3 +564,6 @@ body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;bac
 }
 .entry-sticky.is-complete .entry-drift{filter:none}
 @media(prefers-reduced-motion:reduce){.entry-drift{filter:none}}
+
+/* Place the artwork/content layer above the background scanlines. */
+body > main.site{position:relative;z-index:1}
