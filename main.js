@@ -104,12 +104,14 @@ document.querySelectorAll('.key').forEach(k=>{
         const floating=char!==' '&&hash(i+271)>.32;
         const glint=char!==' '&&hash(i+991)>.50;
         el.className='entry-glyph'+(char===' '?' space':'')+(floating?' floating':'')+(glint?' twinkle':'');
-        if(floating||glint){
+        if(char!==' '){
           const drift=document.createElement('span');
           drift.className='entry-drift';
           const ink=document.createElement('span');
           ink.className='entry-glint';
           ink.textContent=char;
+          el.dataset.original=char;
+          el._ink=ink;
           if(floating){
             drift.style.setProperty('--drift-x',((hash(i+457)-.5)*28).toFixed(1)+'px');
             drift.style.setProperty('--drift-y',((hash(i+683)-.5)*25).toFixed(1)+'px');
@@ -173,6 +175,16 @@ document.querySelectorAll('.key').forEach(k=>{
     // This prevents a visible jump when the completed tree becomes static.
     const floatStrength=reduce.matches?0:1-ease((p-.24)/.47);
     stage.style.setProperty('--float-strength',floatStrength.toFixed(3));
+    const haze = reduce.matches ? 0 : 1 - ease((p - .12) / .62);
+    stage.style.setProperty('--glyph-haze', haze.toFixed(3));
+    glyphs.forEach((el, i) => {
+      if (!el._ink) return;
+      const reveal = .30 + hash(i + 1821) * .43;
+      const shades = ['░', '▒', '▓', '█'];
+      const density = Math.min(3, Math.floor(hash(i + 1403) * 3 + p * 2));
+      const next = reduce.matches || p >= reveal ? el.dataset.original : shades[density];
+      if (el._ink.textContent !== next) el._ink.textContent = next;
+    });
     stage.classList.toggle('is-sparkling',floatStrength>.001);
     animations.forEach(a=>a.currentTime=assembled*1390);
     prompt.style.opacity=String(ease((p-.58)/.26));
