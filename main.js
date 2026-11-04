@@ -180,9 +180,10 @@ document.querySelectorAll('.key').forEach(k=>{
     glyphs.forEach((el, i) => {
       if (!el._ink) return;
       const reveal = .30 + hash(i + 1821) * .43;
-      const shades = ['░', '▒', '▓', '█'];
-      const density = Math.min(3, Math.floor(hash(i + 1403) * 3 + p * 2));
-      const next = reduce.matches || p >= reveal ? el.dataset.original : shades[density];
+      // Mostly small points, with occasional cross-shaped brighter stars.
+      const stars = ['.', '.', '·', '·', '·', '⋅', '+', '*', '✧', '✦'];
+      const star = stars[Math.floor(hash(i + 1403) * stars.length)];
+      const next = reduce.matches || p >= reveal ? el.dataset.original : star;
       if (el._ink.textContent !== next) el._ink.textContent = next;
     });
     stage.classList.toggle('is-sparkling',floatStrength>.001);
