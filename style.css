@@ -518,7 +518,7 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 /* Light-theme signal texture: quiet scanlines and short, localized glitches. */
 .entry-sticky::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(20,20,20,.025) 3px 4px);opacity:.55}
 .entry-ascii-wide{position:relative}
-.entry-ascii-wide::after{content:attr(data-glitch);position:absolute;inset:0;white-space:pre;pointer-events:none;opacity:0;color:var(--ink);text-shadow:2px 0 rgba(0,140,170,.65),-2px 0 rgba(190,65,100,.5);clip-path:inset(35% 0 48% 0)}
+.entry-ascii-wide::after{content:attr(data-glitch);position:absolute;inset:0;white-space:pre;pointer-events:none;opacity:0;color:var(--ink);text-shadow:-2px 0 rgba(255,0,0,.5),0 1px rgba(0,180,0,.35),2px 0 rgba(0,0,255,.5);clip-path:inset(35% 0 48% 0)}
 @media(prefers-reduced-motion:no-preference){
  .entry-ascii-wide::after{animation:entry-signal-glitch 7s steps(1,end) 2;animation-delay:1.8s}
  .entry-meta a:hover,.entry-scene .tree-nav a:hover,.gallery-caption>a:hover,.category-path a:hover{animation:link-signal-glitch .32s steps(1,end) 1}
@@ -532,12 +532,12 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 }
 @keyframes link-signal-glitch{
  0%,100%{text-shadow:none}
- 20%{text-shadow:4px 0 rgba(0,190,230,.95),-4px 0 rgba(235,35,125,.85)}
- 45%{text-shadow:-3px 0 rgba(0,190,230,.95),3px 0 rgba(235,35,125,.85)}
+ 20%{text-shadow:-4px 0 rgba(255,0,0,.75),0 2px rgba(0,180,0,.55),4px 0 rgba(0,0,255,.75)}
+ 45%{text-shadow:3px 0 rgba(255,0,0,.7),0 -1px rgba(0,180,0,.5),-3px 0 rgba(0,0,255,.7)}
  65%{text-shadow:none}
 }
 @media(prefers-reduced-motion:reduce){.entry-sticky::after,.entry-ascii-wide::after{display:none}}
 
 /* Persistent chromatic edges, independent of the brief glitch animation. */
-.entry-ascii-wide{text-shadow:1.5px 0 rgba(0,165,195,.45),-1.5px 0 rgba(205,60,110,.35)}
-.entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:drop-shadow(1px 0 rgba(0,165,195,.4)) drop-shadow(-1px 0 rgba(205,60,110,.3))}
+.entry-ascii-wide{text-shadow:-1.5px 0 rgba(255,0,0,.35),0 1px rgba(0,180,0,.3),1.5px 0 rgba(0,0,255,.35)}
+.entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:drop-shadow(-1px 0 rgba(255,0,0,.3)) drop-shadow(0 1px rgba(0,180,0,.25)) drop-shadow(1px 0 rgba(0,0,255,.3))}
