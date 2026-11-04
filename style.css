@@ -532,12 +532,13 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 }
 @keyframes link-signal-glitch{
  0%,100%{text-shadow:none}
- 20%{text-shadow:-4px 0 rgba(255,0,0,.75),0 2px rgba(0,180,0,.55),4px 0 rgba(0,0,255,.75)}
- 45%{text-shadow:3px 0 rgba(255,0,0,.7),0 -1px rgba(0,180,0,.5),-3px 0 rgba(0,0,255,.7)}
+ 20%{filter:url(#rgb-ink)}
+ 45%{filter:url(#rgb-ink)}
  65%{text-shadow:none}
 }
 @media(prefers-reduced-motion:reduce){.entry-sticky::after,.entry-ascii-wide::after{display:none}}
 
-/* Persistent chromatic edges, independent of the brief glitch animation. */
-.entry-ascii-wide{text-shadow:-1.5px 0 rgba(255,0,0,.35),0 1px rgba(0,180,0,.3),1.5px 0 rgba(0,0,255,.35)}
-.entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:drop-shadow(-1px 0 rgba(255,0,0,.3)) drop-shadow(0 1px rgba(0,180,0,.25)) drop-shadow(1px 0 rgba(0,0,255,.3))}
+/* RGB masks are added before inversion; overlaps become dark ink. */
+.entry-ascii-wide{filter:url(#rgb-ink);text-shadow:none}
+.entry-ascii-wide::after{text-shadow:none}
+.entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:url(#rgb-ink)}

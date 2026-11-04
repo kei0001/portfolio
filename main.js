@@ -379,3 +379,28 @@ document.querySelectorAll('.key').forEach(k=>{
   const art = document.querySelector('.entry-ascii-wide');
   if (art) art.dataset.glitch = art.textContent;
 })();
+
+/* Add RGB channel masks, sum their light, then invert for dark ink on paper. */
+(() => {
+  if (!document.querySelector('.portfolio-entry')) return;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('width', '0');
+  svg.setAttribute('height', '0');
+  svg.style.position = 'absolute';
+  svg.innerHTML = `<defs><filter id="rgb-ink" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dx="-1.2" dy="0" result="rMask"/>
+    <feOffset in="SourceAlpha" dx="0" dy="0.7" result="gMask"/>
+    <feOffset in="SourceAlpha" dx="1.2" dy="0" result="bMask"/>
+    <feFlood flood-color="#ff0000" result="red"/>
+    <feComposite in="red" in2="rMask" operator="in" result="r"/>
+    <feFlood flood-color="#00ff00" result="green"/>
+    <feComposite in="green" in2="gMask" operator="in" result="g"/>
+    <feFlood flood-color="#0000ff" result="blue"/>
+    <feComposite in="blue" in2="bMask" operator="in" result="b"/>
+    <feComposite in="r" in2="g" operator="arithmetic" k2="1" k3="1" result="rg"/>
+    <feComposite in="rg" in2="b" operator="arithmetic" k2="1" k3="1" result="rgb"/>
+    <feColorMatrix in="rgb" type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"/>
+  </filter></defs>`;
+  document.body.appendChild(svg);
+})();
