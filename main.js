@@ -177,15 +177,6 @@ document.querySelectorAll('.key').forEach(k=>{
     stage.style.setProperty('--float-strength',floatStrength.toFixed(3));
     const haze = reduce.matches ? 0 : 1 - ease((p - .12) / .62);
     stage.style.setProperty('--glyph-haze', haze.toFixed(3));
-    glyphs.forEach((el, i) => {
-      if (!el._ink) return;
-      const reveal = .30 + hash(i + 1821) * .43;
-      // Mostly small points, with occasional cross-shaped brighter stars.
-      const stars = ['.', '.', '·', '·', '·', '⋅', '+', '*', '✧', '✦'];
-      const star = stars[Math.floor(hash(i + 1403) * stars.length)];
-      const next = reduce.matches || p >= reveal ? el.dataset.original : star;
-      if (el._ink.textContent !== next) el._ink.textContent = next;
-    });
     stage.classList.toggle('is-sparkling',floatStrength>.001);
     animations.forEach(a=>a.currentTime=assembled*1390);
     prompt.style.opacity=String(ease((p-.58)/.26));

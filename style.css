@@ -554,8 +554,8 @@ body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;bac
 [data-theme="dark"] .work-entry:hover{background:var(--panel)}
 [data-theme="dark"] .km-inspector{color:#1f2937}
 
-/* Sparse star glyphs resolve into the actual linked directory text. */
-.entry-drift{filter:blur(calc(var(--glyph-haze,0) * .35px))}
+/* Scattered directory letters sharpen as they assemble. */
+.entry-drift{filter:blur(calc(var(--glyph-haze,0) * .6px))}
 @keyframes entry-twinkle{
  0%,18%,77%,100%{opacity:.85;transform:scale(1);text-shadow:0 0 calc(var(--float-strength)*3px) currentColor}
  28%{opacity:calc(1 - .65*var(--float-strength));transform:scale(calc(1 - .08*var(--float-strength)));text-shadow:none}
