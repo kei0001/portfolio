@@ -404,3 +404,33 @@ document.querySelectorAll('.key').forEach(k=>{
   </filter></defs>`;
   document.body.appendChild(svg);
 })();
+
+/* Keep a dark additive variant of the RGB filter and offer a theme preview. */
+(() => {
+  const ink = document.getElementById('rgb-ink');
+  if (ink) {
+    const light = ink.cloneNode(true);
+    light.id = 'rgb-light';
+    light.querySelector('feColorMatrix').remove();
+    ink.parentNode.appendChild(light);
+  }
+  if (!document.querySelector('.portfolio-entry')) return;
+  const button = document.createElement('button');
+  button.className = 'theme-preview-toggle';
+  button.type = 'button';
+  const sync = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    button.textContent = dark ? '◐ light' : '◑ dark';
+    button.setAttribute('aria-label', dark ? 'ライト表示に切り替える' : 'ダーク表示に切り替える');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#141414' : '#fafafa');
+  };
+  button.addEventListener('click', () => {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+    try { sessionStorage.setItem('portfolio-theme', theme); } catch (_) {}
+    const url = new URL(location.href); url.searchParams.set('theme', theme);
+    history.replaceState(null, '', url);
+    sync();
+  });
+  sync(); document.body.appendChild(button);
+})();

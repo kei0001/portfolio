@@ -542,3 +542,14 @@ html.breadcrumb-slide .scroll-path-incoming{animation:breadcrumb-slide-in 220ms 
 .entry-ascii-wide{filter:url(#rgb-ink);text-shadow:none}
 .entry-ascii-wide::after{text-shadow:none}
 .entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:url(#rgb-ink)}
+
+/* Neutral dark preview; artwork keeps its original colors. */
+:root[data-theme="dark"]{color-scheme:dark;--paper:#141414;--ink:#ededed;--secondary:#aaa;--muted:#929292;--line:#393939;--panel:#202020}
+.theme-preview-toggle{position:fixed;right:20px;bottom:20px;z-index:60;background:var(--paper);color:var(--ink);border:1px solid var(--line);padding:7px 12px;font:12px/1.5 var(--mono);border-radius:2px}
+.theme-preview-toggle:hover{background:var(--panel)}
+[data-theme="dark"] .entry-ascii-wide,[data-theme="dark"] .entry-sticky:not(.is-complete) .entry-glyph:not(.space){filter:url(#rgb-light)}
+[data-theme="dark"] .entry-sticky::after{background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.035) 3px 4px)}
+[data-theme="dark"] .gallery-caption small,[data-theme="dark"] .gallery-product-description,[data-theme="dark"] .entry-identity p{color:var(--secondary)}
+[data-theme="dark"] .flow-node{background:var(--panel);border-color:var(--line)}
+[data-theme="dark"] .work-entry:hover{background:var(--panel)}
+[data-theme="dark"] .km-inspector{color:#1f2937}
