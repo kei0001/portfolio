@@ -373,3 +373,9 @@ document.querySelectorAll('.key').forEach(k=>{
     if(dialog)dialog.addEventListener('close',stop);
   });
 })();
+
+/* Duplicate only the decorative ASCII layer for a brief signal glitch. */
+(() => {
+  const art = document.querySelector('.entry-ascii-wide');
+  if (art) art.dataset.glitch = art.textContent;
+})();
