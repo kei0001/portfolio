@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101211">
+<meta name="description" content="物価上昇・賃金上昇・投資収益から、インフレ環境での家計と資産の損益分岐点をシミュレーション。">
+<title>INFLATION / CAPITAL — 資産とインフレの損益分岐点</title>
+<style>
+:root{color-scheme:dark;--bg:#101211;--panel:#181b19;--panel2:#202420;--line:#353b36;--muted:#9da99d;--text:#f1f4ed;--lime:#c3fb72;--orange:#ffb989;--red:#ff887d;font-family:Inter,-apple-system,BlinkMacSystemFont,"Noto Sans JP",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 70% 40% at 65% -15%,#293723 0%,transparent 90%),var(--bg);color:var(--text)}a{color:var(--lime)}button,input{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}header{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center}.brand{font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px;letter-spacing:.12em;font-weight:800}.brand span{color:var(--lime)}.headright{margin-left:auto;font-size:12px;color:var(--muted)}main{padding:70px 0 100px}.eyebrow{font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);font-size:12px}h1{font-size:clamp(35px,5.2vw,65px);line-height:1.19;letter-spacing:-.06em;margin:18px 0;max-width:900px}h1 em{color:var(--lime);font-style:normal}.lead{max-width:700px;color:var(--muted);font-size:15px;line-height:2;margin:0 0 46px}.layout{display:grid;grid-template-columns:minmax(310px,400px) minmax(0,1fr);gap:20px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:26px}.panel h2{font-size:15px;margin:0 0 25px;letter-spacing:-.02em}.tiny{font-size:11px;color:var(--muted);font-family:ui-monospace,monospace;letter-spacing:.09em}.control{margin-bottom:26px}.control-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.control-head label{font-size:13px;font-weight:600}.value{font-family:ui-monospace,monospace;color:var(--lime);font-size:16px;white-space:nowrap}.inputline{display:flex;align-items:center;gap:10px}.inputline input[type=number]{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:12px 13px;color:var(--text);outline:none}.inputline input:focus{border-color:var(--lime)}.unit{font-size:12px;color:var(--muted);white-space:nowrap}input[type=range]{width:100%;accent-color:var(--lime);cursor:pointer}.range-ends{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.sep{border:0;border-top:1px solid var(--line);margin:22px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px 14px;font-size:12px;cursor:pointer}.btn:hover{border-color:var(--lime)}.btn.primary{color:#111a0a;background:var(--lime);border-color:var(--lime);font-weight:750}.right{display:grid;gap:20px}.result{background:#1b251a;border-color:#3d5437;position:relative;overflow:hidden}.result:before{content:"";position:absolute;width:200px;height:200px;background:#b6fd6320;border-radius:100%;filter:blur(45px);top:-90px;right:-70px;pointer-events:none}.result-label{font-size:13px;color:#c8d8c5}.big{font-size:clamp(42px,5.2vw,71px);font-weight:750;letter-spacing:-.07em;margin:18px 0 10px;overflow-wrap:anywhere;line-height:1.05}.big .suffix{font-size:.4em;letter-spacing:0;margin-left:6px}.sub{color:#b3c5ad;font-size:12px;line-height:1.8;margin:0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:27px}.metric{padding:14px;background:#ffffff08;border:1px solid #ffffff10;border-radius:10px}.metric strong{display:block;font-size:23px;margin-top:8px;font-family:ui-monospace,monospace;letter-spacing:-.05em}.metric .tiny{font-size:10px}.positive{color:var(--lime)}.negative{color:var(--red)}.neutral{color:var(--orange)}.viz h2{margin-bottom:8px}.viz-desc{margin:0 0 27px;color:var(--muted);font-size:12px;line-height:1.8}.barrow{display:grid;grid-template-columns:145px 1fr 100px;align-items:center;gap:12px;margin:18px 0}.barrow .name{font-size:12px;color:#cdd4c9}.bartrack{height:14px;background:#2b302c;border-radius:3px;position:relative;overflow:hidden}.bar{height:100%;border-radius:3px;min-width:1px;transition:width .2s ease}.bar.cost{background:var(--orange)}.bar.wage{background:#84a9ff}.bar.asset{background:var(--lime)}.amount{text-align:right;font-family:ui-monospace,monospace;font-size:12px}.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;font-size:11px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}.scenarios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.scenario{padding:18px;background:var(--panel2);border:1px solid var(--line);border-radius:11px}.scenario .name{font-size:12px;color:var(--muted)}.scenario strong{font-size:23px;display:block;margin:12px 0 4px;letter-spacing:-.05em}.scenario small{font-size:11px;color:var(--muted);line-height:1.6;display:block}.notes{margin-top:48px;max-width:1000px}.notes h2{font-size:20px}.notes p,.notes li{font-size:13px;line-height:2;color:var(--muted)}.notes ul{padding-left:20px}.footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding:25px 0 40px;font-size:11px;color:var(--muted)}@media(max-width:850px){main{padding:46px 0 80px}.layout{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.barrow{grid-template-columns:110px 1fr 82px}.panel{padding:20px}}@media(max-width:470px){.wrap{width:min(100% - 28px,1160px)}.headright{display:none}.metrics{grid-template-columns:1fr}.metric{display:flex;align-items:center;justify-content:space-between}.metric strong{margin:0;font-size:20px}.scenarios{grid-template-columns:1fr}.barrow{grid-template-columns:92px 1fr 74px;gap:8px}.barrow .name,.amount{font-size:10px}h1{font-size:39px}.panel{padding:18px}}
+</style>
+</head>
+<body>
+<header><div class="wrap" style="display:flex;align-items:center;width:min(1160px,calc(100% - 40px))"><div class="brand">INFLATION <span>/</span> CAPITAL</div><div class="headright">REAL WEALTH SIMULATOR &nbsp; / &nbsp; v1.0</div></div></header>
+<main class="wrap">
+<div class="eyebrow">01 / Who benefits from inflation?</div>
+<h1>インフレで得する側に、<br><em>いつから回れるのか。</em></h1>
+<p class="lead">物価が上がり、給与も上がり、株式も値上がりする。そのとき、あなたの家計はプラスかマイナスか。年間の生活費負担を資産リターンで相殺するために必要な株式資産を計算します。</p>
+<div class="layout">
+<section class="panel">
+<h2>条件を設定 <span class="tiny"> / INPUT</span></h2>
+<div class="control"><div class="control-head"><label for="income">年間手取り収入</label><span class="tiny">NET INCOME</span></div><div class="inputline"><input id="income" type="number" min="0" max="10000000" step="10" value="450"><span class="unit">万円 / 年</span></div></div>
+<div class="control"><div class="control-head"><label for="expense">年間生活費</label><span class="tiny">ANNUAL SPENDING</span></div><div class="inputline"><input id="expense" type="number" min="0" max="10000000" step="10" value="300"><span class="unit">万円 / 年</span></div></div>
+<hr class="sep">
+<div class="control"><div class="control-head"><label for="inflation">物価上昇率</label><span class="value" id="inflationV">3.0%</span></div><input id="inflation" type="range" min="-5" max="15" step=".5" value="3"><div class="range-ends"><span>-5%</span><span>+15%</span></div></div>
+<div class="control"><div class="control-head"><label for="wage">手取り収入の上昇率</label><span class="value" id="wageV">1.0%</span></div><input id="wage" type="range" min="-5" max="15" step=".5" value="1"><div class="range-ends"><span>-5%</span><span>+15%</span></div></div>
+<div class="control"><div class="control-head"><label for="stock">株式の名目年間リターン</label><span class="value" id="stockV">6.0%</span></div><input id="stock" type="range" min="-30" max="30" step=".5" value="6"><div class="range-ends"><span>-30%</span><span>+30%</span></div></div>
+<hr class="sep"><div class="actions"><button id="reset" class="btn">初期値に戻す</button><button id="share" class="btn primary">条件をURLで共有</button></div>
+</section>
+<div class="right">
+<section class="panel result" aria-live="polite"><div class="result-label">必要な株式資産額 <span class="tiny"> / BREAK-EVEN</span></div><div class="big" id="needed">155<span class="suffix">万円</span></div><p class="sub" id="summary">株式の実質的な値上がり益が、家計負担の増加を相殺する資産額。</p>
+<div class="metrics"><div class="metric"><span class="tiny">年間の家計負担増</span><strong id="gap">+4.5万</strong></div><div class="metric"><span class="tiny">株式の実質収益率</span><strong id="real">+2.91%</strong></div><div class="metric"><span class="tiny">生活費の物価影響</span><strong id="extra">+9.0万</strong></div></div></section>
+<section class="panel viz"><h2>年間の変化 <span class="tiny"> / CASHFLOW</span></h2><p class="viz-desc">各項目の変化を絶対額で比較。資産収益は、必要資産額で計算した実質ベースの値です。</p>
+<div class="barrow"><div class="name">生活費の変化</div><div class="bartrack"><div class="bar cost" id="costBar"></div></div><div class="amount" id="costNum"></div></div>
+<div class="barrow"><div class="name">手取りの変化</div><div class="bartrack"><div class="bar wage" id="wageBar"></div></div><div class="amount" id="wageNum"></div></div>
+<div class="barrow"><div class="name">株式の実質損益</div><div class="bartrack"><div class="bar asset" id="assetBar"></div></div><div class="amount" id="assetNum"></div></div>
+<div class="legend"><span><span class="dot" style="background:var(--orange)"></span>生活費</span><span><span class="dot" style="background:#84a9ff"></span>手取り</span><span><span class="dot" style="background:var(--lime)"></span>株式</span></div>
+</section>
+<section class="panel"><h2>資産額別の実質リターン <span class="tiny"> / SCENARIOS</span></h2><div class="scenarios" id="scenarios"></div></section>
+</div></div>
+<section class="notes"><div class="eyebrow">02 / How to read</div><h2>このシミュレーターの見方</h2>
+<p>この計算は、物価変動による「今年の家計負担と手取りの差」を「保有株式の年間実質リターン」で補うための<span style="color:var(--text)">仮想的な損益分岐点</span>です。資産の階級や政治的立場の境界を示すものではありません。</p>
+<ul><li>家計差額 = 年間生活費 × 物価上昇率 − 年間手取り × 手取り上昇率</li><li>株式の実質リターン = (1 + 名目株式リターン) ÷ (1 + 物価上昇率) − 1</li><li>必要資産額 = max(0, 家計差額) ÷ 株式の実質リターン（実質リターンが正のとき）</li></ul>
+<p>重要：給与・生活費の差は基準年の金額、株式収益は実質額で扱う簡略化モデルです。厳密に同じ購買力単位で比較する場合は生活費・給与の年末差額も物価指数で割る必要があります。また株式の値上がりはインフレ政策の効果そのものではなく、株価下落も起こりえます。税金、配当課税、売却時期、現預金、借入金、家賃、金利などは考慮していません。投資判断に使う場合は前提を個別に検証してください。</p>
+</section>
+</main>
+<footer class="wrap footer"><span>INFLATION / CAPITAL — Economic thought experiment</span><span>計算はブラウザ内で完結。入力内容はサーバーに送信されません。</span></footer>
+<script>
+(function(){
+'use strict';
+const ids=['income','expense','inflation','wage','stock'];
+const defaults={income:450,expense:300,inflation:3,wage:1,stock:6};
+const $=id=>document.getElementById(id);
+const fmt=(n,d=1)=>Number(n).toLocaleString('ja-JP',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sign=n=>(n>0?'+':'')+fmt(n);
+const safe=(n,fallback)=>Number.isFinite(n)?Math.max(-10000000,Math.min(10000000,n)):fallback;
+function params(){return Object.fromEntries(ids.map(k=>[k,safe(parseFloat($(k).value),defaults[k])]))}
+function render(){
+ const p=params();const expenseChange=p.expense*p.inflation/100;
+ const incomeChange=p.income*p.wage/100;
+ const gap=expenseChange-incomeChange;
+ const real=(1+p.stock/100)/(1+p.inflation/100)-1;
+ const required=gap<=0?0:real>0?gap/real:null;
+ const positive=gap>0;
+ $('needed').innerHTML=required===null?'相殺不可':fmt(required,0)+'<span class="suffix">万円</span>';
+ $('summary').textContent=!positive?'物価と賃金の条件だけで、年間家計差額は悪化しない想定です。':required===null?'株式の実質リターンが0%以下のため、資産を増やしてもこの仮定では補えません。':'資産リターンが年間の家計負担増を相殺する理論値。利益は保証されません。';
+ $('gap').textContent=sign(gap)+'万';$('gap').className=gap>0?'negative':'positive';
+ $('real').textContent=sign(real*100)+'%';$('real').className=real>=0?'positive':'negative';
+ $('extra').textContent=sign(expenseChange)+'万';$('extra').className=expenseChange>0?'negative':'positive';
+ ['inflation','wage','stock'].forEach(k=>$(k+'V').textContent=sign(p[k])+'%');
+ const assetReturn=required===null?0:required*real;
+ const amounts=[expenseChange,incomeChange,assetReturn];
+ const max=Math.max(1,...amounts.map(x=>Math.abs(x)));
+ ['cost','wage','asset'].forEach((k,i)=>{$(k+'Bar').style.width=(Math.abs(amounts[i])/max*100)+'%';$(k+'Num').textContent=sign(amounts[i])+'万';});
+ const levels=[300,1000,3000];
+ $('scenarios').replaceChildren(...levels.map(v=>{const box=document.createElement('div');box.className='scenario';const name=document.createElement('div');name.className='name';name.textContent='株式 '+fmt(v,0)+'万円';const value=document.createElement('strong');value.textContent=sign(v*real)+'万円';value.className=v*real>=0?'positive':'negative';const note=document.createElement('small');note.textContent='年間の実質損益 / 税引前';box.append(name,value,note);return box;}));
+}
+ids.forEach(k=>$(k).addEventListener('input',render));
+$('reset').addEventListener('click',()=>{ids.forEach(k=>$(k).value=defaults[k]);history.replaceState(null,'',location.pathname);render();});
+$('share').addEventListener('click',async()=>{const url=new URL(location.href);const p=params();ids.forEach(k=>url.searchParams.set(k,String(p[k])));try{await navigator.clipboard.writeText(url.href);$('share').textContent='URLをコピーしました';}catch(e){window.prompt('共有用URL',url.href);$('share').textContent='URLを表示しました';}setTimeout(()=>$('share').textContent='条件をURLで共有',2200);});
+const search=new URLSearchParams(location.search);ids.forEach(k=>{if(search.has(k)){const n=Number(search.get(k));const el=$(k);if(Number.isFinite(n)&&n>=Number(el.min||-10000000)&&n<=Number(el.max||10000000))el.value=n;}});
+render();
+})();
+</script>
+</body>
+</html>
