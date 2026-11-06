@@ -567,3 +567,8 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 
 /* Place the artwork/content layer above the background scanlines. */
 body > main.site{position:relative;z-index:1}
+
+/* LUSTR usage chart: match the selected site theme. */
+.lustr-usage-chart .usage-dark{display:none}
+[data-theme="dark"] .lustr-usage-chart .usage-light{display:none}
+[data-theme="dark"] .lustr-usage-chart .usage-dark{display:block}
