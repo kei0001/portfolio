@@ -438,3 +438,24 @@ document.querySelectorAll('.key').forEach(k=>{
   });
   sync(); document.body.appendChild(button);
 })();
+
+/* Enlarge the real chart without shrinking its labels on phones. */
+(function(){
+ const trigger=document.querySelector('.chart-zoom');
+ const dialog=document.getElementById('usage-chart-dialog');
+ if(!trigger||!dialog)return;
+ const scroll=dialog.querySelector('.chart-scroll');
+ trigger.addEventListener('click',()=>{
+  const chart=trigger.querySelector('picture').cloneNode(true);
+  chart.querySelectorAll('img').forEach(img=>img.loading='eager');
+  scroll.replaceChildren(chart);
+  dialog.showModal();
+  scroll.scrollLeft=0;
+ });
+ dialog.querySelector('.chart-close').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',event=>{
+  const r=dialog.getBoundingClientRect();
+  if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();
+ });
+ dialog.addEventListener('close',()=>{scroll.replaceChildren();trigger.focus({preventScroll:true});});
+})();

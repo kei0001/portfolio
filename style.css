@@ -572,3 +572,29 @@ body > main.site{position:relative;z-index:1}
 .lustr-usage-chart .usage-dark{display:none}
 [data-theme="dark"] .lustr-usage-chart .usage-light{display:none}
 [data-theme="dark"] .lustr-usage-chart .usage-dark{display:block}
+
+/* Contact, readable mobile navigation, and a full-size chart viewer. */
+.contact-email{display:flex;align-items:center;gap:10px;width:fit-content;margin:18px 0 16px;overflow-wrap:anywhere}
+.mail-icon{width:20px;height:16px;flex:none}
+@media(max-width:560px){
+ .entry-prompt,.entry-scene .tree-nav,.entry-next-prompt{font-size:clamp(10px,2.9vw,13px);line-height:1.45}
+ .entry-scene .entry-tree-line{height:1.45em;line-height:1.45}
+ .entry-sticky.is-complete .entry-scene{max-height:calc(100svh - 150px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+}
+.chart-zoom{display:block;width:100%;padding:0;border:0;color:inherit;background:none;text-align:left;cursor:zoom-in}
+.chart-zoom-hint{display:block;margin-top:12px;font:400 12px/1.5 var(--mono);color:var(--secondary)}
+.chart-dialog{width:min(1280px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--line);color:var(--ink);background:var(--paper)}
+.chart-dialog::backdrop{background:#000b}
+.chart-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.chart-dialog-header h2{margin:0;font-size:18px;line-height:1.5}
+.chart-close{flex:none;min-height:44px;padding:8px;border:0;background:none;color:var(--ink);font:400 13px var(--mono)}
+.chart-scroll{overflow:auto;overscroll-behavior:contain;padding:20px 0}
+.chart-scroll picture{display:block;width:100%;min-width:1008px}
+.chart-scroll img{width:100%;height:auto;display:block}
+.chart-pan-note{display:none;margin:16px 20px 0;color:var(--secondary);font-size:13px}
+body:has(.chart-dialog[open]){overflow:hidden}
+@media(max-width:1050px){.chart-pan-note{display:block}}
+@media(max-width:560px){.chart-dialog{width:calc(100vw - 16px)}.chart-dialog-header{padding:12px 16px}.chart-dialog-header h2{font-size:15px}}
+
+.entry-sticky.is-complete .entry-scene::-webkit-scrollbar{display:none}
+@media(max-width:560px){.entry-scene{padding-right:8px;box-sizing:content-box}}
