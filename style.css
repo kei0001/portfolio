@@ -575,7 +575,8 @@ body > main.site{position:relative;z-index:1}
 
 /* Contact, readable mobile navigation, and a full-size chart viewer. */
 .contact-email{display:flex;align-items:center;gap:10px;width:fit-content;margin:18px 0 16px;overflow-wrap:anywhere}
-.mail-icon{width:20px;height:16px;flex:none}
+.contact-icon{display:block;width:20px;height:auto;flex:none}
+.contact-github{display:flex;align-items:center;gap:10px;width:fit-content}
 @media(max-width:560px){
  .entry-prompt,.entry-scene .tree-nav,.entry-next-prompt{font-size:clamp(10px,2.9vw,13px);line-height:1.45}
  .entry-scene .entry-tree-line{height:1.45em;line-height:1.45}
