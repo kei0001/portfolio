@@ -347,7 +347,7 @@ L 863.856 265.68
 L 893.424 239.76 
 L 922.992 261.792 
 L 952.56 289.008 
-" clip-path="url(#p8cc3ff3444)" style="fill: none; stroke-dasharray: 8,4; stroke-dashoffset: 0; stroke: #777777; stroke-width: 2"/>
+" clip-path="url(#p8cc3ff3444)" style="fill: none; stroke-dasharray: 0,5; stroke-dashoffset: 0; stroke: #777777; stroke-width: 2.5; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 65.52 324 
@@ -514,7 +514,7 @@ z
      <path d="M 197.52 378.722 
 L 212.52 378.722 
 L 227.52 378.722 
-" style="fill: none; stroke-dasharray: 8,4; stroke-dashoffset: 0; stroke: #777777; stroke-width: 2"/>
+" style="fill: none; stroke-dasharray: 0,5; stroke-dashoffset: 0; stroke: #777777; stroke-width: 2.5; stroke-linecap: round"/>
     </g>
     <g id="text_14">
      <!-- 画像書き出し操作 -->
